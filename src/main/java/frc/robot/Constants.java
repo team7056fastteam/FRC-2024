@@ -34,16 +34,16 @@ public class Constants {
             new Translation2d(-kTrackWidth / 2.0, -kWheelBase / 2.0));
 
         //drive motors port ids
-        public static final int kFrontLeftDriveMotorPort = 0;
-        public static final int kBackLeftDriveMotorPort = 1;
-        public static final int kFrontRightDriveMotorPort = 2;
-        public static final int kBackRightDriveMotorPort = 3;
-
+        public static final int kFrontLeftDriveMotorPort = 13;
+        public static final int kBackLeftDriveMotorPort = 21;
+        public static final int kFrontRightDriveMotorPort = 22;
+        public static final int kBackRightDriveMotorPort = 20;
+        
         //turn motors port ids
-        public static final int kFrontLeftTurningMotorPort = 0;
-        public static final int kBackLeftTurningMotorPort = 1;
-        public static final int kFrontRightTurningMotorPort = 2;
-        public static final int kBackRightTurningMotorPort = 3;
+        public static final int kFrontLeftTurningMotorPort = 23;
+        public static final int kBackLeftTurningMotorPort = 11;
+        public static final int kFrontRightTurningMotorPort = 12;
+        public static final int kBackRightTurningMotorPort = 10;
 
         //if the wheels are turning forever they flip the corresponding value
         public static final boolean kFrontLeftTurningMotorReversed = false;
@@ -71,10 +71,10 @@ public class Constants {
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
 
         //adjust wheel offsets
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(0);
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(0);
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(0);
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(0);
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(85.568 + 180);
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-74.361);
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(33.092);
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(32.574);
 
         //these are the physical max of the motor. Look up the values for these.
         public static final double kPhysicalMaxSpeedMetersPerSecond = 5;

@@ -36,8 +36,8 @@ public class Robot extends TimedRobot {
   NavPod _navpod;
   AutoA _autoA;
   double gyroRotation = 0.0;
-  XboxController driver = new XboxController(1);
-  XboxController operator = new XboxController(0);
+  XboxController driver = new XboxController(0);
+  XboxController operator = new XboxController(1);
   double driveX;
   double driveY;
   double driveZ;
@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
 
   Pose2d currentPose;
   double clamp = 0;
-  int step;
+  //int step;
   SwerveModuleState[] moduleStates;
   SwerveModuleState[] lockedStates = 
   {
