@@ -12,7 +12,7 @@ public class AutoA {
         return targetChassisSpeeds;
     }
     public static void runAutonomousA(double time){
-        if(time > 0 && time < 1){
+        if(time > 0 && time < 5){
             targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(.5, 0, 
             0, _robot.getGyroscopeRotation2d());
         }
