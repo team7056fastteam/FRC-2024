@@ -110,5 +110,20 @@ public class Constants {
                         kMaxAngularAccelerationRadiansPerSecondSquared);
     }
     public static final class Specops {
+        //Motors
+        public static final int kExtendMotor = 3;
+        public static final int kGrabberMotor = 5;
+        public static final int kWristMotor = 4;
+        public static final int kArmMotor = 2;
+        //Encoders
+        public static final int kArmCoder = 6;
+        public static final int kExtendMotorCoder = 7;
+        public static final int kGrabberMotorCoder = 8;
+        public static final int kWristMotorCoder = 9;
+        //Limit
+        public static final int kLimitSwitchIn = 0;
+        public static final int kLimitSwitchOut = 1;
+        public static final double kExtendMotorRotLimit = 7.3 * 360;
+        public static final double armSpoolLimit = 30;
     }
 }

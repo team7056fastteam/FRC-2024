@@ -56,6 +56,11 @@ public class Robot extends TimedRobot {
 
   Pose2d currentPose;
   double clamp = 0;
+
+  double armAngle = 35;
+  double extenderPower = 0;
+  double grabberPower = 0;
+  double wristAngle = -80;
   //int step;
   SwerveModuleState[] moduleStates;
   SwerveModuleState[] lockedStates = 
@@ -199,7 +204,11 @@ public class Robot extends TimedRobot {
     switch(autoSelected){
       case "0":
       AutoA.runAutonomousA(time);
-      targetChassisSpeeds = AutoA.chassisSpeedAutoA();
+      targetChassisSpeeds = AutoA.targetChassisSpeeds;
+      armAngle = AutoA.armAngle_;
+      extenderPower = AutoA.extenderPower_;
+      grabberPower =  AutoA.grabberPower_;
+      if(AutoA.armEnabled){ _specOps.armMotorPosition(armAngle);}
         break;
       case "1":
         //AutoB();
@@ -230,6 +239,27 @@ public class Robot extends TimedRobot {
       _drive.setModuleStatesUnrestricted(lockedStates);
     }
 
+    _specOps.wristMotorPosition(wristAngle);
+
+    if(extenderPower < 0 && _specOps.extendMotorRotLimit()){
+      _specOps.extendMotorPower(extenderPower);
+    }
+    else if(!_specOps.getLimitSwitchIn() && extenderPower > 0 ){
+      _specOps.extendMotorPower(extenderPower);
+    }
+    else{
+      _specOps.extendMotorPower(0);
+    }
+
+    if(grabberPower < 0 && _specOps.grabberMotorCoderget() > 50){
+      _specOps.grabberMotorPower(grabberPower);
+    }
+    else if(grabberPower > 0){
+      _specOps.grabberMotorPower(grabberPower);
+    }
+    else{
+      _specOps.grabberMotorPower(0);
+    }
   }
 
   /** This function is called once when teleop is enabled. */
@@ -319,7 +349,34 @@ public class Robot extends TimedRobot {
     if(driver.getAButton()){
       _navpod.resetH(0);
     }
+    if(operator.getRawAxis(2) > 0.1 && !_specOps.getLimitSwitchIn()){
+      _specOps.extendMotorPower(1);
     }
+    else{
+      if(operator.getRawAxis(3) > 0.1 && _specOps.extendMotorRotLimit()){
+        _specOps.extendMotorPower(-1);
+      }
+      else{
+        _specOps.extendMotorPower(0);
+      }
+    }
+    if(operator.getAButton() && _specOps.grabberMotorCoderget() > 50){
+      _specOps.grabberMotorPower(-0.5);
+    }
+    else if(operator.getBButton()){
+      _specOps.grabberMotorPower(0.8);
+    }
+    else{
+      _specOps.grabberMotorPower(0);
+    }
+    if(operator.getRawAxis(1) < -0.15 && armAngle < 110){
+      armAngle = armAngle + 0.5;
+    }
+    else if(operator.getRawAxis(1) > 0.15 && armAngle > 7){
+      armAngle = armAngle - 0.5;
+    }
+    _specOps.armMotorPosition(armAngle);
+  }
 
   public Rotation2d getGyroscopeRotation2d() {
       return Rotation2d.fromDegrees(gyroRotation);
