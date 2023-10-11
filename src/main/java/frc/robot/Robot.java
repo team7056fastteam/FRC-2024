@@ -34,26 +34,24 @@ public class Robot extends TimedRobot {
   SwerveSubsystem _drive;
   SpecOps _specOps;
   NavPod _navpod;
+  
+  //Autos
   AutoA _autoA;
+  //AutoB _autoB;
+  //AutoC _autoC;
+  //AutoD _autoD;
+  //AutoE _autoE;
+
   double gyroRotation = 0.0;
   XboxController driver = new XboxController(0);
   XboxController operator = new XboxController(1);
-  double driveX;
-  double driveY;
-  double driveZ;
+  double driveX , driveY , driveZ;
   TrajectoryConfig trajectoryConfig;
-  PIDController xController;
-  PIDController yController;
-  PIDController turnController;
+  PIDController xController, yController, turnController;
   ProfiledPIDController thetaController;
   HolonomicDriveController controller;
 
-  double kx;
-  double ky;
-  double kgx;
-  double kgy;
-  double kgz;
-
+  double kx, ky , kgx, kgy , kgz;
   Pose2d currentPose;
   double clamp = 0;
 
@@ -61,7 +59,7 @@ public class Robot extends TimedRobot {
   double extenderPower = 0;
   double grabberPower = 0;
   double wristAngle = -80;
-  //int step;
+
   SwerveModuleState[] moduleStates;
   SwerveModuleState[] lockedStates = 
   {
@@ -73,9 +71,7 @@ public class Robot extends TimedRobot {
   ChassisSpeeds targetChassisSpeeds;
   
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  NetworkTableEntry tx = table.getEntry("tx");
-  NetworkTableEntry ty = table.getEntry("ty");
-  NetworkTableEntry ta = table.getEntry("ta");
+  NetworkTableEntry tx = table.getEntry("tx") , ty = table.getEntry("ty") , ta = table.getEntry("ta");
 
   private String autoSelected;
   private final SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -91,6 +87,10 @@ public class Robot extends TimedRobot {
 
     //autos
     _autoA = new AutoA();
+    //_autoB = new AutoB();
+    //_autoC = new AutoC();
+    //_autoD = new AutoD();
+    //_autoE = new AutoE();
 
     // Check if the NavPod is connected to RoboRIO
     if (_navpod.isValid()) {
@@ -276,22 +276,20 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // Driver
+
+    //Speed adjuster
     double xT;
-    
-    if (driver.getLeftBumper()) {
-         xT = 1.2;
-    }
-    else{
-        xT = .45;
-    }
+    if (driver.getLeftBumper()){xT = 1.2;}else{xT = 0.45;}
   
     driveX = (driver.getRawAxis(1) * xT * -1);
     driveY = (driver.getRawAxis(0) * xT * -1);
     driveZ = (driver.getRawAxis(4) * -1);
+
     //apply deadband
     driveX = Math.abs(driveX) > DriveConstants.kDeadband ? driveX : 0.0;
     driveY = Math.abs(driveY) > DriveConstants.kDeadband ? driveY : 0.0;
     driveZ = Math.abs(driveZ) > DriveConstants.kDeadband ? driveZ : 0.0;
+
     //smoother
     driveX = xLimiter.calculate(driveX) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
     driveY = yLimiter.calculate(driveY) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
@@ -346,9 +344,15 @@ public class Robot extends TimedRobot {
       moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
       _drive.setModuleStates(moduleStates);
     }
+
+    //Reset angle of robot to zero
     if(driver.getAButton()){
       _navpod.resetH(0);
     }
+
+    //Operator
+
+    //Extender
     if(operator.getRawAxis(2) > 0.1 && !_specOps.getLimitSwitchIn()){
       _specOps.extendMotorPower(1);
     }
@@ -360,6 +364,8 @@ public class Robot extends TimedRobot {
         _specOps.extendMotorPower(0);
       }
     }
+
+    //Grabber
     if(operator.getAButton() && _specOps.grabberMotorCoderget() > 50){
       _specOps.grabberMotorPower(-0.5);
     }
@@ -369,6 +375,8 @@ public class Robot extends TimedRobot {
     else{
       _specOps.grabberMotorPower(0);
     }
+
+    //Manual Adjustment of Arm Angle
     if(operator.getRawAxis(1) < -0.15 && armAngle < 110){
       armAngle = armAngle + 0.5;
     }
@@ -401,24 +409,6 @@ public class Robot extends TimedRobot {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
     }
   }
-  
-  // public void AutoA(){
-  //   if(step == 0){
-  //     targetChassisSpeeds = _drive.GoTo(5, 5, 0, currentPose);
-  //     if(_drive.GoToComplete(5, 5, 0, currentPose)){
-  //       step++;
-  //     }
-  //   }
-  //   if(step == 1){
-  //     targetChassisSpeeds = _drive.GoTo(6, 7, 90, currentPose);
-  //     if(_drive.GoToComplete(6, 7, 90, currentPose)){
-  //       step++;
-  //     }
-  //   }
-  //   if(step == 2){
-  //     stop();
-  //   }
-  // }
 
   public void stop() {
     _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates

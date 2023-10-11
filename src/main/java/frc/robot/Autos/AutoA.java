@@ -7,14 +7,10 @@ public class AutoA {
     private static Robot _robot = new Robot();
 
     public static ChassisSpeeds targetChassisSpeeds;
-    public static double armAngle_;
-    public static double wristAngle_;
-    public static double extenderPower_;
-    public static double grabberPower_;
+    public static double armAngle_ , wristAngle_ , extenderPower_ , grabberPower_; 
     public static boolean armEnabled;
     
     public static void runAutonomousA(double time){
-        // 
         if(time > 0 && time < 0.01){
             extenderPower_ = 0;
             wristAngle_ = -80;
