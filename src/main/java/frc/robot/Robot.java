@@ -211,10 +211,13 @@ public class Robot extends TimedRobot {
       if(AutoA.armEnabled){ _specOps.armMotorPosition(armAngle);}
         break;
       case "1":
-        //AutoB();
+        _specOps.setblinkin(0.8);
+        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getGyroscopeRotation2d());
         break;
       case "2":
         //AutoC();
+        _specOps.setblinkin(0.7);
+        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getGyroscopeRotation2d());
         break;
       case "3":
         //AutoD();

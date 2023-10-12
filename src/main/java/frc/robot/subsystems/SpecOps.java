@@ -7,6 +7,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Specops;
@@ -15,6 +17,8 @@ public class SpecOps extends SubsystemBase {
     DigitalInput limitSwitchIn;
 
     CANSparkMax extendMotor, armMotor, wristMotor, grabberMotor;
+
+    PWM blinkin;
 
     CANCoder armCoder, grabberMotorCoder, wristMotorCoder, extendMotorCoder;
     RelativeEncoder armMotorEncoder;
@@ -31,7 +35,7 @@ public class SpecOps extends SubsystemBase {
         armMotor = new CANSparkMax(Specops.kArmMotor, MotorType.kBrushless);
         wristMotor = new CANSparkMax(Specops.kWristMotor, MotorType.kBrushless);
         grabberMotor = new CANSparkMax(Specops.kGrabberMotor, MotorType.kBrushless);
-        
+        blinkin = new PWM(0);
 
         //Encoders
         armCoder = new CANCoder(Specops.kArmCoder);
@@ -89,7 +93,7 @@ public class SpecOps extends SubsystemBase {
     }
     public void wristMotorPosition(double angle){
             double wristMotorSpeed = (wristPidController.calculate(wristMotorCoder.getAbsolutePosition(),angle))/180;
-            wristMotor.set(-wristMotorSpeed);
+            //wristMotor.set(-wristMotorSpeed);
     }
     public void extendMotorPower(double speed){
         extendMotor.set(speed);
@@ -112,6 +116,9 @@ public class SpecOps extends SubsystemBase {
     }
     public void resetExtenderEncoder(){
         armMotorEncoder.setPosition(0);
+    }
+    public void setblinkin(double value){
+        blinkin.setPosition(value);
     }
 
     public Boolean extendMotorRotLimitAuto(){
