@@ -282,7 +282,7 @@ public class Robot extends TimedRobot {
 
     //Speed adjuster
     double xT;
-    if (driver.getLeftBumper()){xT = 1.2;}else{xT = 0.45;}
+    if (driver.getLeftBumper()){xT = 1;}else{xT = 0.25;}
   
     driveX = (driver.getRawAxis(1) * xT * -1);
     driveY = (driver.getRawAxis(0) * xT * -1);
@@ -369,7 +369,7 @@ public class Robot extends TimedRobot {
     }
 
     //Grabber
-    if(operator.getAButton() && _specOps.grabberMotorCoderget() > 50){
+    if(operator.getAButton() && _specOps.grabberMotorCoderget() > 50 && _specOps.grabberMotorCoderget() < 340){
       _specOps.grabberMotorPower(-0.5);
     }
     else if(operator.getBButton()){
