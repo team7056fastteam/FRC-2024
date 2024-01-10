@@ -11,7 +11,7 @@ public class Constants {
         public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
 
         //look these numbers up
-        public static final double kDriveMotorGearRatio = 1 / 5.8462;
+        public static final double kDriveMotorGearRatio = 1 / 5.14;
         public static final double kTurningMotorGearRatio = 1 / 18;
 
         //these convert thoose numbers into positon and velocity
@@ -71,17 +71,17 @@ public class Constants {
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
 
         //adjust wheel offsets
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(85.568 + 180);
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-74.361);
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(33.092);
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(32.574);
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-90);
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-40.5);
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(135);
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(30);
 
         //these are the physical max of the motor. Look up the values for these.
-        public static final double kPhysicalMaxSpeedMetersPerSecond = 5;
+        public static final double kPhysicalMaxSpeedMetersPerSecond = 6.03504;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
 
         //adjust the divisor closer to 1 but never past if you want more speed
-        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 1.5;
+        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 1;
 
         //adjust the divisor closer to 1 but never past if you want faster turning
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 3.5;
