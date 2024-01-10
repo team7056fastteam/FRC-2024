@@ -111,8 +111,8 @@ public class Constants {
     }
     public static final class Specops {
         //Motors
-        public static final int kExtendMotor = 3;
-        public static final int kGrabberMotor = 5;
+        public static final int kIngestMotor = 3;
+        public static final int kShooterMotor = 5;
         public static final int kWristMotor = 4;
         public static final int kArmMotor = 2;
         //Encoders

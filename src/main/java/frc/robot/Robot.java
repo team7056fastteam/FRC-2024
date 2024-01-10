@@ -199,16 +199,16 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    double time = timer.get();
+    //double time = timer.get();
 
     switch(autoSelected){
       case "0":
-      AutoA.runAutonomousA(time);
-      targetChassisSpeeds = AutoA.targetChassisSpeeds;
-      armAngle = AutoA.armAngle_;
-      extenderPower = AutoA.extenderPower_;
-      grabberPower =  AutoA.grabberPower_;
-      if(AutoA.armEnabled){ _specOps.armMotorPosition(armAngle);}
+      // AutoA.runAutonomousA(time);
+      // targetChassisSpeeds = AutoA.targetChassisSpeeds;
+      // armAngle = AutoA.armAngle_;
+      // extenderPower = AutoA.extenderPower_;
+      // grabberPower =  AutoA.grabberPower_;
+      // if(AutoA.armEnabled){ _specOps.armMotorPosition(armAngle);}
         break;
       case "1":
         //AutoB();
@@ -232,34 +232,34 @@ public class Robot extends TimedRobot {
 
     moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
 
-    if(!lockAuton){
-    _drive.setModuleStates(moduleStates);
-    }
-    else{
-      _drive.setModuleStatesUnrestricted(lockedStates);
-    }
+    // if(!lockAuton){
+    // _drive.setModuleStates(moduleStates);
+    // }
+    // else{
+    //   _drive.setModuleStatesUnrestricted(lockedStates);
+    // }
 
-    _specOps.wristMotorPosition(wristAngle);
+    // _specOps.wristMotorPosition(wristAngle);
 
-    if(extenderPower < 0 && _specOps.extendMotorRotLimit()){
-      _specOps.extendMotorPower(extenderPower);
-    }
-    else if(!_specOps.getLimitSwitchIn() && extenderPower > 0 ){
-      _specOps.extendMotorPower(extenderPower);
-    }
-    else{
-      _specOps.extendMotorPower(0);
-    }
+    // if(extenderPower < 0 && _specOps.extendMotorRotLimit()){
+    //   _specOps.extendMotorPower(extenderPower);
+    // }
+    // else if(!_specOps.getLimitSwitchIn() && extenderPower > 0 ){
+    //   _specOps.extendMotorPower(extenderPower);
+    // }
+    // else{
+    //   _specOps.extendMotorPower(0);
+    // }
 
-    if(grabberPower < 0 && _specOps.grabberMotorCoderget() > 50){
-      _specOps.grabberMotorPower(grabberPower);
-    }
-    else if(grabberPower > 0){
-      _specOps.grabberMotorPower(grabberPower);
-    }
-    else{
-      _specOps.grabberMotorPower(0);
-    }
+    // if(grabberPower < 0 && _specOps.grabberMotorCoderget() > 50){
+    //   _specOps.grabberMotorPower(grabberPower);
+    // }
+    // else if(grabberPower > 0){
+    //   _specOps.grabberMotorPower(grabberPower);
+    // }
+    // else{
+    //   _specOps.grabberMotorPower(0);
+    // }
   }
 
   /** This function is called once when teleop is enabled. */
@@ -353,37 +353,37 @@ public class Robot extends TimedRobot {
     //Operator
 
     //Extender
-    if(operator.getRawAxis(2) > 0.1 && !_specOps.getLimitSwitchIn()){
-      _specOps.extendMotorPower(1);
-    }
-    else{
-      if(operator.getRawAxis(3) > 0.1 && _specOps.extendMotorRotLimit()){
-        _specOps.extendMotorPower(-1);
-      }
-      else{
-        _specOps.extendMotorPower(0);
-      }
-    }
+  //   if(operator.getRawAxis(2) > 0.1 && !_specOps.getLimitSwitchIn()){
+  //     _specOps.extendMotorPower(1);
+  //   }
+  //   else{
+  //     if(operator.getRawAxis(3) > 0.1 && _specOps.extendMotorRotLimit()){
+  //       _specOps.extendMotorPower(-1);
+  //     }
+  //     else{
+  //       _specOps.extendMotorPower(0);
+  //     }
+  //   }
 
-    //Grabber
-    if(operator.getAButton() && _specOps.grabberMotorCoderget() > 50){
-      _specOps.grabberMotorPower(-0.5);
-    }
-    else if(operator.getBButton()){
-      _specOps.grabberMotorPower(0.8);
-    }
-    else{
-      _specOps.grabberMotorPower(0);
-    }
+  //   //Grabber
+  //   if(operator.getAButton() && _specOps.grabberMotorCoderget() > 50){
+  //     _specOps.grabberMotorPower(-0.5);
+  //   }
+  //   else if(operator.getBButton()){
+  //     _specOps.grabberMotorPower(0.8);
+  //   }
+  //   else{
+  //     _specOps.grabberMotorPower(0);
+  //   }
 
-    //Manual Adjustment of Arm Angle
-    if(operator.getRawAxis(1) < -0.15 && armAngle < 110){
-      armAngle = armAngle + 0.5;
-    }
-    else if(operator.getRawAxis(1) > 0.15 && armAngle > 7){
-      armAngle = armAngle - 0.5;
-    }
-    _specOps.armMotorPosition(armAngle);
+  //   //Manual Adjustment of Arm Angle
+  //   if(operator.getRawAxis(1) < -0.15 && armAngle < 110){
+  //     armAngle = armAngle + 0.5;
+  //   }
+  //   else if(operator.getRawAxis(1) > 0.15 && armAngle > 7){
+  //     armAngle = armAngle - 0.5;
+  //   }
+  //   _specOps.armMotorPosition(armAngle);
   }
 
   public Rotation2d getGyroscopeRotation2d() {
