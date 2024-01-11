@@ -203,8 +203,8 @@ public class Robot extends TimedRobot {
 
     switch(autoSelected){
       case "0":
-      // AutoA.runAutonomousA(time);
-      // targetChassisSpeeds = AutoA.targetChassisSpeeds;
+        AutoA.runAutonomousA(currentPose);
+        targetChassisSpeeds = AutoA.targetChassisSpeeds;
       // armAngle = AutoA.armAngle_;
       // extenderPower = AutoA.extenderPower_;
       // grabberPower =  AutoA.grabberPower_;
