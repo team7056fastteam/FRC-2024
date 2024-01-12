@@ -108,6 +108,11 @@ public class Constants {
                 new TrapezoidProfile.Constraints(
                         kMaxAngularSpeedRadiansPerSecond,
                         kMaxAngularAccelerationRadiansPerSecondSquared);
+
+        public static final TrapezoidProfile.Constraints kPosControllerConstraints =
+                new TrapezoidProfile.Constraints(
+                        kMaxSpeedMetersPerSecond,
+                        kMaxAccelerationMetersPerSecondSquared);
     }
     public static final class Specops {
         //Motors

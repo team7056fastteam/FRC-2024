@@ -102,7 +102,7 @@ public class Robot extends TimedRobot {
       config.mountOffsetY = -4;
       config.rotationScaleFactorX = 0.05; // 0.0675
       config.rotationScaleFactorY = 0.05; // 0.02
-      config.translationScaleFactor = 0.00796529; // 0.008567
+      config.translationScaleFactor = 0.0008771929824561404; // 0.008567
       _navpod.setConfig(config);
 
       // Report values to the console
@@ -152,7 +152,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    currentPose = new Pose2d(new Translation2d(kx, ky), getGyroscopeRotation2d());
+    currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
 
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
@@ -232,12 +232,12 @@ public class Robot extends TimedRobot {
 
     moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
 
-    // if(!lockAuton){
-    // _drive.setModuleStates(moduleStates);
-    // }
-    // else{
-    //   _drive.setModuleStatesUnrestricted(lockedStates);
-    // }
+    if(!lockAuton){
+    _drive.setModuleStates(moduleStates);
+    }
+    else{
+      _drive.setModuleStatesUnrestricted(lockedStates);
+    }
 
     // _specOps.wristMotorPosition(wristAngle);
 
@@ -348,6 +348,7 @@ public class Robot extends TimedRobot {
     //Reset angle of robot to zero
     if(driver.getAButton()){
       _navpod.resetH(0);
+      _navpod.resetXY(0, 0);
     }
 
     //Operator
