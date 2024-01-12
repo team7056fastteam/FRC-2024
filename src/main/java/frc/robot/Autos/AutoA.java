@@ -12,11 +12,13 @@ public class AutoA {
     public static ChassisSpeeds targetChassisSpeeds;
     public static double ingestPower_ , shooterPower_ ;
 
-    static PIDController xController = new PIDController(1, 0, 0);
-    public static PIDController yController = new PIDController(1, 0, 0);
+    static PIDController xController = new PIDController(0.01, 0, 0);
+    public static PIDController yController = new PIDController(0.01, 0, 0);
 
     static int selectedPath, selectedPoint;
-    static double selectedX, selectedY, selectedH;
+    static double selectedX, selectedY, selectedH, xPower, yPower;
+
+    static Boolean kStopPath =  false;
 
     public static double[][] path0 = {{0,0,0},{0,0,0}};
 
@@ -25,28 +27,46 @@ public class AutoA {
     public static double[][][] paths = {path0, path1};
     
     public static void runAutonomousA(Pose2d currentPose){
+        runpath(currentPose);
+    }
+
+    static void runpath(Pose2d currentPose){
         selectedX = paths[selectedPath][selectedPoint][0];
         selectedY = paths[selectedPath][selectedPoint][1];
         selectedH = paths[selectedPath][selectedPoint][2];
 
-        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-            drivePower(xController.calculate(currentPose.getX(),selectedX)), 
-            drivePower(yController.calculate(currentPose.getY(),selectedY)), 
-             0, _robot.getGyroscopeRotation2d());
+        double kX = currentPose.getX();
+        double kY = currentPose.getY();
 
-        if(paths[selectedPath].length == selectedPoint + 1){
-            //less error because it is endpoint
-            if(currentPose.getX() - 0.2 <= selectedX && selectedX <= currentPose.getX() + 0.2){
-                advancePoint();
+        double error = Math.sqrt((Math.pow((selectedX - kX),2) - Math.pow((selectedY - kY),2)));
+        
+        if(!kStopPath){
+            targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+            drivePower(drivePower(xPower)), 
+            drivePower(drivePower(yPower)), 
+             0, _robot.getGyroscopeRotation2d());
+        }
+        else{
+            targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0,0, 
+            0, _robot.getGyroscopeRotation2d());
+        }
+
+        if(selectedPoint == (paths[selectedPath].length - 1) ){
+            //end point
+            xPower = xController.calculate(kX,selectedX);
+            yPower = yController.calculate(kY,selectedY);
+            if(error < 0.5){
+                kStopPath = true;
             }
         }
         else{
-            //more error cause checkpoint
-            if(currentPose.getX() - 1.0 <= selectedX && selectedX <= currentPose.getX() + 1.0){
+            //way point
+            xPower = xController.calculate(kX,selectedX);
+            yPower = yController.calculate(kY,selectedY);
+            if(error < 1){
                 advancePoint();
             }
         }
-
     }
 
     static void advancePoint(){
@@ -54,13 +74,6 @@ public class AutoA {
 
         if (length >= selectedPoint + 1){
             selectedPoint += 1;
-        }
-    }
-    static void advancePath(){
-        int length = paths.length;
-
-        if (length >= selectedPath + 1){
-            selectedPath += 1;
         }
     }
 
