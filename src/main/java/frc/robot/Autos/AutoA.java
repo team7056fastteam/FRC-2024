@@ -94,7 +94,7 @@ public class AutoA {
                     highestYPower = drivePower(yPower);
                 }
 
-                if(angle > 90){
+                if(-90 <= angle && angle <= 90){
                     //yPower constant
                     xPower = xController.calculate(kX,selectedX);
                     yPower = highestYPower;
