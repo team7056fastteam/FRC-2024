@@ -48,10 +48,10 @@ public class Robot extends TimedRobot {
   double driveX , driveY , driveZ;
   TrajectoryConfig trajectoryConfig;
   PIDController xController, yController, turnController;
-  ProfiledPIDController thetaController;
+  ProfiledPIDController thetaController, limeX, limeZ;
   HolonomicDriveController controller;
 
-  double kx, ky , kgx, kgy , kgz;
+  double kx, ky, kgx, kgy, kgz;
   Pose2d currentPose;
   double clamp = 0;
 
@@ -71,12 +71,12 @@ public class Robot extends TimedRobot {
   ChassisSpeeds targetChassisSpeeds;
   
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  NetworkTableEntry tx = table.getEntry("tx") , ty = table.getEntry("ty") , ta = table.getEntry("ta");
+  NetworkTableEntry tx = table.getEntry("tx") , ty = table.getEntry("ty") , ta = table.getEntry("ta"), tv = table.getEntry("tv");
 
   private String autoSelected;
   private final SendableChooser<String> autoChooser = new SendableChooser<>();
 
-  boolean lockAuton = false;
+  boolean lockAuton = false, trackTranslation = false;
 
   @Override
   public void robotInit() {
@@ -134,6 +134,9 @@ public class Robot extends TimedRobot {
     turnController = new PIDController(28,0,3);
     controller = new HolonomicDriveController(xController, yController, thetaController);
 
+    limeX = new ProfiledPIDController(0.1, 0, 0,AutoConstants.kPosControllerConstraints);
+    limeZ = new ProfiledPIDController(0.1, 0, 0.1,AutoConstants.kThetaControllerConstraints);
+
     //Prevents stick stabbing I might need to adjust the zlimiter
     xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
     yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
@@ -156,19 +159,27 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
+    double x = tx.getDouble(0.0);
+    double y = ty.getDouble(0.0);
+    double area = ta.getDouble(0.0);
+    double tag = tv.getDouble(0.0);
+    SmartDashboard.putNumber("LimeLightX", x);
+    SmartDashboard.putNumber("LimeLightY", y);
+    SmartDashboard.putNumber("LimeLightArea", area);
+    SmartDashboard.putNumber("Tag", tag);
   }
 
   @Override
   public void autonomousInit() {
     // Zero robot position
     _navpod.resetXY(0, 0);
-
     autoSelected = autoChooser.getSelected();
 
     //sets starting angle of robot
     switch(autoSelected){
       case "0":
         _navpod.resetH(0);
+        AutoA.selectedPoint = 0;
         break;
       case "1":
         _navpod.resetH(0);
@@ -301,43 +312,60 @@ public class Robot extends TimedRobot {
       _drive.setModuleStatesUnrestricted(lockedStates);
 
     } else if(driver.getRawAxis(3) > 0.1){
-      double ModDriveZ = turnController.calculate(getGyroscopeRotation()/180, 1);
-      if(ModDriveZ > 0){
-        clamp = Math.min(ModDriveZ, 2.5);
-      }
-      else{
-        clamp = Math.max(ModDriveZ, -2.5);
-      }
-      SmartDashboard.putNumber("ModDriveZ", clamp);
-      ChassisSpeeds modifiedChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, clamp, getGyroscopeRotation2d());
-      moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(modifiedChassisSpeeds);
-      _drive.setModuleStates(moduleStates);
+      // double ModDriveZ = turnController.calculate(getGyroscopeRotation()/180, 1);
+      // if(ModDriveZ > 0){
+      //   clamp = Math.min(ModDriveZ, 2.5);
+      // }
+      // else{
+      //   clamp = Math.max(ModDriveZ, -2.5);
+      // }
+      // SmartDashboard.putNumber("ModDriveZ", clamp);
+      // ChassisSpeeds modifiedChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, clamp, getGyroscopeRotation2d());
+      // moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(modifiedChassisSpeeds);
+      // _drive.setModuleStates(moduleStates);
     }
     else if(driver.getYButton()){
       //Robot Centric
-      ChassisSpeeds modifiedChassisSpeeds =  new ChassisSpeeds(driveX, driveY, driveZ);
+      // ChassisSpeeds modifiedChassisSpeeds =  new ChassisSpeeds(driveX, driveY, driveZ);
+      // moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(modifiedChassisSpeeds);
+      // _drive.setModuleStates(moduleStates);
+      double y,z;
+      if(trackTranslation){
+        y = limeX.calculate(tx.getDouble(0.0));
+        z = driveZ;
+      }
+      else{
+        y = driveY;
+        z = limeZ.calculate(tx.getDouble(0.0));
+      }
+      ChassisSpeeds modifiedChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, y, z, getGyroscopeRotation2d());
       moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(modifiedChassisSpeeds);
-      _drive.setModuleStates(moduleStates);
+      if(tv.getDouble(0.0) > 0){
+        _drive.setModuleStates(moduleStates);
+      }
+      else{
+        _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getGyroscopeRotation2d())));
+      }
     }
     else if(driver.getRightBumper()){
-      double angle;
-      if(gyroRotation > 180){
-        angle = gyroRotation - 360;
-      }
-      else{
-        angle = gyroRotation;
-      }
-      double ModDriveZ = turnController.calculate(angle/180, 0);
-      if(ModDriveZ > 0){
-        clamp = Math.min(ModDriveZ, 2.5);
-      }
-      else{
-        clamp = Math.max(ModDriveZ, -2.5);
-      }
-      SmartDashboard.putNumber("ModDriveZ", clamp);
-      ChassisSpeeds modifiedChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, clamp, getGyroscopeRotation2d());
-      moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(modifiedChassisSpeeds);
-      _drive.setModuleStates(moduleStates);
+      // double angle;
+      // if(gyroRotation > 180){
+      //   angle = gyroRotation - 360;
+      // }
+      // else{
+      //   angle = gyroRotation;
+      // }
+      // double ModDriveZ = turnController.calculate(angle/180, 0);
+      // if(ModDriveZ > 0){
+      //   clamp = Math.min(ModDriveZ, 2.5);
+      // }
+      // else{
+      //   clamp = Math.max(ModDriveZ, -2.5);
+      // }
+      // SmartDashboard.putNumber("ModDriveZ", clamp);
+      // ChassisSpeeds modifiedChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, clamp, getGyroscopeRotation2d());
+      // moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(modifiedChassisSpeeds);
+      // _drive.setModuleStates(moduleStates);
     }
     else{
       //field Centric
