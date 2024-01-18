@@ -10,21 +10,21 @@ public class Pathrunner {
     public static ChassisSpeeds targetChassisSpeeds;
     public static double ingestPower_ , shooterPower_ ;
 
-    static PIDController xController = new PIDController(AutoConstants.kPXController, 0.0125, 0);
-    static PIDController yController = new PIDController(AutoConstants.kPYController, 0.0125, 0);
+    static PIDController xController = new PIDController(AutoConstants.kPXController, AutoConstants.kIXController, 0);
+    static PIDController yController = new PIDController(AutoConstants.kPYController, AutoConstants.kIYController, 0);
     static ProfiledPIDController thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
 
     public static int selectedPath, selectedPoint = 0;
-    static double selectedX, selectedY, selectedH, xPower, yPower, hPower, oldXPower = 0, oldYPower = 0, highestXPower = 0, highestYPower = 0;
+    static double xPower, yPower, hPower, oldXPower = 0, oldYPower = 0, highestXPower = 0, highestYPower = 0;
     
     public static Boolean kStopPath = false;
     
     public ChassisSpeeds runpath(Pose2d currentPose, double[][][] paths,int kselectedPath){
 
-        selectedPath = kselectedPath;
-        selectedX = paths[kselectedPath][selectedPoint][0];
-        selectedY = paths[kselectedPath][selectedPoint][1];
-        selectedH = Math.toRadians(paths[kselectedPath][selectedPoint][2]);
+        double selectedX = paths[kselectedPath][selectedPoint][0];
+        double selectedY = paths[kselectedPath][selectedPoint][1];
+        double selectedH = Math.toRadians(paths[kselectedPath][selectedPoint][2]);
+
         double selectedError = paths[kselectedPath][selectedPoint][3];
 
         double kX = currentPose.getX();

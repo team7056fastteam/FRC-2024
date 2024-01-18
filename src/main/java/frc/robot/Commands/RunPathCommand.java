@@ -8,37 +8,29 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RunPathCommand extends FastCommand{
+    SwerveSubsystem _drive = new SwerveSubsystem();
+
     ChassisSpeeds targetChassisSpeeds;
     Pose2d currentPose;
-    SwerveSubsystem _drive;
     Pathrunner _path;
 
     double[][][] paths;
     int selectedPath;
 
-    public RunPathCommand(SwerveSubsystem drive, double[][][] mPaths, Pose2d pose, int currentPath){
-        _drive = drive;
-        currentPose = pose;
+    public RunPathCommand(double[][][] mPaths, int currentPath){
         paths = mPaths;
         selectedPath = currentPath;
     }
 
     @Override
     public void run() {
-        while(!isFinished()){
-            targetChassisSpeeds = _path.runpath(currentPose,paths, selectedPath);
+        targetChassisSpeeds = _path.runpath(_drive.getPose(),paths, selectedPath);
             _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
-        }
     }
 
     @Override
     public Boolean isFinished() {
-        if(Pathrunner.kStopPath){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return Pathrunner.kStopPath;
     }
 
     @Override
@@ -46,7 +38,7 @@ public class RunPathCommand extends FastCommand{
         Pathrunner.kStopPath = false;
         Pathrunner.selectedPoint = 0;
         targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, currentPose.getRotation());
-        
+        _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
     }
 
     @Override

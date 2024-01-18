@@ -2,14 +2,15 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.Constants.*;
 
 public class SwerveSubsystem extends SubsystemBase {
+    private Robot _robot = new Robot();
 
     //sets the constants for each module
     private final static SwerveModule frontLeft = new SwerveModule(
@@ -74,29 +75,7 @@ public class SwerveSubsystem extends SubsystemBase {
         backLeft.setDesiredStateUnrestricted(desiredStates[2]);
         backRight.setDesiredStateUnrestricted(desiredStates[3]);
     }
-
-    public ChassisSpeeds GoTo(double tx, double ty, double tangle, Pose2d pose){
-        double x =  pose.getX();
-        double y =  pose.getY();
-        Rotation2d gyro = pose.getRotation();
-        driveX = xpid.calculate(x, tx) * AutoConstants.kMaxSpeedMetersPerSecond;
-        driveY = ypid.calculate(y, ty) * AutoConstants.kMaxSpeedMetersPerSecond;
-        zpid.enableContinuousInput(0, 360);
-        driveZ = (zpid.calculate(gyro.getDegrees(), tangle)/360) * AutoConstants.kMaxAngularSpeedRadiansPerSecond;
-        
-        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, gyro);
-        return targetChassisSpeeds;
-    }
-    public Boolean GoToComplete(double tx, double ty, double tangle, Pose2d pose){
-        double errorX = Math.abs(tx - pose.getX());
-        double errorY = Math.abs(ty - pose.getY());
-        double errorAngle = Math.abs(tangle - pose.getRotation().getDegrees());
-        
-        if(errorX > .25 && errorY > .25 && errorAngle > 1){
-            return true;
-        }
-        else{
-            return false;
-        }
+    public Pose2d getPose(){
+        return _robot.getPose();
     }
 }

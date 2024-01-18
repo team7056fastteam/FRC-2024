@@ -20,29 +20,26 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.SpecOps;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.Autos.AutoA;
+import frc.robot.Autos.Common.AutoModeRunner;
+import frc.robot.Autos.Common.AutoModeSelector;
 
 public class Robot extends TimedRobot {
+  //SubSytems
+  private SwerveSubsystem _drive;
+  //private SpecOps _specOps;
+  private NavPod _navpod;
+
+  //Auto
+  private AutoModeRunner mAutoModeRunner;
+  private AutoModeSelector modeSelector;
+
   Timer timer = new Timer();
   SlewRateLimiter xLimiter, yLimiter, zLimiter;
-  SwerveSubsystem _drive;
-  SpecOps _specOps;
-  NavPod _navpod;
-  
-  //Autos
-  AutoA _autoA;
-  //AutoB _autoB;
-  //AutoC _autoC;
-  //AutoD _autoD;
-  //AutoE _autoE;
 
-  double gyroRotation = 0.0;
   XboxController driver = new XboxController(0);
   XboxController operator = new XboxController(1);
   double driveX , driveY , driveZ;
@@ -51,14 +48,9 @@ public class Robot extends TimedRobot {
   ProfiledPIDController thetaController, limeX, limeZ;
   HolonomicDriveController controller;
 
-  double kx, ky, kgx, kgy, kgz;
+  double kx, ky, kgx, kgy, kgz, gyroRotation;
   Pose2d currentPose;
   double clamp = 0;
-
-  double armAngle = 35;
-  double extenderPower = 0;
-  double grabberPower = 0;
-  double wristAngle = -80;
 
   SwerveModuleState[] moduleStates;
   SwerveModuleState[] lockedStates = 
@@ -72,9 +64,7 @@ public class Robot extends TimedRobot {
   
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTableEntry tx = table.getEntry("tx") , ty = table.getEntry("ty") , ta = table.getEntry("ta"), tv = table.getEntry("tv");
-
-  private String autoSelected;
-  private final SendableChooser<String> autoChooser = new SendableChooser<>();
+  
 
   boolean lockAuton = false, trackTranslation = false;
 
@@ -83,14 +73,7 @@ public class Robot extends TimedRobot {
     //subsystems
     _navpod = new NavPod();
     _drive = new SwerveSubsystem();
-    _specOps = new SpecOps();
-
-    //autos
-    _autoA = new AutoA();
-    //_autoB = new AutoB();
-    //_autoC = new AutoC();
-    //_autoD = new AutoD();
-    //_autoE = new AutoE();
+    //_specOps = new SpecOps();
 
     // Check if the NavPod is connected to RoboRIO
     if (_navpod.isValid()) {
@@ -141,16 +124,6 @@ public class Robot extends TimedRobot {
     xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
     yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
     zLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
-
-    //Auto Chooser
-    autoChooser.setDefaultOption("Auto A", "0");
-    autoChooser.addOption("Auto A", "0");
-    autoChooser.addOption("Auto B", "1");
-    autoChooser.addOption("Auto C", "2");
-    autoChooser.addOption("Auto D", "3");
-    autoChooser.addOption("Auto E", "4");
-    autoChooser.addOption("Auto F", "5");
-    SmartDashboard.putData("Auto choices", autoChooser);
   }
 
   @Override
@@ -173,99 +146,14 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // Zero robot position
     _navpod.resetXY(0, 0);
-    autoSelected = autoChooser.getSelected();
-
-    //sets starting angle of robot
-    switch(autoSelected){
-      case "0":
-        _navpod.resetH(0);
-        AutoA.onetime = false;
-        break;
-      case "1":
-        _navpod.resetH(0);
-        break;
-      case "2":
-        _navpod.resetH(0);
-        break;
-      case "3":
-        _navpod.resetH(0);
-        break;
-      case "4":
-        _navpod.resetH(0);
-        break;
-      case "5":
-        _navpod.resetH(0);
-        break;
-      default:
-        _navpod.resetH(0);
-        break;
+    if(modeSelector.getAutoMode() != null){
+      mAutoModeRunner.start();
     }
-    
-    timer.reset();
-    timer.start();
-    lockAuton = false;
-    
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {
-
-    switch(autoSelected){
-      case "0":
-        AutoA.runAutonomousA(currentPose, _drive);
-        break;
-      case "1":
-        //AutoB();
-        break;
-      case "2":
-        //AutoC();
-        break;
-      case "3":
-        //AutoD();
-        break;
-      case "4":
-        //AutoE();
-        break;
-      case "5":
-        //AutoF();
-        break;
-      default:
-        //AutoA();
-        break;
-    }
-
-    // moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
-
-    // if(!lockAuton){
-    // _drive.setModuleStates(moduleStates);
-    // }
-    // else{
-    //   _drive.setModuleStatesUnrestricted(lockedStates);
-    // }
-
-    // _specOps.wristMotorPosition(wristAngle);
-
-    // if(extenderPower < 0 && _specOps.extendMotorRotLimit()){
-    //   _specOps.extendMotorPower(extenderPower);
-    // }
-    // else if(!_specOps.getLimitSwitchIn() && extenderPower > 0 ){
-    //   _specOps.extendMotorPower(extenderPower);
-    // }
-    // else{
-    //   _specOps.extendMotorPower(0);
-    // }
-
-    // if(grabberPower < 0 && _specOps.grabberMotorCoderget() > 50){
-    //   _specOps.grabberMotorPower(grabberPower);
-    // }
-    // else if(grabberPower > 0){
-    //   _specOps.grabberMotorPower(grabberPower);
-    // }
-    // else{
-    //   _specOps.grabberMotorPower(0);
-    // }
-  }
+  public void autonomousPeriodic() {}
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -442,5 +330,14 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     stop();
     setLimelight(false);
+  }
+
+  @Override
+  public void disabledPeriodic() {
+    mAutoModeRunner.setAuto(modeSelector.getAutoMode());
+  }
+
+  public Pose2d getPose(){
+    return currentPose;
   }
 }

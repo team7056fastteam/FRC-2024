@@ -101,6 +101,9 @@ public class Constants {
         public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
         public static final double kPXController = 0.4;
         public static final double kPYController = 0.4;
+        public static final double kIXController = 0.0125;
+        public static final double kIYController = 0.0125;
+        
         public static final double kPThetaController1 = 7;
         public static final double kPThetaController = 3;
 
