@@ -1,18 +1,18 @@
 package frc.robot.subsystems;
 
 //import com.ctre.phoenix.sensors.CANCoder;
-import com.revrobotics.CANSparkMax;
+//import com.revrobotics.CANSparkMax;
 //import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+//import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 //import edu.wpi.first.math.controller.PIDController;
 //import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Specops;
+//import frc.robot.Constants.Specops;
 
 public class SpecOps extends SubsystemBase {
-    CANSparkMax ingestMotor, shooterMotor;
+    //CANSparkMax ingestMotor, shooterMotor;
 
     // CANCoder armCoder, grabberMotorCoder, wristMotorCoder, extendMotorCoder;
     // RelativeEncoder armMotorEncoder;
@@ -27,8 +27,8 @@ public class SpecOps extends SubsystemBase {
 
     public SpecOps(){
         //Motors
-        ingestMotor = new CANSparkMax(Specops.kIngestMotor, MotorType.kBrushless);
-        shooterMotor = new CANSparkMax(Specops.kShooterMotor, MotorType.kBrushless);
+        //ingestMotor = new CANSparkMax(Specops.kIngestMotor, MotorType.kBrushless);
+        //shooterMotor = new CANSparkMax(Specops.kShooterMotor, MotorType.kBrushless);
         //wristMotor = new CANSparkMax(Specops.kWristMotor, MotorType.kBrushless);
         //grabberMotor = new CANSparkMax(Specops.kGrabberMotor, MotorType.kBrushless);
         
@@ -56,13 +56,13 @@ public class SpecOps extends SubsystemBase {
         //restExtendEncoder = extendMotorCoder.getPosition();
     }
 
-    public void ingestPower(double power){
-        ingestMotor.set(power);
-    }
+    // public void ingestPower(double power){
+    //     ingestMotor.set(power);
+    // }
 
-    public void shooterPower(double power){
-        shooterMotor.set(power);
-    }
+    // public void shooterPower(double power){
+    //     shooterMotor.set(power);
+    // }
     // public void armMotorPosition(double angle){
     //     armMotorSpeed = armPidController.calculate((armCoder.getAbsolutePosition()/100), (angle/100));
     //     if(-armMotorSpeed < 0 && armMotorEncoder.getPosition() > -Specops.armSpoolLimit){

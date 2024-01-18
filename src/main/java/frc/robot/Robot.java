@@ -179,7 +179,7 @@ public class Robot extends TimedRobot {
     switch(autoSelected){
       case "0":
         _navpod.resetH(0);
-        AutoA.selectedPoint = 0;
+        AutoA.onetime = false;
         break;
       case "1":
         _navpod.resetH(0);
@@ -210,16 +210,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    //double time = timer.get();
 
     switch(autoSelected){
       case "0":
-        AutoA.runAutonomousA(currentPose);
-        targetChassisSpeeds = AutoA.targetChassisSpeeds;
-      // armAngle = AutoA.armAngle_;
-      // extenderPower = AutoA.extenderPower_;
-      // grabberPower =  AutoA.grabberPower_;
-      // if(AutoA.armEnabled){ _specOps.armMotorPosition(armAngle);}
+        AutoA.runAutonomousA(currentPose, _drive);
         break;
       case "1":
         //AutoB();
@@ -241,14 +235,14 @@ public class Robot extends TimedRobot {
         break;
     }
 
-    moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
+    // moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
 
-    if(!lockAuton){
-    _drive.setModuleStates(moduleStates);
-    }
-    else{
-      _drive.setModuleStatesUnrestricted(lockedStates);
-    }
+    // if(!lockAuton){
+    // _drive.setModuleStates(moduleStates);
+    // }
+    // else{
+    //   _drive.setModuleStatesUnrestricted(lockedStates);
+    // }
 
     // _specOps.wristMotorPosition(wristAngle);
 
