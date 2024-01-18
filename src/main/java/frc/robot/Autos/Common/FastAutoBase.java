@@ -21,16 +21,12 @@ public abstract class FastAutoBase {
         m_active = false;
     }
 
-    public boolean isActive() {
-        return m_active;
-    }
-
     public boolean isActiveWithThrow() throws Exception {
-        if (!isActive()) {
+        if (!m_active) {
             throw new Exception();
         }
 
-        return isActive();
+        return m_active;
     }
 
     public void runCommand(FastCommand command) throws Exception{
