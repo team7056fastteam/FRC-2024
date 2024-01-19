@@ -20,7 +20,6 @@ public class Pathrunner {
     public static Boolean kStopPath = false;
     
     public ChassisSpeeds runpath(Pose2d currentPose, double[][][] paths,int kselectedPath){
-
         double selectedX = paths[kselectedPath][selectedPoint][0];
         double selectedY = paths[kselectedPath][selectedPoint][1];
         double selectedH = Math.toRadians(paths[kselectedPath][selectedPoint][2]);
@@ -78,7 +77,7 @@ public class Pathrunner {
             return ChassisSpeeds.fromFieldRelativeSpeeds(
             drivePower(yPower), 
             -drivePower(xPower), 
-            hPower, currentPose.getRotation());
+            -hPower, currentPose.getRotation());
         }
         else{
             return ChassisSpeeds.fromFieldRelativeSpeeds(

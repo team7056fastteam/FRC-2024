@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -10,7 +8,15 @@ import frc.robot.Robot;
 import frc.robot.Constants.*;
 
 public class SwerveSubsystem extends SubsystemBase {
-    private Robot _robot = new Robot();
+    private static Robot _robot;
+    public static SwerveSubsystem mInstance;
+
+    public static SwerveSubsystem getInstance(){
+        if(mInstance == null){
+            mInstance = new SwerveSubsystem(_robot);
+        }
+        return mInstance;
+    }
 
     //sets the constants for each module
     private final static SwerveModule frontLeft = new SwerveModule(
@@ -49,15 +55,9 @@ public class SwerveSubsystem extends SubsystemBase {
             DriveConstants.kBackRightDriveAbsoluteEncoderOffsetRad,
             DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
 
-    ChassisSpeeds targetChassisSpeeds;
-    double driveX;
-    double driveY;
-    double driveZ;
-    PIDController xpid = new PIDController(AutoConstants.kPXController, 0, 0);
-    PIDController ypid = new PIDController(AutoConstants.kPYController, 0, 0);
-    PIDController zpid = new PIDController(1, 0, 0);
-
-    public SwerveSubsystem() {}
+    public SwerveSubsystem(Robot _robot) {
+        SwerveSubsystem._robot = _robot;
+    }
 
     //sets the states for each module
     public void setModuleStates(SwerveModuleState[] desiredStates) {
@@ -75,6 +75,7 @@ public class SwerveSubsystem extends SubsystemBase {
         backLeft.setDesiredStateUnrestricted(desiredStates[2]);
         backRight.setDesiredStateUnrestricted(desiredStates[3]);
     }
+
     public Pose2d getPose(){
         return _robot.getPose();
     }

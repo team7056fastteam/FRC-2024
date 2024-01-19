@@ -2,17 +2,19 @@ package frc.robot.Commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.Robot;
 import frc.robot.Autos.Common.FastCommand;
 import frc.robot.Autos.Common.Pathrunner;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RunPathCommand extends FastCommand{
-    SwerveSubsystem _drive = new SwerveSubsystem();
+    SwerveSubsystem _drive = SwerveSubsystem.getInstance();
+    Robot _robot = new Robot();
+    Pathrunner _path = new Pathrunner();
 
     ChassisSpeeds targetChassisSpeeds;
     Pose2d currentPose;
-    Pathrunner _path;
 
     double[][][] paths;
     int selectedPath;
@@ -24,8 +26,10 @@ public class RunPathCommand extends FastCommand{
 
     @Override
     public void run() {
-        targetChassisSpeeds = _path.runpath(_drive.getPose(),paths, selectedPath);
-            _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
+        if(_drive.getPose() != null){
+           _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(
+           _path.runpath(_drive.getPose() ,paths, selectedPath)));
+        }
     }
 
     @Override
@@ -37,13 +41,14 @@ public class RunPathCommand extends FastCommand{
     public void init() {
         Pathrunner.kStopPath = false;
         Pathrunner.selectedPoint = 0;
-        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, currentPose.getRotation());
+        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, _drive.getPose().getRotation());
         _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
+        
     }
 
     @Override
     public void end() {
-        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, currentPose.getRotation());
+        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, _drive.getPose().getRotation());
         _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
     }
     

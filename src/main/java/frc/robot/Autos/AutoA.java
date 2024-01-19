@@ -5,7 +5,7 @@ import frc.robot.Commands.*;
 
 public class AutoA extends FastAutoBase{
     //{x,y,heading,error}
-    double[][] path0 = {{-0.7,2.0,0,0.2}};
+    double[][] path0 = {{-0.7,2.0,0,1}};
 
     double[][] path1 = {{ -.7,9.2,0,0.2}};
 

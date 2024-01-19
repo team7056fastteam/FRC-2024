@@ -72,7 +72,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     //subsystems
     _navpod = new NavPod();
-    _drive = new SwerveSubsystem();
+    _drive = new SwerveSubsystem(this);
+    modeSelector = new AutoModeSelector();
+    mAutoModeRunner = new AutoModeRunner();
     //_specOps = new SpecOps();
 
     // Check if the NavPod is connected to RoboRIO
@@ -83,9 +85,9 @@ public class Robot extends TimedRobot {
       config.initialHeadingAngle = 0;
       config.mountOffsetX = 0;
       config.mountOffsetY = -4;
-      config.rotationScaleFactorX = 0.05; // 0.0675
-      config.rotationScaleFactorY = 0.05; // 0.02
-      config.translationScaleFactor = 0.0008771929824561404; // 0.008567
+      config.rotationScaleFactorX = 0.0; // 0.0675
+      config.rotationScaleFactorY = 0.0; // 0.02
+      config.translationScaleFactor = 0.00719929350933028438809204856697; // 0.008567
       _navpod.setConfig(config);
 
       // Report values to the console
@@ -129,7 +131,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
-
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
     double x = tx.getDouble(0.0);
@@ -187,7 +188,8 @@ public class Robot extends TimedRobot {
     driveX = xLimiter.calculate(driveX) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
     driveY = yLimiter.calculate(driveY) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
     driveZ = zLimiter.calculate(driveZ) * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
-    targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, getGyroscopeRotation2d());
+    //targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, getGyroscopeRotation2d());
+    targetChassisSpeeds = new ChassisSpeeds(driveX,driveY,driveZ);
     
     if (driver.getRawAxis(2) > 0.1) {
       //lock
@@ -334,7 +336,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    mAutoModeRunner.setAuto(modeSelector.getAutoMode());
+    if(modeSelector.getAutoMode() != null && mAutoModeRunner != null){
+      mAutoModeRunner.stop();
+      mAutoModeRunner.setAuto(modeSelector.getAutoMode());
+    }
   }
 
   public Pose2d getPose(){

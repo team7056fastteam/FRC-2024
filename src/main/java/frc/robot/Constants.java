@@ -71,10 +71,10 @@ public class Constants {
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
 
         //adjust wheel offsets
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-90);
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-40.5);
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(135);
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(30);
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-90 - -3.252);
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-40.5 - -5.186);
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(135 - -0.176);
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(30 - -4.746);
 
         //these are the physical max of the motor. Look up the values for these.
         public static final double kPhysicalMaxSpeedMetersPerSecond = 6.03504;
@@ -99,13 +99,13 @@ public class Constants {
         public static final double kMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 8;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
-        public static final double kPXController = 0.4;
-        public static final double kPYController = 0.4;
-        public static final double kIXController = 0.0125;
-        public static final double kIYController = 0.0125;
+        public static final double kPXController = 0.1; //0.4
+        public static final double kPYController = 0.1; //0.4
+        public static final double kIXController = 0.0; //0.0125
+        public static final double kIYController = 0.0; //0.0125
         
         public static final double kPThetaController1 = 7;
-        public static final double kPThetaController = 3;
+        public static final double kPThetaController = 0.1; //3
 
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
                 new TrapezoidProfile.Constraints(

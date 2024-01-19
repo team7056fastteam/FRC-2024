@@ -23,6 +23,9 @@ public class AutoModeRunner {
     }
 
     public void stop() {
+        if (mAuto != null){
+            mAuto.stop();
+        }
         m_thread = null;
     }
 }
