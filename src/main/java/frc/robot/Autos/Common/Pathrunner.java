@@ -1,7 +1,6 @@
 package frc.robot.Autos.Common;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.Constants.AutoConstants;
@@ -12,14 +11,16 @@ public class Pathrunner {
 
     static PIDController xController = new PIDController(AutoConstants.kPXController, AutoConstants.kIXController, 0);
     static PIDController yController = new PIDController(AutoConstants.kPYController, AutoConstants.kIYController, 0);
-    static ProfiledPIDController thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-
+    static PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
+    
     public static int selectedPath, selectedPoint = 0;
     static double xPower, yPower, hPower, oldXPower = 0, oldYPower = 0, highestXPower = 0, highestYPower = 0;
     
     public static Boolean kStopPath = false;
     
     public ChassisSpeeds runpath(Pose2d currentPose, double[][][] paths,int kselectedPath){
+        thetaController.enableContinuousInput(0,2 * Math.PI);
+
         double selectedX = paths[kselectedPath][selectedPoint][0];
         double selectedY = paths[kselectedPath][selectedPoint][1];
         double selectedH = Math.toRadians(paths[kselectedPath][selectedPoint][2]);
@@ -77,7 +78,7 @@ public class Pathrunner {
             return ChassisSpeeds.fromFieldRelativeSpeeds(
             drivePower(yPower), 
             -drivePower(xPower), 
-            -hPower, currentPose.getRotation());
+            hPower, currentPose.getRotation());
         }
         else{
             return ChassisSpeeds.fromFieldRelativeSpeeds(

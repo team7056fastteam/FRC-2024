@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -45,10 +44,11 @@ public class Robot extends TimedRobot {
   double driveX , driveY , driveZ;
   TrajectoryConfig trajectoryConfig;
   PIDController xController, yController, turnController;
-  ProfiledPIDController thetaController, limeX, limeZ;
-  HolonomicDriveController controller;
+  ProfiledPIDController limeX;
+  ProfiledPIDController limeZ;
 
   double kx, ky, kgx, kgy, kgz, gyroRotation;
+  double Ax, Ay, Aarea, Atag, Aid;
   Pose2d currentPose;
   double clamp = 0;
 
@@ -63,9 +63,8 @@ public class Robot extends TimedRobot {
   ChassisSpeeds targetChassisSpeeds;
   
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  NetworkTableEntry tx = table.getEntry("tx") , ty = table.getEntry("ty") , ta = table.getEntry("ta"), tv = table.getEntry("tv");
+  NetworkTableEntry tx = table.getEntry("tx") , ty = table.getEntry("ty") , ta = table.getEntry("ta"), tv = table.getEntry("tv"), tid = table.getEntry("tid");
   
-
   boolean lockAuton = false, trackTranslation = false;
 
   @Override
@@ -85,8 +84,8 @@ public class Robot extends TimedRobot {
       config.initialHeadingAngle = 0;
       config.mountOffsetX = 0;
       config.mountOffsetY = -4;
-      config.rotationScaleFactorX = 0.0; // 0.0675
-      config.rotationScaleFactorY = 0.0; // 0.02
+      config.rotationScaleFactorX = 0.065; // 0.0675
+      config.rotationScaleFactorY = 0.01; // 0.02
       config.translationScaleFactor = 0.00719929350933028438809204856697; // 0.008567
       _navpod.setConfig(config);
 
@@ -107,17 +106,7 @@ public class Robot extends TimedRobot {
       // Keep heading calibrated
       _navpod.setAutoUpdate(0.02, update -> {gyroRotation = update.h; kx = update.x; ky = update.y; kgx = update.gx; kgy = update.gy; kgz = update.gz;});
     }
-    trajectoryConfig = new TrajectoryConfig(
-              AutoConstants.kMaxSpeedMetersPerSecond,
-              AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                      .setKinematics(DriveConstants.kDriveKinematics);
-
-    thetaController = new ProfiledPIDController(
-            AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-
-    thetaController.enableContinuousInput(0, Math.PI *2);
     turnController = new PIDController(28,0,3);
-    controller = new HolonomicDriveController(xController, yController, thetaController);
 
     limeX = new ProfiledPIDController(0.1, 0, 0,AutoConstants.kPosControllerConstraints);
     limeZ = new ProfiledPIDController(0.1, 0, 0.1,AutoConstants.kThetaControllerConstraints);
@@ -133,14 +122,17 @@ public class Robot extends TimedRobot {
     currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
-    double x = tx.getDouble(0.0);
-    double y = ty.getDouble(0.0);
-    double area = ta.getDouble(0.0);
-    double tag = tv.getDouble(0.0);
-    SmartDashboard.putNumber("LimeLightX", x);
-    SmartDashboard.putNumber("LimeLightY", y);
-    SmartDashboard.putNumber("LimeLightArea", area);
-    SmartDashboard.putNumber("Tag", tag);
+    Ax = tx.getDouble(0.0);
+    Ay = ty.getDouble(0.0);
+    Aarea = ta.getDouble(0.0);
+    Atag = tv.getDouble(0.0);
+    Aid = tid.getDouble(0.0);
+
+    SmartDashboard.putNumber("LimeLightX", Ax);
+    SmartDashboard.putNumber("LimeLightY", Ay);
+    SmartDashboard.putNumber("LimeLightArea", Aarea);
+    SmartDashboard.putNumber("Tag", Atag);
+    SmartDashboard.putNumber("Id", Aid);
   }
 
   @Override
@@ -188,8 +180,6 @@ public class Robot extends TimedRobot {
     driveX = xLimiter.calculate(driveX) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
     driveY = yLimiter.calculate(driveY) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
     driveZ = zLimiter.calculate(driveZ) * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
-    //targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, getGyroscopeRotation2d());
-    targetChassisSpeeds = new ChassisSpeeds(driveX,driveY,driveZ);
     
     if (driver.getRawAxis(2) > 0.1) {
       //lock
@@ -209,26 +199,29 @@ public class Robot extends TimedRobot {
       // _drive.setModuleStates(moduleStates);
     }
     else if(driver.getYButton()){
+      setLimelight(true);
+      setLimelightCamera(true);
       //Robot Centric
       // ChassisSpeeds modifiedChassisSpeeds =  new ChassisSpeeds(driveX, driveY, driveZ);
       // moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(modifiedChassisSpeeds);
       // _drive.setModuleStates(moduleStates);
       double y,z;
       if(trackTranslation){
-        y = limeX.calculate(tx.getDouble(0.0));
+        y = limeX.calculate(Ax);
         z = driveZ;
       }
       else{
         y = driveY;
-        z = limeZ.calculate(tx.getDouble(0.0));
+        z = limeZ.calculate(Ax);
       }
       ChassisSpeeds modifiedChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, y, z, getGyroscopeRotation2d());
       moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(modifiedChassisSpeeds);
-      if(tv.getDouble(0.0) > 0){
+      if(Aid > 0){
         _drive.setModuleStates(moduleStates);
       }
       else{
-        _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getGyroscopeRotation2d())));
+        moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, getGyroscopeRotation2d()));
+        _drive.setModuleStates(moduleStates);
       }
     }
     else if(driver.getRightBumper()){
@@ -253,8 +246,11 @@ public class Robot extends TimedRobot {
     }
     else{
       //field Centric
+      targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, getGyroscopeRotation2d());
       moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
       _drive.setModuleStates(moduleStates);
+      setLimelight(false);
+      setLimelightCamera(false);
     }
 
     //Reset angle of robot to zero
@@ -310,16 +306,17 @@ public class Robot extends TimedRobot {
 
   public void setLimelight(boolean mode) {
     if (mode == true) {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+      table.getEntry("ledMode").setNumber(3);
     } else {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+      table.getEntry("ledMode").setNumber(1);
     }
   }
   public void setLimelightCamera(boolean mode) {
     if (mode == true) {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
+      table.getEntry("pipeline").setNumber(0);
     } else {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
+      table.getEntry("pipeline").setNumber(1);
+      table.getEntry("camMode").setNumber(0);
     }
   }
 

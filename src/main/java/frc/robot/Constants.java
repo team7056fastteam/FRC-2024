@@ -99,13 +99,13 @@ public class Constants {
         public static final double kMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 8;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
-        public static final double kPXController = 0.1; //0.4
-        public static final double kPYController = 0.1; //0.4
-        public static final double kIXController = 0.0; //0.0125
-        public static final double kIYController = 0.0; //0.0125
+        public static final double kPXController = 0.045; //0.4
+        public static final double kPYController = 0.045; //0.4
+        public static final double kIXController = 0.002; //0.0125
+        public static final double kIYController = 0.002; //0.0125
         
         public static final double kPThetaController1 = 7;
-        public static final double kPThetaController = 0.1; //3
+        public static final double kPThetaController = 1; //3
 
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
                 new TrapezoidProfile.Constraints(
@@ -121,6 +121,15 @@ public class Constants {
         //Motors
         public static final int kIngestMotor = 3;
         public static final int kShooterMotor = 5;
+
+        public static final int kHighTopRPM = 2500;
+        public static final int kHighBottomRPM = 2500;
+
+        public static final int kLowTopRPM = 2500;
+        public static final int kLowBottomRPM = 1500;
+
+        public static final double kPTOP = 0.05;
+        public static final double kPBOTTOM = 0.05;
         // public static final int kWristMotor = 4;
         // public static final int kArmMotor = 2;
         // //Encoders
