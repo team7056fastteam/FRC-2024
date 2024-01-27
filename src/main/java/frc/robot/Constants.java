@@ -106,6 +106,7 @@ public class Constants {
         
         public static final double kPThetaController1 = 7;
         public static final double kPThetaController = 1; //3
+        public static final double kPTargetController = 0.1;
 
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
                 new TrapezoidProfile.Constraints(
