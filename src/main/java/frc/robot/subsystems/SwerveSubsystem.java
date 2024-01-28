@@ -9,14 +9,6 @@ import frc.robot.Constants.*;
 
 public class SwerveSubsystem extends SubsystemBase {
     private static Robot _robot;
-    public static SwerveSubsystem mInstance;
-
-    public static SwerveSubsystem getInstance(){
-        if(mInstance == null){
-            mInstance = new SwerveSubsystem(_robot);
-        }
-        return mInstance;
-    }
 
     //sets the constants for each module
     private final static SwerveModule frontLeft = new SwerveModule(

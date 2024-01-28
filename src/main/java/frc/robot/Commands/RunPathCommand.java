@@ -9,7 +9,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RunPathCommand extends FastCommand{
-    SwerveSubsystem _drive = SwerveSubsystem.getInstance();
+    SwerveSubsystem _drive = Robot.getSwerveInstance();
     Robot _robot = new Robot();
     Pathrunner _path = new Pathrunner();
 

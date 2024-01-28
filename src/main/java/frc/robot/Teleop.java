@@ -11,13 +11,22 @@ import frc.robot.Autos.Common.ControllerFunction;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Specops.Climber;
+import frc.robot.subsystems.Specops.Ingest;
+import frc.robot.subsystems.Specops.Kurtinator;
 import frc.robot.subsystems.Specops.Shooter;
+import frc.robot.subsystems.Specops.Climber.ClimbState;
+import frc.robot.subsystems.Specops.Ingest.IngestState;
+import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
 import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 
 public class Teleop {
     private SwerveSubsystem _drive;
     private Robot _robot;
     private Shooter _shoot;
+    private Ingest _ingest;
+    private Kurtinator _kurtinator;
+    private Climber _climber;
     
     XboxController driver = new XboxController(0);
     XboxController operator = new XboxController(1);
@@ -26,6 +35,7 @@ public class Teleop {
     double xT, driveX, driveY, driveZ;
 
     public enum DriveMode{fieldOriented, robotOriented, Targeting, RotationLock, Locked}
+
     DriveMode mode = DriveMode.fieldOriented;
 
     SwerveModuleState[] lockedStates = 
@@ -42,10 +52,12 @@ public class Teleop {
 
     PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0);
     
-    public Teleop(Robot _robot, SwerveSubsystem _drive, Shooter _shoot){
+    public Teleop(Robot _robot){
         this._robot = _robot;
-        this._drive =_drive;
-        this._shoot = _shoot;
+        _drive = Robot.getSwerveInstance();
+        _shoot = Robot.getShooterInstance();
+        _ingest = Robot.getIngestInstance();
+        _kurtinator = Robot.getKurtinatorInstance();
     }
 
     public void Driver(){
@@ -79,7 +91,6 @@ public class Teleop {
                 runChassis(driveX, driveY, driveZ);
                 _robot.setLimelight(false);
                 _robot.setLimelightCamera(false);
-                _shoot.setSolutionState(shooterState.kIdle);
                 break;
             case robotOriented:
                 runRobotOrientedChassis(driveX, driveY, driveZ);
@@ -91,7 +102,6 @@ public class Teleop {
                 _robot.setLimelight(true);
                 _robot.setLimelightCamera(true);
                 _shoot.dataInSolution(_robot.getPose(), _robot.getTX(), _robot.getTA());
-                _shoot.setSolutionState(shooterState.kTarget);
                 double z = theta.calculate(_shoot.getYaw());
                 runChassis(driveX, driveY, z);
                 break;
@@ -103,6 +113,45 @@ public class Teleop {
         }
     }
     public void Operator(){
+        if(get.HighShot()){
+            _shoot.setSolutionState(shooterState.kHigh);
+        }
+        else if(get.LowShot()){
+            _shoot.setSolutionState(shooterState.kLow);
+        }
+        else if(mode == DriveMode.Targeting){
+            _shoot.setSolutionState(shooterState.kTarget);
+        }
+        else{
+            _shoot.setSolutionState(shooterState.kIdle);
+        }
+
+        if(get.IngestIn()){
+            _ingest.setState(IngestState.kForward);
+            _kurtinator.setState(KurtinatorState.kRunTilTrip);
+        }
+        else if(get.IngestOut()){
+            _ingest.setState(IngestState.kReversed);
+            _kurtinator.setState(KurtinatorState.kReversed);
+        }
+        else if(get.Feed()){
+            _ingest.setState(IngestState.kIdle);
+            _kurtinator.setState(KurtinatorState.kFeed);
+        }
+        else{
+            _ingest.setState(IngestState.kIdle);
+            _kurtinator.setState(KurtinatorState.KIdle);
+        }
+
+        if(get.Climb()){
+            _climber.setState(ClimbState.kClimb);
+        }
+        else if(get.UnClimb()){
+            _climber.setState(ClimbState.kUnClimb);
+        }
+        else{
+            _climber.setState(ClimbState.kIdle);
+        }
 
     }
     void runChassis(double driveX, double driveY, double driveZ){

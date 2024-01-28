@@ -120,17 +120,38 @@ public class Constants {
     }
     public static final class Specops {
         //Motors
-        public static final int kIngestMotor = 3;
-        public static final int kShooterMotor = 5;
+        public static final int kIngestMotor = 1;
+        public static final int kKurtinatorMotor = 2;
+        public static final int kShooterMotorBottom = 3;
+        public static final int kShooterMotorTop = 4;
+        public static final int kWinchMotor = 5;
+        public static final int kPitchMotor = 6;
+        public static final int kSlapperMotor = 7;
+
+        public static final int kPitchCoder = 6;
+
+        public static final int kLeftLimit = 0;
+        public static final int kRightLimit = 1;
 
         public static final int kHighTopRPM = 2500;
         public static final int kHighBottomRPM = 2500;
 
-        public static final int kLowTopRPM = 2500;
-        public static final int kLowBottomRPM = 1500;
+        public static final int kLowTopRPM = 2000;
+        public static final int kLowBottomRPM = 1200;
+        //rpm control
+        public static final double kPTOP = 0.01;
+        public static final double kPBOTTOM = 0.01;
 
-        public static final double kPTOP = 0.05;
-        public static final double kPBOTTOM = 0.05;
+        public static final double kPPitch = 0.01;
+
+        public static final double kIngestForwardSpeed = 1;
+        public static final double kIngestReversedSpeed = -1;
+
+        public static final double kKurtinatorForwardSpeed = 1;
+        public static final double kKurtinatorReversedSpeed = -1;
+
+        public static final double kClimberForwardSpeed = 1;
+        public static final double kClimberReversedSpeed = -1;
         // public static final int kWristMotor = 4;
         // public static final int kArmMotor = 2;
         // //Encoders

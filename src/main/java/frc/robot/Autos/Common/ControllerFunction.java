@@ -37,4 +37,27 @@ public class ControllerFunction {
     public double driverZ(){
         return driver.getRawAxis(4) * -1;
     }
+
+    public boolean IngestIn(){
+        return operator.getAButton();
+    }
+    public boolean IngestOut(){
+        return operator.getYButton();
+    }
+    public boolean LowShot(){
+        return operator.getBButton();
+    }
+    public boolean HighShot(){
+        return operator.getXButton();
+    }
+    public boolean Feed(){
+        return operator.getRightBumper();
+    }
+    public boolean Climb(){
+        return operator.getLeftBumper();
+    }
+    //Left Trigger
+    public boolean UnClimb(){
+        return operator.getRawAxis(2) > 0.1;
+    }
 }

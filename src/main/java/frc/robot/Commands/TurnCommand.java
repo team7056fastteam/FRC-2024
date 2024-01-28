@@ -2,12 +2,13 @@ package frc.robot.Commands;
 
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.Robot;
 import frc.robot.Autos.Common.FastCommand;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.Constants.DriveConstants;
 
 public class TurnCommand extends FastCommand{
-    SwerveSubsystem _drive = SwerveSubsystem.getInstance();
+    SwerveSubsystem _drive = Robot.getSwerveInstance();
     ChassisSpeeds targetChassisSpeeds;
 
     Boolean halfway;

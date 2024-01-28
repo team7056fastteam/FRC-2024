@@ -18,15 +18,20 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Specops.Climber;
+import frc.robot.subsystems.Specops.Ingest;
+import frc.robot.subsystems.Specops.Kurtinator;
 import frc.robot.subsystems.Specops.Shooter;
 import frc.robot.Autos.Common.AutoModeRunner;
 import frc.robot.Autos.Common.AutoModeSelector;
 
 public class Robot extends TimedRobot {
-  //SubSytems
-  private SwerveSubsystem _drive;
-  //private SpecOps _specOps;
-  private Shooter _shooter;
+  //Subsytems
+  private static SwerveSubsystem _drive;
+  private static Shooter _shooter;
+  private static Ingest _ingest;
+  private static Kurtinator _kurtinator;
+  private static Climber _climber;
   private NavPod _navpod;
   private Teleop _teleop;
 
@@ -64,10 +69,12 @@ public class Robot extends TimedRobot {
     _navpod = new NavPod();
     _drive = new SwerveSubsystem(this);
     _shooter = new Shooter();
+    _ingest = new Ingest();
+    _kurtinator = new Kurtinator();
+    _climber = new Climber();
     modeSelector = new AutoModeSelector();
     mAutoModeRunner = new AutoModeRunner();
-    _teleop = new Teleop(this, _drive, _shooter);
-    //_specOps = new SpecOps();
+    _teleop = new Teleop(this);
 
     // Check if the NavPod is connected to RoboRIO
     if (_navpod.isValid()) {
@@ -106,6 +113,9 @@ public class Robot extends TimedRobot {
     currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
     RobotDashboard();
     _shooter.Dashboard();
+    _ingest.Dashboard();
+    _kurtinator.Dashboard();
+    _climber.Dashboard();
     _teleop.Dashboard();
   }
 
@@ -197,5 +207,21 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
     SmartDashboard.putNumber("Id", tid.getDouble(0));
+  }
+
+  public static SwerveSubsystem getSwerveInstance(){
+    return _drive;
+  }
+  public static Ingest getIngestInstance(){
+    return _ingest;
+  }
+  public static Shooter getShooterInstance(){
+    return _shooter;
+  }
+  public static Kurtinator getKurtinatorInstance(){
+    return _kurtinator;
+  }
+  public static Climber getClimberInstance(){
+    return _climber;
   }
 }
