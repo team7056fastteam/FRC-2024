@@ -4,7 +4,6 @@ import frc.robot.Robot;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class OldAutoA {
-    private static Robot _robot = new Robot();
 
     public static ChassisSpeeds targetChassisSpeeds;
     public static double armAngle_ , wristAngle_ , extenderPower_ , grabberPower_; 
@@ -16,7 +15,7 @@ public class OldAutoA {
             wristAngle_ = -80;
             armEnabled = false;
             targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 
-             0, _robot.getGyroscopeRotation2d());
+             0, Robot.getGyroscopeRotation2d());
         }
         else if(time > 0 && time < .2){
             grabberPower_ = 0.6;
@@ -30,11 +29,11 @@ public class OldAutoA {
         }
         else if(time > 3.5 && time < 4.5){
             targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0.5, 0, 
-             0, _robot.getGyroscopeRotation2d());
+             0, Robot.getGyroscopeRotation2d());
         }
         else if(time > 4.5 && time < 5){
             targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 
-            0, _robot.getGyroscopeRotation2d());
+            0, Robot.getGyroscopeRotation2d());
             grabberPower_ = -0.5;
         }
         else{

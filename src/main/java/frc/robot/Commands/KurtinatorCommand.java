@@ -6,7 +6,7 @@ import frc.robot.subsystems.Specops.Kurtinator;
 import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
 
 public class KurtinatorCommand extends FastCommand{
-    KurtinatorState state = KurtinatorState.KIdle;
+    KurtinatorState state = KurtinatorState.kIdle;
     Kurtinator _kurt = Robot.getKurtinatorInstance();
     public KurtinatorCommand(KurtinatorState state){
         this.state = state;
@@ -38,7 +38,7 @@ public class KurtinatorCommand extends FastCommand{
     @Override
     public void end() {
         if(state == KurtinatorState.kRunTilTrip){
-            _kurt.setState(KurtinatorState.KIdle);
+            _kurt.setState(KurtinatorState.kIdle);
         }
     }
     

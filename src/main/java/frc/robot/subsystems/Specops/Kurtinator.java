@@ -13,8 +13,8 @@ public class Kurtinator extends SubsystemBase{
 
     DigitalInput right, left;
 
-    public enum KurtinatorState{kFeed, kRunTilTrip, kReversed, KIdle}
-    KurtinatorState state = KurtinatorState.KIdle;
+    public enum KurtinatorState{kFeed, kRunTilTrip, kReversed, kIdle}
+    KurtinatorState state = KurtinatorState.kIdle;
 
     public Kurtinator(){
         right = new DigitalInput(Specops.kRightLimit);
@@ -34,7 +34,7 @@ public class Kurtinator extends SubsystemBase{
             case kReversed:
                 setKurtinatorSpeed(Specops.kKurtinatorReversedSpeed);
                 break;
-            case KIdle:
+            case kIdle:
                 setKurtinatorSpeed(0);
                 break;
         }

@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
   private static Ingest _ingest;
   private static Kurtinator _kurtinator;
   private static Climber _climber;
-  private NavPod _navpod;
+  private static NavPod _navpod;
   private Teleop _teleop;
 
   //Auto
@@ -44,8 +44,9 @@ public class Robot extends TimedRobot {
   ProfiledPIDController limeX;
   ProfiledPIDController limeZ;
 
-  double kx, ky, kgx, kgy, kgz, gyroRotation;
-  Pose2d currentPose;
+  double kx, ky, kgx, kgy, kgz;
+  static double gyroRotation;
+  static Pose2d currentPose;
   double clamp = 0;
 
   SwerveModuleState[] moduleStates;
@@ -58,8 +59,12 @@ public class Robot extends TimedRobot {
   };
   ChassisSpeeds targetChassisSpeeds;
   
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  NetworkTableEntry tx = table.getEntry("tx") , ty = table.getEntry("ty") , ta = table.getEntry("ta"), tv = table.getEntry("tv"), tid = table.getEntry("tid");
+  static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  static NetworkTableEntry tx = table.getEntry("tx");
+  NetworkTableEntry ty = table.getEntry("ty");
+  static NetworkTableEntry ta = table.getEntry("ta");
+  NetworkTableEntry tv = table.getEntry("tv");
+  NetworkTableEntry tid = table.getEntry("tid");
   
   boolean lockAuton = false, trackTranslation = false;
 
@@ -67,14 +72,14 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     //subsystems
     _navpod = new NavPod();
-    _drive = new SwerveSubsystem(this);
+    _drive = new SwerveSubsystem();
     _shooter = new Shooter();
     _ingest = new Ingest();
     _kurtinator = new Kurtinator();
     _climber = new Climber();
     modeSelector = new AutoModeSelector();
     mAutoModeRunner = new AutoModeRunner();
-    _teleop = new Teleop(this);
+    _teleop = new Teleop();
 
     // Check if the NavPod is connected to RoboRIO
     if (_navpod.isValid()) {
@@ -146,18 +151,18 @@ public class Robot extends TimedRobot {
     _teleop.Operator();
   }
 
-  public Rotation2d getGyroscopeRotation2d() {
+  public static Rotation2d getGyroscopeRotation2d() {
       return Rotation2d.fromDegrees(gyroRotation);
   }
 
-  public void setLimelight(boolean mode) {
+  public static void setLimelight(boolean mode) {
     if (mode == true) {
       table.getEntry("ledMode").setNumber(3);
     } else {
       table.getEntry("ledMode").setNumber(1);
     }
   }
-  public void setLimelightCamera(boolean mode) {
+  public static void setLimelightCamera(boolean mode) {
     if (mode == true) {
       table.getEntry("pipeline").setNumber(0);
     } else {
@@ -166,17 +171,17 @@ public class Robot extends TimedRobot {
     }
   }
 
-  public double getTX(){
+  public static double getTX(){
     return tx.getDouble(0);
   }
-  public double getTA(){
+  public static double getTA(){
     return ta.getDouble(0);
   }
 
-  public void resetH(){
+  public static void resetH(){
     _navpod.resetH(0);
   }
-  public void resetXY(){
+  public static void resetXY(){
     _navpod.resetXY(0, 0);
   }
 
@@ -199,7 +204,7 @@ public class Robot extends TimedRobot {
     }
   }
 
-  public Pose2d getPose(){
+  public static Pose2d getPose(){
     return currentPose;
   }
 
@@ -223,5 +228,8 @@ public class Robot extends TimedRobot {
   }
   public static Climber getClimberInstance(){
     return _climber;
+  }
+  public Robot getThisInstance(){
+    return this;
   }
 }

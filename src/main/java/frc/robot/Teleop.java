@@ -22,7 +22,6 @@ import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 
 public class Teleop {
     private SwerveSubsystem _drive;
-    private Robot _robot;
     private Shooter _shoot;
     private Ingest _ingest;
     private Kurtinator _kurtinator;
@@ -52,8 +51,7 @@ public class Teleop {
 
     PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0);
     
-    public Teleop(Robot _robot){
-        this._robot = _robot;
+    public Teleop(){
         _drive = Robot.getSwerveInstance();
         _shoot = Robot.getShooterInstance();
         _ingest = Robot.getIngestInstance();
@@ -69,8 +67,8 @@ public class Teleop {
         else{mode = DriveMode.fieldOriented;}
 
         if(get.Reset()){
-            _robot.resetH();
-            _robot.resetXY();
+            Robot.resetH();
+            Robot.resetXY();
         }
 
         driveX = get.driverX() * xT;
@@ -89,19 +87,19 @@ public class Teleop {
         switch(mode){
             case fieldOriented:
                 runChassis(driveX, driveY, driveZ);
-                _robot.setLimelight(false);
-                _robot.setLimelightCamera(false);
+                Robot.setLimelight(false);
+                Robot.setLimelightCamera(false);
                 break;
             case robotOriented:
                 runRobotOrientedChassis(driveX, driveY, driveZ);
-                _robot.setLimelight(false);
-                _robot.setLimelightCamera(false);
+                Robot.setLimelight(false);
+                Robot.setLimelightCamera(false);
                 _shoot.setSolutionState(shooterState.kIdle);
                 break;
             case Targeting:
-                _robot.setLimelight(true);
-                _robot.setLimelightCamera(true);
-                _shoot.dataInSolution(_robot.getPose(), _robot.getTX(), _robot.getTA());
+                Robot.setLimelight(true);
+                Robot.setLimelightCamera(true);
+                _shoot.dataInSolution(Robot.getPose(), Robot.getTX(), Robot.getTA());
                 double z = theta.calculate(_shoot.getYaw());
                 runChassis(driveX, driveY, z);
                 break;
@@ -140,7 +138,7 @@ public class Teleop {
         }
         else{
             _ingest.setState(IngestState.kIdle);
-            _kurtinator.setState(KurtinatorState.KIdle);
+            _kurtinator.setState(KurtinatorState.kIdle);
         }
 
         if(get.Climb()){
@@ -155,7 +153,7 @@ public class Teleop {
 
     }
     void runChassis(double driveX, double driveY, double driveZ){
-        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, _robot.getGyroscopeRotation2d());
+        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, Robot.getGyroscopeRotation2d());
         SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         _drive.setModuleStates(moduleStates);
     }

@@ -15,7 +15,7 @@ public class TurnCommand extends FastCommand{
 
     @Override
     public void init() {
-        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, _drive.getPose().getRotation());
+        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Robot.getPose().getRotation());
         _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
         halfway = false;
     }
@@ -24,7 +24,7 @@ public class TurnCommand extends FastCommand{
     public void run() {
         targetChassisSpeeds = new ChassisSpeeds(0, 0, 0.8);
         _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
-        if(_drive.getPose().getRotation().getRadians() > Math.PI){
+        if(Robot.getPose().getRotation().getRadians() > Math.PI){
             halfway = true;
         }
     }
@@ -32,7 +32,7 @@ public class TurnCommand extends FastCommand{
     @Override
     public Boolean isFinished() {
         if(halfway){
-            return 0.07 > _drive.getPose().getRotation().getRadians() || _drive.getPose().getRotation().getRadians() > ((2*Math.PI) -0.07);
+            return 0.07 > Robot.getPose().getRotation().getRadians() || Robot.getPose().getRotation().getRadians() > ((2*Math.PI) -0.07);
         }
         else{
             return false;
@@ -41,7 +41,7 @@ public class TurnCommand extends FastCommand{
 
     @Override
     public void end() {
-        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, _drive.getPose().getRotation());
+        targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Robot.getPose().getRotation());
         _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
     }
     

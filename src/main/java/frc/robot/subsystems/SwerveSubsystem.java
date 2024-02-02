@@ -1,14 +1,11 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.Constants.*;
 
 public class SwerveSubsystem extends SubsystemBase {
-    private static Robot _robot;
 
     //sets the constants for each module
     private final static SwerveModule frontLeft = new SwerveModule(
@@ -47,8 +44,7 @@ public class SwerveSubsystem extends SubsystemBase {
             DriveConstants.kBackRightDriveAbsoluteEncoderOffsetRad,
             DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
 
-    public SwerveSubsystem(Robot _robot) {
-        SwerveSubsystem._robot = _robot;
+    public SwerveSubsystem() {
     }
 
     //sets the states for each module
@@ -68,7 +64,7 @@ public class SwerveSubsystem extends SubsystemBase {
         backRight.setDesiredStateUnrestricted(desiredStates[3]);
     }
 
-    public Pose2d getPose(){
-        return _robot.getPose();
-    }
+    // public Pose2d getPose(){
+    //     return _robot.getPose();
+    // }
 }

@@ -10,9 +10,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class OldishAutoA {
-    private static Robot _robot = new Robot();
 
-    public static ChassisSpeeds targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0,0,0, _robot.getGyroscopeRotation2d());
+    public static ChassisSpeeds targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0,0,0, Robot.getGyroscopeRotation2d());
     public static double ingestPower_ , shooterPower_ ;
 
     static PIDController xController = new PIDController(AutoConstants.kPXController, 0.0125, 0);
@@ -78,7 +77,7 @@ public class OldishAutoA {
             targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             drivePower(yPower), 
             -drivePower(xPower), 
-            hPower, _robot.getGyroscopeRotation2d());
+            hPower, Robot.getGyroscopeRotation2d());
         }
         else{
             stop();
@@ -157,6 +156,6 @@ public class OldishAutoA {
     }
     static void stop(){
         targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0,0, 
-            0, _robot.getGyroscopeRotation2d());
+            0, Robot.getGyroscopeRotation2d());
     }
 }
