@@ -5,11 +5,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Robot;
 import frc.robot.Autos.Common.FastCommand;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.SwerveSubsystem;
 
 public class DriveCommand extends FastCommand{
-    private SwerveSubsystem _drive = Robot.getSwerveInstance();
     private double driveX, driveY, driveZ;
+    ChassisSpeeds chassisSpeeds;
+    SwerveModuleState[] moduleStates;
 
     public DriveCommand(double driveX, double driveY, double driveZ){
         this.driveX = driveX;
@@ -19,17 +19,18 @@ public class DriveCommand extends FastCommand{
 
     @Override
     public void init() {
-        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, Robot.getGyroscopeRotation2d());
-        SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-        _drive.setModuleStates(moduleStates);
+        chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, Robot.getGyroscopeRotation2d());
+        moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
     }
 
     @Override
-    public void run() {}
+    public void run() {
+        Robot._drive.setModuleStates(moduleStates);
+    }
 
     @Override
     public Boolean isFinished() {
-        return true;
+        return false;
     }
 
     @Override

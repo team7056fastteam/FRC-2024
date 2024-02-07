@@ -22,7 +22,7 @@ public class WaitCommand extends FastCommand{
 
     @Override
     public Boolean isFinished() {
-        if(time.get() > waitTime){ return true;} else { return false;}
+        return time.get() > waitTime;
     }
 
     @Override

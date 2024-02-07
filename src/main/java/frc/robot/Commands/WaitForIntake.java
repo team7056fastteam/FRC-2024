@@ -3,13 +3,10 @@ package frc.robot.Commands;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.Autos.Common.FastCommand;
-import frc.robot.subsystems.Specops.Kurtinator;
 
 public class WaitForIntake extends FastCommand{
     Timer time = new Timer();
     double maxWait;
-
-    Kurtinator _kurt = Robot.getKurtinatorInstance();
 
     public WaitForIntake(double maxWait){
         this.maxWait = maxWait;
@@ -26,12 +23,10 @@ public class WaitForIntake extends FastCommand{
 
     @Override
     public Boolean isFinished() {
-        return (maxWait < time.get()) || _kurt.LimitSwitchTripped();
+        return (time.get() > maxWait) || Robot._kurtinator.LimitSwitchTripped();
     }
 
     @Override
-    public void end() {
-        time.stop();
-    }
+    public void end() {}
     
 }

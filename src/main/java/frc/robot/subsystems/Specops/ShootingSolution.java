@@ -2,13 +2,12 @@ package frc.robot.subsystems.Specops;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import frc.robot.Robot;
 import frc.robot.Constants.Specops;
 import frc.robot.subsystems.Specops.Pitchinator.PitchState;
 
 public class ShootingSolution {
     public enum shooterState {kIdle, kTarget, kLow, kHigh}
-    private Shooter _shooter = Robot.getShooterInstance();
+    private Shooter _shooter;
     private Pitchinator _pitch = new Pitchinator();
 
     public shooterState State = shooterState.kIdle;
@@ -22,9 +21,10 @@ public class ShootingSolution {
 
     Pose2d currentpose;
 
-    public ShootingSolution(){
+    public ShootingSolution(Shooter _shooter){
         topPID = new PIDController(Specops.kPTOP, 0, 0);
         bottomPID = new PIDController(Specops.kPBOTTOM, 0, 0);
+        this._shooter = _shooter;
     }
     public void dataIn(Pose2d currentpose, double tx, double ta){
         this.currentpose = currentpose;

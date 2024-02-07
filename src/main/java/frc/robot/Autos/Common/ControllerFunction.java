@@ -60,4 +60,10 @@ public class ControllerFunction {
     public boolean UnClimb(){
         return operator.getRawAxis(2) > 0.1;
     }
+
+    public void Button(boolean active, FastTeleOpAction action){
+        if(active){
+            action.run();
+        }
+    }
 }

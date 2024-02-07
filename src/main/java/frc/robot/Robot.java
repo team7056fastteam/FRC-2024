@@ -27,11 +27,11 @@ import frc.robot.Autos.Common.AutoModeSelector;
 
 public class Robot extends TimedRobot {
   //Subsytems
-  private static SwerveSubsystem _drive;
-  private static Shooter _shooter;
-  private static Ingest _ingest;
-  private static Kurtinator _kurtinator;
-  private static Climber _climber;
+  public static SwerveSubsystem _drive;
+  public static Shooter _shooter;
+  public static Ingest _ingest;
+  public static Kurtinator _kurtinator;
+  public static Climber _climber;
   private static NavPod _navpod;
   private Teleop _teleop;
 
@@ -110,6 +110,7 @@ public class Robot extends TimedRobot {
 
       // Keep heading calibrated
       _navpod.setAutoUpdate(0.02, update -> {gyroRotation = update.h; kx = update.x; ky = update.y; kgx = update.gx; kgy = update.gy; kgz = update.gz;});
+      setLimelightCamera(false);
     }
   }
 
@@ -140,8 +141,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    setLimelightCamera(true);
-    setLimelight(false);
+    setLimelightCamera(false);
   }
 
   /** This function is called periodically during operator control. */
@@ -155,19 +155,11 @@ public class Robot extends TimedRobot {
       return Rotation2d.fromDegrees(gyroRotation);
   }
 
-  public static void setLimelight(boolean mode) {
-    if (mode == true) {
-      table.getEntry("ledMode").setNumber(3);
-    } else {
-      table.getEntry("ledMode").setNumber(1);
-    }
-  }
   public static void setLimelightCamera(boolean mode) {
     if (mode == true) {
       table.getEntry("pipeline").setNumber(0);
     } else {
       table.getEntry("pipeline").setNumber(1);
-      table.getEntry("camMode").setNumber(0);
     }
   }
 
@@ -193,7 +185,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     stop();
-    setLimelight(false);
+    setLimelightCamera(false);
   }
 
   @Override
@@ -212,24 +204,5 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
     SmartDashboard.putNumber("Id", tid.getDouble(0));
-  }
-
-  public static SwerveSubsystem getSwerveInstance(){
-    return _drive;
-  }
-  public static Ingest getIngestInstance(){
-    return _ingest;
-  }
-  public static Shooter getShooterInstance(){
-    return _shooter;
-  }
-  public static Kurtinator getKurtinatorInstance(){
-    return _kurtinator;
-  }
-  public static Climber getClimberInstance(){
-    return _climber;
-  }
-  public Robot getThisInstance(){
-    return this;
   }
 }

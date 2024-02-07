@@ -99,10 +99,10 @@ public class Constants {
         public static final double kMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 8;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
-        public static final double kPXController = 0.045; //0.4
-        public static final double kPYController = 0.045; //0.4
-        public static final double kIXController = 0.002; //0.0125
-        public static final double kIYController = 0.002; //0.0125
+        public static final double kPXController = 0.05; //0.4
+        public static final double kPYController = 0.05; //0.4
+        public static final double kIXController = 0.003; //0.0125
+        public static final double kIYController = 0.003; //0.0125
         
         public static final double kPThetaController1 = 7;
         public static final double kPThetaController = 1; //3

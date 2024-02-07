@@ -45,9 +45,10 @@ public class Kurtinator extends SubsystemBase{
     }
 
     public boolean LimitSwitchTripped(){
-        return right.get() || left.get();
+        return !right.get() || !left.get();
     }
     public void Dashboard(){
         SmartDashboard.putString("Kurtinator State", state.toString());
+        SmartDashboard.putBoolean("Tripped", LimitSwitchTripped());
     }
 }

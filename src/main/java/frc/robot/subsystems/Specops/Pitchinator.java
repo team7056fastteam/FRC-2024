@@ -13,8 +13,6 @@ public class Pitchinator extends SubsystemBase{
     public enum PitchState{kIdle, kPitching}
     PitchState state = PitchState.kIdle;
 
-    private Shooter _shooter = Robot.getShooterInstance();
-
     CANSparkMax PitchingMotor;
     CANCoder pitchCoder;
 
@@ -34,7 +32,7 @@ public class Pitchinator extends SubsystemBase{
                 setPitchSpeed(0);
                 break;
             case kPitching:
-                pitch = _shooter.pitch;
+                pitch = Robot._shooter.pitch;
                 setPitchSpeed(pitchAngle(pitch));
                 break;
         }

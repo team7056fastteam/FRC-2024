@@ -6,11 +6,8 @@ import frc.robot.Robot;
 import frc.robot.Autos.Common.FastCommand;
 import frc.robot.Autos.Common.Pathrunner;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.SwerveSubsystem;
 
 public class RunPathCommand extends FastCommand{
-    SwerveSubsystem _drive = Robot.getSwerveInstance();
-    Robot _robot = new Robot();
     Pathrunner _path = new Pathrunner();
 
     ChassisSpeeds targetChassisSpeeds;
@@ -27,7 +24,7 @@ public class RunPathCommand extends FastCommand{
     @Override
     public void run() {
         if(Robot.getPose() != null){
-           _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(
+            Robot._drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(
            _path.runpath(Robot.getPose() ,paths, selectedPath)));
         }
     }
@@ -42,14 +39,14 @@ public class RunPathCommand extends FastCommand{
         Pathrunner.kStopPath = false;
         Pathrunner.selectedPoint = 0;
         targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Robot.getPose().getRotation());
-        _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
+        Robot._drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
         
     }
 
     @Override
     public void end() {
         targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Robot.getPose().getRotation());
-        _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
+        Robot._drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
     }
     
 }

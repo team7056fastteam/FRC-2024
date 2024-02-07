@@ -1,8 +1,10 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.Constants.*;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -62,6 +64,17 @@ public class SwerveSubsystem extends SubsystemBase {
         frontRight.setDesiredStateUnrestricted(desiredStates[1]);
         backLeft.setDesiredStateUnrestricted(desiredStates[2]);
         backRight.setDesiredStateUnrestricted(desiredStates[3]);
+    }
+
+    public void runChassis(double driveX, double driveY, double driveZ){
+        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, Robot.getGyroscopeRotation2d());
+        SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+        setModuleStates(moduleStates);
+    }
+    public void runRobotOrientedChassis(double driveX, double driveY, double driveZ){
+        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(driveX, driveY, driveZ);
+        SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+        setModuleStates(moduleStates);
     }
 
     // public Pose2d getPose(){
