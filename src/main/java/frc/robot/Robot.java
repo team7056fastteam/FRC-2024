@@ -8,15 +8,12 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Specops.Climber;
 import frc.robot.subsystems.Specops.Ingest;
@@ -24,6 +21,7 @@ import frc.robot.subsystems.Specops.Kurtinator;
 import frc.robot.subsystems.Specops.Shooter;
 import frc.robot.Autos.Common.AutoModeRunner;
 import frc.robot.Autos.Common.AutoModeSelector;
+import frc.robot.Commands.TeleOpActions.ResetAction;
 
 public class Robot extends TimedRobot {
   //Subsytems
@@ -48,16 +46,6 @@ public class Robot extends TimedRobot {
   static double gyroRotation;
   static Pose2d currentPose;
   double clamp = 0;
-
-  SwerveModuleState[] moduleStates;
-  SwerveModuleState[] lockedStates = 
-  {
-    new SwerveModuleState(0, new Rotation2d(Math.toRadians(45))),
-    new SwerveModuleState(0, new Rotation2d(Math.toRadians(315))),
-    new SwerveModuleState(0, new Rotation2d(Math.toRadians(315))),
-    new SwerveModuleState(0, new Rotation2d(Math.toRadians(45)))
-  };
-  ChassisSpeeds targetChassisSpeeds;
   
   static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   static NetworkTableEntry tx = table.getEntry("tx");
@@ -178,8 +166,7 @@ public class Robot extends TimedRobot {
   }
 
   public void stop() {
-    _drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates
-    (ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getGyroscopeRotation2d())));
+    new ResetAction().run();
   }
 
   @Override
