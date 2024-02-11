@@ -1,8 +1,8 @@
 package frc.robot.subsystems.Specops;
 
-import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,15 +14,15 @@ public class Pitchinator extends SubsystemBase{
     PitchState state = PitchState.kIdle;
 
     CANSparkMax PitchingMotor;
-    CANCoder pitchCoder;
+    CANcoder pitchCoder;
 
     double pitch = 0;
 
     PIDController pitchControl;
 
     public Pitchinator(){
-        PitchingMotor = new CANSparkMax(Specops.kPitchMotor, MotorType.kBrushless);
-        pitchCoder = new CANCoder(Specops.kPitchCoder);
+        PitchingMotor = new CANSparkMax(Specops.kPitchCoder, MotorType.kBrushless);
+        pitchCoder = new CANcoder(Specops.kPitchCoder);
         pitchControl = new PIDController(Specops.kPPitch, 0, 0);
     }
     public void setState(PitchState state){
@@ -38,7 +38,7 @@ public class Pitchinator extends SubsystemBase{
         }
     }
     double pitchAngle(double angle){
-        return pitchControl.calculate(pitchCoder.getAbsolutePosition(),angle);
+        return pitchControl.calculate(pitchCoder.getAbsolutePosition().getValueAsDouble(),angle);
     }
     void setPitchSpeed(double speed){
         PitchingMotor.set(speed);
