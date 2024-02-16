@@ -14,6 +14,7 @@ import frc.robot.subsystems.Specops.Climber.ClimbState;
 import frc.robot.subsystems.Specops.Ingest.IngestState;
 import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
 import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
+import frc.robot.subsystems.Specops.Slapper.SlappState;
 
 public class Teleop {
     
@@ -68,11 +69,11 @@ public class Teleop {
 
         switch(mode){
             case fieldOriented:
-                Robot._drive.runChassis(driveX, driveY, driveZ);
+                //Robot._drive.runChassis(driveX, driveY, driveZ);
                 Robot.setLimelightCamera(false);
                 break;
             case robotOriented:
-                Robot._drive.runRobotOrientedChassis(driveX, driveY, driveZ);
+                //Robot._drive.runRobotOrientedChassis(driveX, driveY, driveZ);
                 Robot.setLimelightCamera(false);
                 Robot._shooter.setSolutionState(shooterState.kIdle);
                 break;
@@ -80,12 +81,12 @@ public class Teleop {
                 Robot.setLimelightCamera(true);
                 Robot._shooter.dataInSolution(Robot.getPose(), Robot.getTX(), Robot.getTA());
                 double z = theta.calculate(Robot._shooter.getYaw());
-                Robot._drive.runChassis(driveX, driveY, z);
+                //Robot._drive.runChassis(driveX, driveY, z);
                 break;
             case RotationLock:
                 break;
             case Locked:
-                Robot._drive.setModuleStatesUnrestricted(lockedStates);
+                //Robot._drive.setModuleStatesUnrestricted(lockedStates);
                 break;
         }
     }
@@ -100,9 +101,13 @@ public class Teleop {
         get.Button(get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kFeed));
         get.Button(!get.IngestIn() && !get.IngestOut() && !get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kIdle));
 
-        get.Button(get.Climb(), new ClimberAction(ClimbState.kClimb));
-        get.Button(get.UnClimb(), new ClimberAction(ClimbState.kUnClimb));
-        get.Button(!get.Climb() && !get.UnClimb(), new ClimberAction(ClimbState.kIdle));
+        // get.Button(get.Climb(), new ClimberAction(ClimbState.kClimb));
+        // get.Button(get.UnClimb(), new ClimberAction(ClimbState.kUnClimb));
+        // get.Button(!get.Climb() && !get.UnClimb(), new ClimberAction(ClimbState.kIdle));
+
+        get.Button(get.Climb(), new SlapperAction(SlappState.kSlapp));
+        get.Button(get.UnClimb(), new SlapperAction(SlappState.kUnSlapp));
+        get.Button(!get.Climb() && !get.UnClimb(), new SlapperAction(SlappState.kIdle));
     }
 
     public void Dashboard(){

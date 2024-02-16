@@ -22,6 +22,7 @@ import frc.robot.subsystems.Specops.Climber;
 import frc.robot.subsystems.Specops.Ingest;
 import frc.robot.subsystems.Specops.Kurtinator;
 import frc.robot.subsystems.Specops.Shooter;
+import frc.robot.subsystems.Specops.Slapper;
 import frc.robot.Autos.Common.AutoModeRunner;
 import frc.robot.Autos.Common.AutoModeSelector;
 
@@ -32,6 +33,7 @@ public class Robot extends TimedRobot {
   public static Ingest _ingest;
   public static Kurtinator _kurtinator;
   public static Climber _climber;
+  public static Slapper _slapper;
   private static NavPod _navpod;
   private Teleop _teleop;
 
@@ -77,6 +79,7 @@ public class Robot extends TimedRobot {
     _ingest = new Ingest();
     _kurtinator = new Kurtinator();
     _climber = new Climber();
+    _slapper = new Slapper();
     modeSelector = new AutoModeSelector();
     mAutoModeRunner = new AutoModeRunner();
     _teleop = new Teleop();
@@ -123,6 +126,7 @@ public class Robot extends TimedRobot {
     _kurtinator.Dashboard();
     _climber.Dashboard();
     _teleop.Dashboard();
+    _slapper.Dashboard();
   }
 
   @Override

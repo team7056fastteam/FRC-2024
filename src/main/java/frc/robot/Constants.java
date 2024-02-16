@@ -152,17 +152,10 @@ public class Constants {
 
         public static final double kClimberForwardSpeed = 1;
         public static final double kClimberReversedSpeed = -1;
-        // public static final int kWristMotor = 4;
-        // public static final int kArmMotor = 2;
-        // //Encoders
-        // public static final int kArmCoder = 6;
-        // public static final int kExtendMotorCoder = 7;
-        // public static final int kGrabberMotorCoder = 8;
-        // public static final int kWristMotorCoder = 9;
-        // //Limit
-        // public static final int kLimitSwitchIn = 0;
-        // public static final int kLimitSwitchOut = 1;
-        // public static final double kExtendMotorRotLimit = 7.3 * 360;
-        // public static final double armSpoolLimit = 30;
+
+        public static final double kSlappForwardSpeed = -0.1;
+        public static final double kSlappReducedForwardSpeed = -0.05;
+        public static final double kSlappReversedSpeed = 0.1;
+        public static final double kSlappAmpLimit = 23;
     }
 }
