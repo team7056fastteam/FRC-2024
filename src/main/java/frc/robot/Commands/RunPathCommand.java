@@ -13,19 +13,18 @@ public class RunPathCommand extends FastCommand{
     ChassisSpeeds targetChassisSpeeds;
     Pose2d currentPose;
 
-    double[][][] paths;
+    double[][] path;
     int selectedPath;
 
-    public RunPathCommand(double[][][] mPaths, int currentPath){
-        paths = mPaths;
-        selectedPath = currentPath;
+    public RunPathCommand(double[][] path){
+        path = this.path;
     }
 
     @Override
     public void run() {
         if(Robot.getPose() != null){
             Robot._drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(
-           _path.runpath(Robot.getPose() ,paths, selectedPath)));
+           _path.runpath(Robot.getPose(), path)));
         }
     }
 

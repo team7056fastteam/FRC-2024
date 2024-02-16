@@ -41,8 +41,6 @@ public class Teleop {
     SlewRateLimiter zLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
 
     PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0);
-    
-    public Teleop(){}
 
     public void Driver(){
         if(get.speedAdjustment()){xT = 1.2;}else{xT = 0.45;}
@@ -101,13 +99,13 @@ public class Teleop {
         get.Button(get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kFeed));
         get.Button(!get.IngestIn() && !get.IngestOut() && !get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kIdle));
 
-        // get.Button(get.Climb(), new ClimberAction(ClimbState.kClimb));
-        // get.Button(get.UnClimb(), new ClimberAction(ClimbState.kUnClimb));
-        // get.Button(!get.Climb() && !get.UnClimb(), new ClimberAction(ClimbState.kIdle));
+        get.Button(get.Climb(), new ClimberAction(ClimbState.kClimb));
+        get.Button(get.UnClimb(), new ClimberAction(ClimbState.kUnClimb));
+        get.Button(!get.Climb() && !get.UnClimb(), new ClimberAction(ClimbState.kIdle));
 
-        get.Button(get.Climb(), new SlapperAction(SlappState.kSlapp));
-        get.Button(get.UnClimb(), new SlapperAction(SlappState.kUnSlapp));
-        get.Button(!get.Climb() && !get.UnClimb(), new SlapperAction(SlappState.kIdle));
+        get.Button(get.Flipp(), new SlapperAction(SlappState.kSlapp));
+        get.Button(get.UnFlipp(), new SlapperAction(SlappState.kUnSlapp));
+        get.Button(!get.Flipp() && !get.UnFlipp(), new SlapperAction(SlappState.kIdle));
     }
 
     public void Dashboard(){
