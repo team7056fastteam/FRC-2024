@@ -11,13 +11,12 @@ import frc.robot.Constants.Specops;
 public class Kurtinator extends SubsystemBase{
     CANSparkMax KurtinatorMotor;
 
-    DigitalInput right, left;
+    DigitalInput left;
 
     public enum KurtinatorState{kFeed, kRunTilTrip, kReversed, kIdle}
     KurtinatorState state = KurtinatorState.kIdle;
 
     public Kurtinator(){
-        right = new DigitalInput(Specops.kRightLimit);
         left = new DigitalInput(Specops.kLeftLimit);
         KurtinatorMotor = new CANSparkMax(Specops.kKurtinatorMotor, MotorType.kBrushless);
     }
@@ -29,7 +28,7 @@ public class Kurtinator extends SubsystemBase{
                 setKurtinatorSpeed(Specops.kKurtinatorForwardSpeed);
                 break;
             case kRunTilTrip:
-                if(!LimitSwitchTripped()){ setKurtinatorSpeed(Specops.kKurtinatorForwardSpeed); } else { setKurtinatorSpeed(0); }
+                if(LimitSwitchTripped()){ setKurtinatorSpeed(Specops.kKurtinatorForwardSpeed); } else { setKurtinatorSpeed(0); }
                 break;
             case kReversed:
                 setKurtinatorSpeed(Specops.kKurtinatorReversedSpeed);
@@ -45,7 +44,7 @@ public class Kurtinator extends SubsystemBase{
     }
 
     public boolean LimitSwitchTripped(){
-        return !right.get() || !left.get();
+        return !left.get();
     }
     public void Dashboard(){
         SmartDashboard.putString("Kurtinator State", state.toString());

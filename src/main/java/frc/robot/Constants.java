@@ -34,16 +34,16 @@ public class Constants {
             new Translation2d(-kTrackWidth / 2.0, -kWheelBase / 2.0));
 
         //drive motors port ids
-        public static final int kFrontLeftDriveMotorPort = 13;
-        public static final int kBackLeftDriveMotorPort = 21;
-        public static final int kFrontRightDriveMotorPort = 22;
-        public static final int kBackRightDriveMotorPort = 20;
+        public static final int kFrontLeftDriveMotorPort = 1;
+        public static final int kBackLeftDriveMotorPort = 3;
+        public static final int kFrontRightDriveMotorPort = 2;
+        public static final int kBackRightDriveMotorPort = 4;
         
         //turn motors port ids
-        public static final int kFrontLeftTurningMotorPort = 23;
-        public static final int kBackLeftTurningMotorPort = 11;
-        public static final int kFrontRightTurningMotorPort = 12;
-        public static final int kBackRightTurningMotorPort = 10;
+        public static final int kFrontLeftTurningMotorPort = 5;
+        public static final int kBackLeftTurningMotorPort = 7;
+        public static final int kFrontRightTurningMotorPort = 6;
+        public static final int kBackRightTurningMotorPort = 8;
 
         //if the wheels are turning forever they flip the corresponding value
         public static final boolean kFrontLeftTurningMotorReversed = false;
@@ -53,16 +53,16 @@ public class Constants {
 
         //to test this put robot up so wheels aren't touching ground and if you put the stick all the way forward they should all be driving in the forward direction
         //if not they adjust this value
-        public static final boolean kFrontLeftDriveMotorReversed = true;
-        public static final boolean kBackLeftDriveMotorReversed = false;
-        public static final boolean kFrontRightDriveMotorReversed = false;
+        public static final boolean kFrontLeftDriveMotorReversed = false;
+        public static final boolean kBackLeftDriveMotorReversed = true;
+        public static final boolean kFrontRightDriveMotorReversed = true;
         public static final boolean kBackRightDriveMotorReversed = true;
 
         //abs encoders ids
-        public static final int kFrontLeftDriveAbsoluteEncoderPort = 3;
-        public static final int kBackLeftDriveAbsoluteEncoderPort = 4;
-        public static final int kFrontRightDriveAbsoluteEncoderPort = 5;
-        public static final int kBackRightDriveAbsoluteEncoderPort = 2;
+        public static final int kFrontLeftDriveAbsoluteEncoderPort = 1;
+        public static final int kBackLeftDriveAbsoluteEncoderPort = 3;
+        public static final int kFrontRightDriveAbsoluteEncoderPort = 2;
+        public static final int kBackRightDriveAbsoluteEncoderPort = 4;
 
         //don't think this needs to be adjusted
         public static final boolean kFrontLeftDriveAbsoluteEncoderReversed = false;
@@ -71,10 +71,10 @@ public class Constants {
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
 
         //adjust wheel offsets
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-90 - -3.252);
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-40.5 - -5.186);
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(135 - -0.176);
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(30 - -4.746);
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-34.54092);
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(124.98048);
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(87.01164);
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(42.80256);
 
         //these are the physical max of the motor. Look up the values for these.
         public static final double kPhysicalMaxSpeedMetersPerSecond = 6.03504;
@@ -120,27 +120,27 @@ public class Constants {
     }
     public static final class Specops {
         //Motors
-        public static final int kIngestMotor = 1;
-        public static final int kKurtinatorMotor = 2;
-        public static final int kShooterMotorBottom = 3;
-        public static final int kShooterMotorTop = 4;
-        public static final int kWinchMotor = 5;
-        public static final int kPitchMotor = 6;
-        public static final int kSlapperMotor = 7;
+        public static final int kIngestMotor = 9;
+        public static final int kKurtinatorMotor = 10;
+        public static final int kShooterMotorBottom = 12;
+        public static final int kShooterMotorTop = 11;
+        public static final int kWinchMotor = 14;
+        public static final int kPitchMotor = 99;
+        public static final int kSlapperMotor = 13;
 
         public static final int kPitchCoder = 6;
 
         public static final int kLeftLimit = 0;
         public static final int kRightLimit = 1;
 
-        public static final int kHighTopRPM = 2500;
-        public static final int kHighBottomRPM = 2500;
+        public static final int kHighTopRPM = 4500;
+        public static final int kHighBottomRPM = 4500;
 
         public static final int kLowTopRPM = 2000;
         public static final int kLowBottomRPM = 1200;
         //rpm control
-        public static final double kPTOP = 0.01;
-        public static final double kPBOTTOM = 0.01;
+        public static final double kPTOP = 0.000005;
+        public static final double kPBOTTOM = 0.000005;
 
         public static final double kPPitch = 0.01;
 

@@ -16,20 +16,8 @@ public class IngestAction extends FastTeleOpAction{
 
     @Override
     public void run() {
-        if(ingestState == IngestState.kForward){
-            if(Robot._kurtinator.LimitSwitchTripped()){
-                Robot._ingest.setState(IngestState.kIdle);
-                Robot._kurtinator.setState(KurtinatorState.kIdle);
-            }
-            else{
-                Robot._ingest.setState(ingestState);
-                Robot._kurtinator.setState(kurtinatorState);
-            }
-        }
-        else{
-            Robot._ingest.setState(ingestState);
-            Robot._kurtinator.setState(kurtinatorState);
-        }
+        Robot._ingest.setState(ingestState);
+        Robot._kurtinator.setState(kurtinatorState);
     }
     
 }

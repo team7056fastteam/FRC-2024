@@ -2,13 +2,13 @@ package frc.robot.subsystems.Specops;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-//import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
-//import frc.robot.Constants.Specops;
+import frc.robot.Constants.Specops;
 
 public class Shooter extends SubsystemBase{
     ShootingSolution _solution = new ShootingSolution(this);
@@ -22,14 +22,14 @@ public class Shooter extends SubsystemBase{
     RelativeEncoder BottomEncoder;
 
     public Shooter(){
-        //ShooterMotorTop = new CANSparkMax(Specops.kShooterMotorTop, MotorType.kBrushless);
-        //ShooterMotorBottom = new CANSparkMax(Specops.kShooterMotorBottom, MotorType.kBrushless);
+        ShooterMotorTop = new CANSparkMax(Specops.kShooterMotorBottom, MotorType.kBrushless);
+        ShooterMotorBottom = new CANSparkMax(Specops.kShooterMotorTop, MotorType.kBrushless);
 
-        //TopEncoder = ShooterMotorTop.getEncoder();
-        //BottomEncoder = ShooterMotorBottom.getEncoder();
+        TopEncoder = ShooterMotorTop.getEncoder();
+        BottomEncoder = ShooterMotorBottom.getEncoder();
 
-        //TopEncoder.setPosition(0);
-        //BottomEncoder.setPosition(0);
+        TopEncoder.setVelocityConversionFactor(1);
+        BottomEncoder.setVelocityConversionFactor(1);
 
         pitch = 50;
         yaw = 0;
@@ -59,26 +59,26 @@ public class Shooter extends SubsystemBase{
     }
 
     public double getTopRPM(){
-        //return TopEncoder.getVelocity();
-        return 2500;
+        return TopEncoder.getVelocity();
+        //return 2500;
     }
     public double getBottomRPM(){
-        //return BottomEncoder.getVelocity();
-        return 2500;
+        return BottomEncoder.getVelocity();
+        //return 2500;
     }
 
     void setTopSpeed(double speed){
-        //ShooterMotorTop.set(speed);
+        ShooterMotorTop.set(speed);
     }
     void setBottomSpeed(double speed){
-        //ShooterMotorBottom.set(speed);
+        ShooterMotorBottom.set(speed);
     }
 
     public void Dashboard(){
         SmartDashboard.putNumber("Yaw", yaw);
         SmartDashboard.putNumber("Pitch", pitch);
-        //SmartDashboard.putNumber("Top", TopEncoder.getVelocity());
-        //SmartDashboard.putNumber("Bottom", BottomEncoder.getVelocity());
+        SmartDashboard.putNumber("Top", TopEncoder.getVelocity());
+        SmartDashboard.putNumber("Bottom", BottomEncoder.getVelocity());
         SmartDashboard.putString("Shooter Sate", _solution.State.toString());
     }
 }
