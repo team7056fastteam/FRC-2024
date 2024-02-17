@@ -41,7 +41,7 @@ public class SwerveModule {
 
         driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
 
-        turningPidController = new PIDController(0.25, 0.15, 0);
+        turningPidController = new PIDController(0.3, 0.2, 0);
         turningPidController.enableContinuousInput(-Math.PI, Math.PI);
 
         driveEncoder.setPosition(0);

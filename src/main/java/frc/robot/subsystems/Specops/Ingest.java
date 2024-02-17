@@ -19,6 +19,10 @@ public class Ingest extends SubsystemBase{
 
     public void setState(IngestState state){
         this.state = state;
+        run();
+    }
+
+    public void run(){
         switch(state){
             case kIdle:
                 setIngestSpeed(0);

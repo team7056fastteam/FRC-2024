@@ -67,11 +67,11 @@ public class Teleop {
 
         switch(mode){
             case fieldOriented:
-                //Robot._drive.runChassis(driveX, driveY, driveZ);
+                Robot._drive.runChassis(driveX, driveY, driveZ);
                 Robot.setLimelightCamera(false);
                 break;
             case robotOriented:
-                //Robot._drive.runRobotOrientedChassis(driveX, driveY, driveZ);
+                Robot._drive.runRobotOrientedChassis(driveX, driveY, driveZ);
                 Robot.setLimelightCamera(false);
                 Robot._shooter.setSolutionState(shooterState.kIdle);
                 break;
@@ -79,12 +79,12 @@ public class Teleop {
                 Robot.setLimelightCamera(true);
                 Robot._shooter.dataInSolution(Robot.getPose(), Robot.getTX(), Robot.getTA());
                 double z = theta.calculate(Robot._shooter.getYaw());
-                //Robot._drive.runChassis(driveX, driveY, z);
+                Robot._drive.runChassis(driveX, driveY, z);
                 break;
             case RotationLock:
                 break;
             case Locked:
-                //Robot._drive.setModuleStatesUnrestricted(lockedStates);
+                Robot._drive.setModuleStatesUnrestricted(lockedStates);
                 break;
         }
     }

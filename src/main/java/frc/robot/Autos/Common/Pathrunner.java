@@ -18,14 +18,14 @@ public class Pathrunner {
     
     public static Boolean kStopPath = false;
     
-    public ChassisSpeeds runpath(Pose2d currentPose, double[][] path){
+    public ChassisSpeeds runpath(Pose2d currentPose, double[][][] paths, int kselectedPath){
         thetaController.enableContinuousInput(0,2 * Math.PI);
 
-        double selectedX = path[selectedPoint][0];
-        double selectedY = path[selectedPoint][1];
-        double selectedH = Math.toRadians(path[selectedPoint][2]);
+        double selectedX = paths[kselectedPath][selectedPoint][0];
+        double selectedY = paths[kselectedPath][selectedPoint][1];
+        double selectedH = Math.toRadians(paths[kselectedPath][selectedPoint][2]);
 
-        double selectedError = path[selectedPoint][3];
+        double selectedError = paths[kselectedPath][selectedPoint][3];
 
         double kX = currentPose.getX();
         double kY = currentPose.getY();
@@ -40,7 +40,7 @@ public class Pathrunner {
         double readYPower = yController.calculate(kY,selectedY);
         hPower = thetaController.calculate(kH, selectedH);
 
-        if(selectedPoint == (path.length - 1) ){
+        if(selectedPoint == (paths[selectedPath].length - 1) ){
             //end point
             xPower = readXPower;
             yPower = readYPower;
@@ -71,7 +71,7 @@ public class Pathrunner {
                 xPower = highestXPower;
             }
             if(error < selectedError){
-                advancePoint(path);
+                advancePoint(paths);
             }
         }
         if(!kStopPath){
@@ -88,8 +88,8 @@ public class Pathrunner {
         }
     }
 
-    static void advancePoint(double[][] path){
-        int length = path.length;
+    static void advancePoint(double[][][] paths){
+        int length = paths[selectedPath].length;
 
         if (length >= selectedPoint + 1){
             selectedPoint += 1;

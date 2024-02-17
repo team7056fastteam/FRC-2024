@@ -22,30 +22,30 @@ public class BlueLeftThreePiece extends FastAutoBase{
     @Override
     public void routine() throws Exception {
         runCommand(new ShooterCommand(shooterState.kHigh));
-        runCommand(new RunPathCommand(path0));
+        runCommand(new RunPathCommand(paths, 0));
         runCommand(new KurtinatorCommand(KurtinatorState.kFeed));
         runCommand(new WaitCommand(1));
 
         runCommand(new KurtinatorCommand(KurtinatorState.kIdle));
-        runCommand(new RunPathCommand(path1));
+        runCommand(new RunPathCommand(paths,1));
         runCommand(new FastParallel(List.of(
-            new DriveCommand(0.2, 0, 0), 
+            new DriveCommand(0.4, 0, 0), 
             new FastSeries(List.of(
                 new IngestCommand(IngestState.kForward), 
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
-                new WaitForIntake(2))))));
+                new WaitForIntake(5))))));
         runCommand(new FastParallel(List.of(
             new DriveCommand(0, 0, 0),
             new FastSeries(List.of(
-                new IngestCommand(IngestState.kIdle),
-                new KurtinatorCommand(KurtinatorState.kIdle))))));
+                new IngestCommand(IngestState.kForward),
+                new KurtinatorCommand(KurtinatorState.kRunTilTrip))))));
         
-        runCommand(new RunPathCommand(path2));
+        runCommand(new RunPathCommand(paths,2));
         runCommand(new KurtinatorCommand(KurtinatorState.kFeed));
         runCommand(new WaitCommand(1));
         runCommand(new KurtinatorCommand(KurtinatorState.kIdle));
 
-        runCommand(new RunPathCommand(path3));
+        runCommand(new RunPathCommand(paths,3));
         runCommand(new FastParallel(List.of(
             new DriveCommand(0.2, 0, 0), 
             new FastSeries(List.of(

@@ -71,10 +71,10 @@ public class Constants {
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
 
         //adjust wheel offsets
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-34.54092);
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(124.98048);
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(87.01164);
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(42.80256);
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-36.03528);
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(124.8048);
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(92.72448);
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(43.06644);
 
         //these are the physical max of the motor. Look up the values for these.
         public static final double kPhysicalMaxSpeedMetersPerSecond = 6.03504;
@@ -147,7 +147,7 @@ public class Constants {
         public static final double kIngestForwardSpeed = 1;
         public static final double kIngestReversedSpeed = -1;
 
-        public static final double kKurtinatorForwardSpeed = 1;
+        public static final double kKurtinatorForwardSpeed = 0.5;
         public static final double kKurtinatorReversedSpeed = -1;
 
         public static final double kClimberForwardSpeed = 1;

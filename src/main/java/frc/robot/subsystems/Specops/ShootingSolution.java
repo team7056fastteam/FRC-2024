@@ -36,6 +36,9 @@ public class ShootingSolution {
     }
     public void setState(shooterState State){
         this.State = State;
+    }
+
+    public void run(){
         switch(this.State){
             case kIdle:
                 _shooter.setState(50, 0, 0);

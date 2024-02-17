@@ -87,14 +87,14 @@ public class Robot extends TimedRobot {
     // Check if the NavPod is connected to RoboRIO
     if (_navpod.isValid()) {
       NavPodConfig config = new NavPodConfig();
-      config.cableMountAngle = 0;
+      config.cableMountAngle = 90;
       config.fieldOrientedEnabled = true;
       config.initialHeadingAngle = 0;
       config.mountOffsetX = 0;
-      config.mountOffsetY = -4;
-      config.rotationScaleFactorX = 0.065; // 0.0675
-      config.rotationScaleFactorY = 0.01; // 0.02
-      config.translationScaleFactor = 0.00719929350933028438809204856697; // 0.008567
+      config.mountOffsetY = 0;
+      config.rotationScaleFactorX = 0.0; // 0.0675
+      config.rotationScaleFactorY = 0.0; // 0.02
+      config.translationScaleFactor = 0.0077706795; // 0.008567
       _navpod.setConfig(config);
 
       // Report values to the console
@@ -140,7 +140,12 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    _shooter.run();
+    _shooter.runSolution();
+    _ingest.run();
+    _kurtinator.run();
+  }
 
   /** This function is called once when teleop is enabled. */
   @Override

@@ -23,6 +23,9 @@ public class Kurtinator extends SubsystemBase{
     public void setState(KurtinatorState state){
         this.state = state;
 
+        run();
+    }
+    public void run(){
         switch(this.state){
             case kFeed:
                 setKurtinatorSpeed(Specops.kKurtinatorForwardSpeed);

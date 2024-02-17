@@ -13,7 +13,7 @@ import frc.robot.Constants.Specops;
 public class Shooter extends SubsystemBase{
     ShootingSolution _solution = new ShootingSolution(this);
 
-    double pitch, yaw;
+    double pitch, yaw, topSpeed, bottomSpeed;
 
     CANSparkMax ShooterMotorTop;
     CANSparkMax ShooterMotorBottom;
@@ -37,7 +37,11 @@ public class Shooter extends SubsystemBase{
 
     public void setState(double pitch, double topSpeed, double bottomSpeed){
         this.pitch = pitch;
+        this.topSpeed = topSpeed;
+        this.bottomSpeed = bottomSpeed;
+    }
 
+    public void run(){
         setTopSpeed(topSpeed);
         setBottomSpeed(bottomSpeed);
     }
@@ -52,6 +56,10 @@ public class Shooter extends SubsystemBase{
 
     public void setSolutionState(shooterState State){
         _solution.setState(State);
+    }
+
+    public void runSolution(){
+        _solution.run();
     }
 
     public void dataInSolution(Pose2d currentPose, double tx, double ta){

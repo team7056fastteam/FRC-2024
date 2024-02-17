@@ -23,7 +23,7 @@ public class WaitForIntake extends FastCommand{
 
     @Override
     public Boolean isFinished() {
-        return (time.get() > maxWait) || Robot._kurtinator.LimitSwitchTripped();
+        return (time.get() > maxWait) || !Robot._kurtinator.LimitSwitchTripped();
     }
 
     @Override
