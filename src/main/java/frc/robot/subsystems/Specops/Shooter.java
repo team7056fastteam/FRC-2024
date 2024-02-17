@@ -39,6 +39,7 @@ public class Shooter extends SubsystemBase{
         this.pitch = pitch;
         this.topSpeed = topSpeed;
         this.bottomSpeed = bottomSpeed;
+        run();
     }
 
     public void run(){

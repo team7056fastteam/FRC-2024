@@ -36,6 +36,7 @@ public class ShootingSolution {
     }
     public void setState(shooterState State){
         this.State = State;
+        run();
     }
 
     public void run(){

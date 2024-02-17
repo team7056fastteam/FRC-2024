@@ -10,14 +10,12 @@ import frc.robot.subsystems.Specops.Ingest.IngestState;
 import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
 import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 
-public class BlueLeftThreePiece extends FastAutoBase{
+public class BlueRightTwoPiece  extends FastAutoBase{
     //{x,y,heading,error}
-    double[][] path0 = {{-12.53,28.80,65,2}};
-    double[][] path1 = {{-1.56,73.71,0,3}};
-    double[][] path2 = {{54.59,58.58,0,3}};
-    double[][] path3 = {{54.24,78.41,0,3}};
+    double[][] path0 = {{-5.58,40.21,314.69,3}};
+    double[][] path1 = {{-2.85,80.67,0,3.5}};
 
-    double[][][] paths = {path0, path1, path2, path3};
+    double[][][] paths = {path0, path1};
 
     @Override
     public void routine() throws Exception {
@@ -29,37 +27,21 @@ public class BlueLeftThreePiece extends FastAutoBase{
         runCommand(new KurtinatorCommand(KurtinatorState.kIdle));
         runCommand(new RunPathCommand(paths,1));
         runCommand(new FastParallel(List.of(
-            new DriveCommand(0.5, 0, 0), 
+            new DriveCommand(0.15, 0, 0), 
             new FastSeries(List.of(
                 new IngestCommand(IngestState.kForward), 
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
-                new WaitForIntake(4))))));
+                new WaitForIntake(0.75))))));
         runCommand(new FastParallel(List.of(
             new DriveCommand(0, 0, 0),
             new FastSeries(List.of(
                 new IngestCommand(IngestState.kForward),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip))))));
         
-        runCommand(new RunPathCommand(paths,2));
-        runCommand(new KurtinatorCommand(KurtinatorState.kFeed));
-        runCommand(new WaitCommand(1));
-        runCommand(new KurtinatorCommand(KurtinatorState.kIdle));
-        runCommand(new RunPathCommand(paths,3));
-        runCommand(new FastParallel(List.of(
-            new DriveCommand(0.5, 0, 0), 
-            new FastSeries(List.of(
-                new IngestCommand(IngestState.kForward), 
-                new KurtinatorCommand(KurtinatorState.kRunTilTrip),
-                new WaitForIntake(4))))));
-        runCommand(new FastParallel(List.of(
-            new DriveCommand(0, 0, 0),
-            new FastSeries(List.of(
-                new IngestCommand(IngestState.kForward),
-                new KurtinatorCommand(KurtinatorState.kRunTilTrip))))));
-        runCommand(new IngestCommand(IngestState.kIdle));
-        runCommand(new RunPathCommand(paths,2));
+        runCommand(new RunPathCommand(paths,0));
         runCommand(new KurtinatorCommand(KurtinatorState.kFeed));
         runCommand(new WaitCommand(1));
         runCommand(new StopCommand());
     }
+    
 }
