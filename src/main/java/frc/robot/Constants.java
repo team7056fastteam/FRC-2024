@@ -81,7 +81,7 @@ public class Constants {
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
 
         //adjust the divisor closer to 1 but never past if you want more speed
-        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 1;
+        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2;
 
         //adjust the divisor closer to 1 but never past if you want faster turning
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 3.5;
@@ -106,7 +106,7 @@ public class Constants {
         
         public static final double kPThetaController1 = 7;
         public static final double kPThetaController = 1.5; //3
-        public static final double kPTargetController = 0.1;
+        public static final double kPTargetController = 0.05;
 
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
                 new TrapezoidProfile.Constraints(
@@ -136,8 +136,8 @@ public class Constants {
         public static final int kHighTopRPM = 4500;
         public static final int kHighBottomRPM = 4500;
 
-        public static final int kLowTopRPM = 2000;
-        public static final int kLowBottomRPM = 1200;
+        public static final int kLowTopRPM = 1500;
+        public static final int kLowBottomRPM = 2300;
         //rpm control
         public static final double kPTOP = 0.000005;
         public static final double kPBOTTOM = 0.000005;
@@ -147,7 +147,7 @@ public class Constants {
         public static final double kIngestForwardSpeed = 1;
         public static final double kIngestReversedSpeed = -1;
 
-        public static final double kKurtinatorForwardSpeed = 0.5;
+        public static final double kKurtinatorForwardSpeed = 0.6;
         public static final double kKurtinatorReversedSpeed = -1;
 
         public static final double kClimberForwardSpeed = 1;
@@ -156,6 +156,7 @@ public class Constants {
         public static final double kSlappForwardSpeed = -0.1;
         public static final double kSlappReducedForwardSpeed = -0.05;
         public static final double kSlappReversedSpeed = 0.1;
+        public static final double kSlappReducedReversedSpeed = 0.05;
         public static final double kSlappAmpLimit = 23;
     }
 }

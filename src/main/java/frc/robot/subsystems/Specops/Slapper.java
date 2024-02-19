@@ -30,7 +30,7 @@ public class Slapper {
                 break;
             case kUnSlapp:
                 if(slapperMotor.getOutputCurrent() > Specops.kSlappAmpLimit){
-                    slapperPower(0);
+                    slapperPower(Specops.kSlappReducedReversedSpeed);
                 }
                 else{
                     slapperPower(Specops.kSlappReversedSpeed);

@@ -1,7 +1,9 @@
 package frc.robot.subsystems.Specops;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Robot;
 import frc.robot.Constants.Specops;
 //import frc.robot.subsystems.Specops.Pitchinator.PitchState;
 
@@ -14,29 +16,24 @@ public class ShootingSolution {
 
     double robotHeight = 0;
     double targetHeight = 7*12;
-    double tx = 0;
-    double ta = 0;
+
+    double dist = 0;
+    double yaw = 0;
 
     double topSpeed0, topSpeed1, topSpeed2;
     double bottomSpeed0, bottomSpeed1, bottomSpeed2;
 
     PIDController topPID, bottomPID;
-
-    Pose2d currentpose;
+    Translation2d blueGoal = new Translation2d(0,0);
+    Translation2d redGoal = new Translation2d(0,0);
 
     public ShootingSolution(Shooter _shooter){
         topPID = new PIDController(Specops.kPTOP, 0, 0);
         bottomPID = new PIDController(Specops.kPBOTTOM, 0, 0);
         this._shooter = _shooter;
     }
-    public void dataIn(Pose2d currentpose, double tx, double ta){
-        this.currentpose = currentpose;
-        this.tx = tx;
-        this.ta = ta;
-    }
     public void setState(shooterState State){
         this.State = State;
-        run();
     }
 
     public void run(){
@@ -48,9 +45,16 @@ public class ShootingSolution {
                 //_pitch.setState(PitchState.kPitching);
                 break;
             case kTarget:
-                double dist = 15.552/ta;
+                Robot.updateNavPodWithVision();
+                if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue){
+                    dist = Math.sqrt(Math.pow((blueGoal.getY() - Robot.getPose().getY()), 2) + Math.pow((blueGoal.getX() - Robot.getPose().getX()), 2));
+                    yaw = Math.atan2((blueGoal.getY() - Robot.getPose().getY()), (blueGoal.getX() - Robot.getPose().getX()));
+                }
+                else{
+                    dist = Math.sqrt(Math.pow((blueGoal.getY() - Robot.getPose().getY()), 2) + Math.pow((blueGoal.getX() - Robot.getPose().getX()), 2));
+                    yaw = Math.atan2((redGoal.getY() - Robot.getPose().getY()), (redGoal.getX() - Robot.getPose().getX()));
+                }
                 double pitch = pitchClamped(Math.toDegrees(Math.atan(targetHeight/dist)));
-                double yaw = tx;
                 topSpeed0 += topPID.calculate(Math.abs(_shooter.getTopRPM()),Specops.kHighTopRPM);
                 bottomSpeed0 += bottomPID.calculate(Math.abs(_shooter.getBottomRPM()),Specops.kHighBottomRPM);
                 _shooter.setState(pitch, topSpeed0, bottomSpeed0);

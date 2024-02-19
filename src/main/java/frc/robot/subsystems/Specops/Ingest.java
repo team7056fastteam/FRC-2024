@@ -19,7 +19,6 @@ public class Ingest extends SubsystemBase{
 
     public void setState(IngestState state){
         this.state = state;
-        run();
     }
 
     public void run(){

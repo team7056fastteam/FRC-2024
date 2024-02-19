@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -47,6 +48,8 @@ public class Robot extends TimedRobot {
   ProfiledPIDController limeZ;
 
   double kx, ky, kgx, kgy, kgz;
+  static double xOffset;
+  static double yOffset;
   static double gyroRotation;
   static Pose2d currentPose;
   double clamp = 0;
@@ -62,11 +65,8 @@ public class Robot extends TimedRobot {
   ChassisSpeeds targetChassisSpeeds;
   
   static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  static NetworkTableEntry tx = table.getEntry("tx");
-  NetworkTableEntry ty = table.getEntry("ty");
-  static NetworkTableEntry ta = table.getEntry("ta");
-  NetworkTableEntry tv = table.getEntry("tv");
-  NetworkTableEntry tid = table.getEntry("tid");
+  static NetworkTableEntry tid = table.getEntry("tid");
+  static NetworkTableEntry botPose = table.getEntry("botpose");
   
   boolean lockAuton = false, trackTranslation = false;
 
@@ -114,12 +114,13 @@ public class Robot extends TimedRobot {
       // Keep heading calibrated
       _navpod.setAutoUpdate(0.02, update -> {gyroRotation = update.h; kx = update.x; ky = update.y; kgx = update.gx; kgy = update.gy; kgz = update.gz;});
       setLimelightCamera(false);
+      table.getEntry("pipeline").setNumber(1);
     }
   }
 
   @Override
   public void robotPeriodic() {
-    currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
+    currentPose = new Pose2d(new Translation2d(-kx + xOffset, -ky + yOffset), getGyroscopeRotation2d());
     RobotDashboard();
     _shooter.Dashboard();
     _ingest.Dashboard();
@@ -142,7 +143,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     _shooter.run();
-    _shooter.runSolution();
     _ingest.run();
     _kurtinator.run();
   }
@@ -158,6 +158,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     _teleop.Driver();
     _teleop.Operator();
+
+    _shooter.run();
+    _ingest.run();
+    _kurtinator.run();
   }
 
   public static Rotation2d getGyroscopeRotation2d() {
@@ -172,18 +176,18 @@ public class Robot extends TimedRobot {
     }
   }
 
-  public static double getTX(){
-    return tx.getDouble(0);
+  public static Translation2d getXY(){
+    return new Translation2d(0, 0);
   }
-  public static double getTA(){
-    return ta.getDouble(0);
+  public static double getTID(){
+    return tid.getDouble(0);
   }
 
   public static void resetH(){
     _navpod.resetH(0);
   }
   public static void resetXY(){
-    _navpod.resetXY(0, 0);
+    _navpod.resetXY(0,0);
   }
 
   public void stop() {
@@ -207,6 +211,13 @@ public class Robot extends TimedRobot {
 
   public static Pose2d getPose(){
     return currentPose;
+  }
+
+  public static void updateNavPodWithVision(){
+    if(tid.getDouble(0) > 0){
+      xOffset = currentPose.getX() - botPose.getDoubleArray(new double[6])[0];
+      yOffset = currentPose.getY() - botPose.getDoubleArray(new double[6])[1];
+    }
   }
 
   void RobotDashboard(){

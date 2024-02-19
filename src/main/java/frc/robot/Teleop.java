@@ -42,6 +42,10 @@ public class Teleop {
 
     PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0);
 
+    public Teleop(){
+        theta.enableContinuousInput(0, 360);
+    }
+
     public void Driver(){
         if(get.speedAdjustment()){xT = 1.2;}else{xT = 0.45;}
 
@@ -77,8 +81,7 @@ public class Teleop {
                 break;
             case Targeting:
                 Robot.setLimelightCamera(true);
-                Robot._shooter.dataInSolution(Robot.getPose(), Robot.getTX(), Robot.getTA());
-                double z = theta.calculate(Robot._shooter.getYaw());
+                double z = theta.calculate(Robot.getPose().getRotation().getRadians(), Robot._shooter.getYaw());
                 Robot._drive.runChassis(driveX, driveY, z);
                 break;
             case RotationLock:

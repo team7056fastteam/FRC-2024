@@ -22,8 +22,6 @@ public class Kurtinator extends SubsystemBase{
     }
     public void setState(KurtinatorState state){
         this.state = state;
-
-        run();
     }
     public void run(){
         switch(this.state){
@@ -51,6 +49,6 @@ public class Kurtinator extends SubsystemBase{
     }
     public void Dashboard(){
         SmartDashboard.putString("Kurtinator State", state.toString());
-        SmartDashboard.putBoolean("Tripped", LimitSwitchTripped());
+        SmartDashboard.putBoolean("Tripped", !LimitSwitchTripped());
     }
 }
