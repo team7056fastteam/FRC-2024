@@ -22,7 +22,7 @@ public class Teleop {
     XboxController operator = new XboxController(1);
 
     ControllerFunction get = new ControllerFunction(driver, operator);
-    double xT, driveX, driveY, driveZ;
+    double xT, driveX, driveY, driveZ, tripped;
 
     public enum DriveMode{fieldOriented, robotOriented, Targeting, RotationLock, Locked}
 
@@ -40,18 +40,14 @@ public class Teleop {
     SlewRateLimiter yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
     SlewRateLimiter zLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
 
-    PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0);
-
-    public Teleop(){
-        theta.enableContinuousInput(0, 360);
-    }
+    PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0.1);
 
     public void Driver(){
         if(get.speedAdjustment()){xT = 1.2;}else{xT = 0.45;}
 
         if(get.lockWheels()){mode = DriveMode.Locked;}
-        else if(get.robotOriented()){mode = DriveMode.robotOriented;}
-        else if(get.Target()){mode = DriveMode.Targeting;}
+        //else if(get.robotOriented()){mode = DriveMode.robotOriented;}
+        else if(get.Target() || get.robotOriented()){mode = DriveMode.Targeting;}
         else{mode = DriveMode.fieldOriented;}
 
         get.Button(get.Reset(), new ResetAction());
@@ -81,7 +77,7 @@ public class Teleop {
                 break;
             case Targeting:
                 Robot.setLimelightCamera(true);
-                double z = theta.calculate(Robot.getPose().getRotation().getRadians(), Robot._shooter.getYaw());
+                double z = theta.calculate(Robot.GetTX());
                 Robot._drive.runChassis(driveX, driveY, z);
                 break;
             case RotationLock:

@@ -28,11 +28,11 @@ public class FastParallel extends FastCommand{
     @Override
     public Boolean isFinished() {
         for (FastCommand command : mCommands){
-            if(command.isFinished()){
-                return true;
+            if(!command.isFinished()){
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     @Override

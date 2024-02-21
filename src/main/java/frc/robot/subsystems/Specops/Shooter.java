@@ -2,6 +2,7 @@ package frc.robot.subsystems.Specops;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +24,9 @@ public class Shooter extends SubsystemBase{
     public Shooter(){
         ShooterMotorTop = new CANSparkMax(Specops.kShooterMotorBottom, MotorType.kBrushless);
         ShooterMotorBottom = new CANSparkMax(Specops.kShooterMotorTop, MotorType.kBrushless);
+
+        ShooterMotorTop.setIdleMode(IdleMode.kCoast);
+        ShooterMotorBottom.setIdleMode(IdleMode.kCoast);
 
         TopEncoder = ShooterMotorTop.getEncoder();
         BottomEncoder = ShooterMotorBottom.getEncoder();

@@ -22,6 +22,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Specops.Climber;
 import frc.robot.subsystems.Specops.Ingest;
 import frc.robot.subsystems.Specops.Kurtinator;
+import frc.robot.subsystems.Specops.NoteState;
 import frc.robot.subsystems.Specops.Shooter;
 import frc.robot.subsystems.Specops.Slapper;
 import frc.robot.Autos.Common.AutoModeRunner;
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
   public static Climber _climber;
   public static Slapper _slapper;
   private static NavPod _navpod;
+  public static NoteState _noteState;
   private Teleop _teleop;
 
   //Auto
@@ -47,7 +49,11 @@ public class Robot extends TimedRobot {
   ProfiledPIDController limeX;
   ProfiledPIDController limeZ;
 
-  double kx, ky, kgx, kgy, kgz;
+  static double kx;
+  static double ky;
+  double kgx;
+  double kgy;
+  double kgz;
   static double xOffset;
   static double yOffset;
   static double gyroRotation;
@@ -65,8 +71,10 @@ public class Robot extends TimedRobot {
   ChassisSpeeds targetChassisSpeeds;
   
   static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  static NetworkTableEntry tid = table.getEntry("tid");
-  static NetworkTableEntry botPose = table.getEntry("botpose");
+  static NetworkTableEntry tv = table.getEntry("tv");
+  static NetworkTableEntry tx = table.getEntry("tx");
+  static NetworkTableEntry ta = table.getEntry("ta");
+  static NetworkTableEntry botPose = table.getEntry("botpose_wpiblue");
   
   boolean lockAuton = false, trackTranslation = false;
 
@@ -82,12 +90,13 @@ public class Robot extends TimedRobot {
     _slapper = new Slapper();
     modeSelector = new AutoModeSelector();
     mAutoModeRunner = new AutoModeRunner();
+    _noteState = new NoteState();
     _teleop = new Teleop();
 
     // Check if the NavPod is connected to RoboRIO
     if (_navpod.isValid()) {
       NavPodConfig config = new NavPodConfig();
-      config.cableMountAngle = 90;
+      config.cableMountAngle = 270;
       config.fieldOrientedEnabled = true;
       config.initialHeadingAngle = 0;
       config.mountOffsetX = 0;
@@ -120,7 +129,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    currentPose = new Pose2d(new Translation2d(-kx + xOffset, -ky + yOffset), getGyroscopeRotation2d());
+    currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
     RobotDashboard();
     _shooter.Dashboard();
     _ingest.Dashboard();
@@ -128,6 +137,7 @@ public class Robot extends TimedRobot {
     _climber.Dashboard();
     _teleop.Dashboard();
     _slapper.Dashboard();
+    _noteState.Dashboard();
   }
 
   @Override
@@ -145,11 +155,13 @@ public class Robot extends TimedRobot {
     _shooter.run();
     _ingest.run();
     _kurtinator.run();
+    _noteState.run();
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    mAutoModeRunner.stop();
     setLimelightCamera(false);
   }
 
@@ -162,6 +174,7 @@ public class Robot extends TimedRobot {
     _shooter.run();
     _ingest.run();
     _kurtinator.run();
+    _noteState.run();
   }
 
   public static Rotation2d getGyroscopeRotation2d() {
@@ -174,13 +187,6 @@ public class Robot extends TimedRobot {
     } else {
       table.getEntry("pipeline").setNumber(1);
     }
-  }
-
-  public static Translation2d getXY(){
-    return new Translation2d(0, 0);
-  }
-  public static double getTID(){
-    return tid.getDouble(0);
   }
 
   public static void resetH(){
@@ -213,16 +219,23 @@ public class Robot extends TimedRobot {
     return currentPose;
   }
 
-  public static void updateNavPodWithVision(){
-    if(tid.getDouble(0) > 0){
-      xOffset = currentPose.getX() - botPose.getDoubleArray(new double[6])[0];
-      yOffset = currentPose.getY() - botPose.getDoubleArray(new double[6])[1];
-    }
+  public static double GetTX(){
+    return tx.getDouble(0);
   }
+  public static double GetTA(){
+    return ta.getDouble(0);
+  }
+
+  // public static void updateNavPodWithVision(){
+  //   if(tv.getDouble(0) > 0){
+  //     xOffset = -kx - Units.metersToInches(botPose.getDoubleArray(new double[6])[0]);
+  //     yOffset = -ky - Units.metersToInches(botPose.getDoubleArray(new double[6])[1]);
+  //   }
+  // }
 
   void RobotDashboard(){
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
-    SmartDashboard.putNumber("Id", tid.getDouble(0));
+    SmartDashboard.putNumber("Detecting", tv.getDouble(0));
   }
 }

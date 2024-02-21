@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Specops;
+import frc.robot.subsystems.Specops.NoteState.noteState;
+import frc.robot.Robot;
 
 public class Kurtinator extends SubsystemBase{
     CANSparkMax KurtinatorMotor;
@@ -29,7 +31,7 @@ public class Kurtinator extends SubsystemBase{
                 setKurtinatorSpeed(Specops.kKurtinatorForwardSpeed);
                 break;
             case kRunTilTrip:
-                if(LimitSwitchTripped()){ setKurtinatorSpeed(Specops.kKurtinatorForwardSpeed); } else { setKurtinatorSpeed(0); }
+                if(Robot._noteState.state == noteState.kNoNote){ setKurtinatorSpeed(Specops.kKurtinatorForwardSpeed); } else { setKurtinatorSpeed(0); }
                 break;
             case kReversed:
                 setKurtinatorSpeed(Specops.kKurtinatorReversedSpeed);
