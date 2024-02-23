@@ -3,6 +3,7 @@ package frc.robot.Autos.Common;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.Autos.Common.Path.WayPointBehavior;
 import frc.robot.Constants.AutoConstants;
 
 public class Pathrunner {
@@ -13,21 +14,19 @@ public class Pathrunner {
     static PIDController yController = new PIDController(AutoConstants.kPYController, AutoConstants.kIYController, 0);
     static PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
     
-    public static int selectedPath, selectedPoint = 0;
+    public static int selectedPoint = 0;
     static double xPower, yPower, hPower, oldXPower = 0, oldYPower = 0, highestXPower = 0, highestYPower = 0;
     
     public static Boolean kStopPath = false;
     
-    public ChassisSpeeds runpath(Pose2d currentPose, double[][][] paths, int kselectedPath){
+    public ChassisSpeeds runpath(Pose2d currentPose, Path path){
         thetaController.enableContinuousInput(0,2 * Math.PI);
 
-        double selectedX = paths[kselectedPath][selectedPoint][0];
-        double selectedY = paths[kselectedPath][selectedPoint][1];
-        double selectedH = Math.toRadians(paths[kselectedPath][selectedPoint][2]);
+        double selectedX = path.points[selectedPoint][0];
+        double selectedY = path.points[selectedPoint][1];
+        double selectedH = Math.toRadians(path.points[selectedPoint][2]);
 
-        double selectedError = paths[kselectedPath][selectedPoint][3];
-        
-        selectedPath = kselectedPath;
+        double selectedError = path.points[selectedPoint][3];
 
         double kX = currentPose.getX();
         double kY = currentPose.getY();
@@ -40,7 +39,7 @@ public class Pathrunner {
         double readYPower = yController.calculate(kY,selectedY);
         hPower = thetaController.calculate(kH, selectedH);
 
-        if(selectedPoint == (paths[kselectedPath].length - 1) ){
+        if(selectedPoint == (path.points.length - 1) ){
             //end point
             xPower = readXPower;
             yPower = readYPower;
@@ -50,30 +49,35 @@ public class Pathrunner {
         }
         else{
             //way point
-            // oldXPower = xPower;
-            // oldYPower = yPower;
-            
-            // if(Math.abs(drivePower(readXPower)) > Math.abs(oldXPower)){
-            //     highestXPower = drivePower(readXPower);
-            // }
-            // if(Math.abs(drivePower(readYPower)) > Math.abs(oldYPower)){
-            //     highestYPower = drivePower(readYPower);
-            // }
-            // if(-45 <= angle && angle <= 45 || -180 <= angle && angle <= -135 || 135 <= angle && angle <= 180){
+            if(path.way == WayPointBehavior.Standard){
+                oldXPower = xPower;
+                oldYPower = yPower;
                 
-            //     //yPower constant
-            //     xPower = readXPower;
-            //     yPower = highestYPower;
-            // }
-            // else{
-            //     //xPower constant
-            //     yPower = readYPower;
-            //     xPower = highestXPower;
-            // }
-            xPower = 12 * Math.sin(Math.toRadians(angle));
-            yPower = 12 * Math.cos(Math.toRadians(angle));
+                if(Math.abs(drivePower(readXPower)) > Math.abs(oldXPower)){
+                    highestXPower = drivePower(readXPower);
+                }
+                if(Math.abs(drivePower(readYPower)) > Math.abs(oldYPower)){
+                    highestYPower = drivePower(readYPower);
+                }
+                if(-45 <= angle && angle <= 45 || -180 <= angle && angle <= -135 || 135 <= angle && angle <= 180){
+
+                    //yPower constant
+                    xPower = readXPower;
+                    yPower = highestYPower;
+                }
+                else{
+                    //xPower constant
+                    yPower = readYPower;
+                    xPower = highestXPower;
+                }
+            }
+            else{
+                xPower = path.points[selectedPoint][4] * Math.sin(Math.toRadians(angle));
+                yPower = path.points[selectedPoint][4] * Math.cos(Math.toRadians(angle));
+            }
+            
             if(error < selectedError){
-                advancePoint(paths);
+                advancePoint(path);
             }
         }
         if(!kStopPath){
@@ -90,8 +94,8 @@ public class Pathrunner {
         }
     }
 
-    static void advancePoint(double[][][] paths){
-        int length = paths[selectedPath].length;
+    static void advancePoint(Path path){
+        int length = path.points.length;
 
         if (length >= selectedPoint + 1){
             selectedPoint += 1;

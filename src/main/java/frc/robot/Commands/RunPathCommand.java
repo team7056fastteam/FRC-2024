@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.Robot;
 import frc.robot.Autos.Common.FastCommand;
+import frc.robot.Autos.Common.Path;
 import frc.robot.Autos.Common.Pathrunner;
 import frc.robot.Constants.DriveConstants;
 
@@ -13,19 +14,17 @@ public class RunPathCommand extends FastCommand{
     ChassisSpeeds targetChassisSpeeds;
     Pose2d currentPose;
 
-    double[][][] paths;
-    int selectedPath;
+    Path path;
 
-    public RunPathCommand(double[][][] mPaths, int currentPath){
-        paths = mPaths;
-        selectedPath = currentPath;
+    public RunPathCommand(Path path){
+        this.path = path;
     }
 
     @Override
     public void run() {
         if(Robot.getPose() != null){
             Robot._drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(
-            _path.runpath(Robot.getPose() ,paths, selectedPath)));
+            _path.runpath(Robot.getPose(), path)));
         }
     }
 
