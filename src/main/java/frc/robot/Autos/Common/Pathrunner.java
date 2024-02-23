@@ -26,50 +26,52 @@ public class Pathrunner {
         double selectedH = Math.toRadians(paths[kselectedPath][selectedPoint][2]);
 
         double selectedError = paths[kselectedPath][selectedPoint][3];
+        
+        selectedPath = kselectedPath;
 
         double kX = currentPose.getX();
         double kY = currentPose.getY();
         double kH = currentPose.getRotation().getRadians();
 
         double error = Math.sqrt((Math.pow((selectedX - kX),2) + Math.pow((selectedY - kY),2)));
-        double errorX = Math.abs(selectedX - kX);
-        double errorY = Math.abs(selectedY - kY);
         double angle = Math.toDegrees(Math.atan2((selectedX - kX), (selectedY - kY)));
 
         double readXPower = xController.calculate(kX,selectedX);
         double readYPower = yController.calculate(kY,selectedY);
         hPower = thetaController.calculate(kH, selectedH);
 
-        if(selectedPoint == (paths[selectedPath].length - 1) ){
+        if(selectedPoint == (paths[kselectedPath].length - 1) ){
             //end point
             xPower = readXPower;
             yPower = readYPower;
-            if(errorX < selectedError && errorY < selectedError){
+            if(error < selectedError){
                 kStopPath = true;
             }
         }
         else{
             //way point
-            oldXPower = xPower;
-            oldYPower = yPower;
+            // oldXPower = xPower;
+            // oldYPower = yPower;
             
-            if(Math.abs(drivePower(readXPower)) > Math.abs(oldXPower)){
-                highestXPower = drivePower(readXPower);
-            }
-            if(Math.abs(drivePower(readYPower)) > Math.abs(oldYPower)){
-                highestYPower = drivePower(readYPower);
-            }
-            if(-45 <= angle && angle <= 45 || -180 <= angle && angle <= -135 || 135 <= angle && angle <= 180){
+            // if(Math.abs(drivePower(readXPower)) > Math.abs(oldXPower)){
+            //     highestXPower = drivePower(readXPower);
+            // }
+            // if(Math.abs(drivePower(readYPower)) > Math.abs(oldYPower)){
+            //     highestYPower = drivePower(readYPower);
+            // }
+            // if(-45 <= angle && angle <= 45 || -180 <= angle && angle <= -135 || 135 <= angle && angle <= 180){
                 
-                //yPower constant
-                xPower = readXPower;
-                yPower = highestYPower;
-            }
-            else{
-                //xPower constant
-                yPower = readYPower;
-                xPower = highestXPower;
-            }
+            //     //yPower constant
+            //     xPower = readXPower;
+            //     yPower = highestYPower;
+            // }
+            // else{
+            //     //xPower constant
+            //     yPower = readYPower;
+            //     xPower = highestXPower;
+            // }
+            xPower = 12 * Math.sin(Math.toRadians(angle));
+            yPower = 12 * Math.cos(Math.toRadians(angle));
             if(error < selectedError){
                 advancePoint(paths);
             }
