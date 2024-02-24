@@ -37,6 +37,8 @@ public class RunPathCommand extends FastCommand{
     public void init() {
         Pathrunner.kStopPath = false;
         Pathrunner.selectedPoint = 0;
+        Pathrunner.highestXPower = 0;
+        Pathrunner.highestYPower = 0;
         targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Robot.getPose().getRotation());
         Robot._drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
         
@@ -44,6 +46,7 @@ public class RunPathCommand extends FastCommand{
 
     @Override
     public void end() {
+        Pathrunner.kStopPath = true;
         targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Robot.getPose().getRotation());
         Robot._drive.setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds));
     }

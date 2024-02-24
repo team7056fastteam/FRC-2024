@@ -2,7 +2,9 @@ package frc.robot.Autos.Common;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Autos.Common.Path.WayPointBehavior;
 import frc.robot.Constants.AutoConstants;
 
@@ -15,7 +17,7 @@ public class Pathrunner {
     static PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
     
     public static int selectedPoint = 0;
-    static double xPower, yPower, hPower, oldXPower = 0, oldYPower = 0, highestXPower = 0, highestYPower = 0;
+    public static double xPower, yPower, hPower, oldXPower = 0, oldYPower = 0, highestXPower = 0, highestYPower = 0;
     
     public static Boolean kStopPath = false;
     
@@ -78,13 +80,23 @@ public class Pathrunner {
             
             if(error < selectedError){
                 advancePoint(path);
+                highestXPower = 0;
+                highestYPower = 0;
             }
         }
         if(!kStopPath){
+            if(path.way == WayPointBehavior.Standard){
             return ChassisSpeeds.fromFieldRelativeSpeeds(
             drivePower(yPower), 
             -drivePower(xPower), 
             hPower, currentPose.getRotation());
+            }
+            else{
+            return ChassisSpeeds.fromFieldRelativeSpeeds(
+            driveFastPower(yPower), 
+            -driveFastPower(xPower), 
+            hPower, currentPose.getRotation());
+            }
         }
         else{
             return ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -105,6 +117,11 @@ public class Pathrunner {
     static double drivePower(double power) {
         return Math.abs(power) > AutoConstants.kMaxSpeedMetersPerSecond
                 ? Math.signum(power) * AutoConstants.kMaxSpeedMetersPerSecond
+                : power;
+    }
+    static double driveFastPower(double power) {
+        return Math.abs(power) > AutoConstants.kFastMaxSpeedMetersPerSecond
+                ? Math.signum(power) * AutoConstants.kFastMaxSpeedMetersPerSecond
                 : power;
     }
 }
