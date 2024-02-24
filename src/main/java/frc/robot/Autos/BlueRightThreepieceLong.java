@@ -1,15 +1,15 @@
 package frc.robot.Autos;
-import java.util.List;
+// import java.util.List;
 
 import frc.robot.Autos.Common.FastAutoBase;
-import frc.robot.Autos.Common.FastParallel;
-import frc.robot.Autos.Common.FastSeries;
+// import frc.robot.Autos.Common.FastParallel;
+// import frc.robot.Autos.Common.FastSeries;
 import frc.robot.Autos.Common.Path;
 import frc.robot.Autos.Common.Path.WayPointBehavior;
 import frc.robot.Commands.*;
-import frc.robot.subsystems.Specops.Ingest.IngestState;
-import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
-import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
+// import frc.robot.subsystems.Specops.Ingest.IngestState;
+// import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
+// import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 
 public class BlueRightThreepieceLong extends FastAutoBase{
     double[][] point0 = {{-5.58,40.21,314.69,3}, {-2.85,80.67,0,3.5}, {-5.58,40.21,314.69,5}};
