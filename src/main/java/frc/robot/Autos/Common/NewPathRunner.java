@@ -8,9 +8,10 @@ import frc.robot.Robot;
 public class NewPathRunner {
     int length = 1;
     public int currentLine = 0;
-    double distanceConsumed = 0;
+    double distanceLeft = 0;
     public boolean finished = false;
     Line selectedline;
+    Point lookAhead;
 
     double xPower, yPower;
 
@@ -21,11 +22,12 @@ public class NewPathRunner {
     public ChassisSpeeds runPath(NewPath path){
         //length = path.lines.size();
         selectedline = path.lines.get(currentLine);
-        distanceConsumed = (selectedline.distance - selectedline.DistanceRobotToPoint(selectedline.point1));
+        distanceLeft = (selectedline.distance - selectedline.DistanceRobotToPoint(selectedline.point0));
+        lookAhead = selectedline.LookAhead(2);
 
         if(length == currentLine){
             //endpoint
-            if(distanceConsumed < 3){
+            if(distanceLeft < 3){
                 xPower = xController.calculate(Robot.getPose().getX(), selectedline.point1.getX());
                 yPower = yController.calculate(Robot.getPose().getY(), selectedline.point1.getY());
             }
@@ -35,11 +37,10 @@ public class NewPathRunner {
         }
         else{
             //waypoint
-            if(distanceConsumed < 3){
+            if(distanceLeft < 3){
                 currentLine ++;
             }
             else{
-                Point lookAhead = selectedline.LookAhead(2);
                 xPower = xController.calculate(Robot.getPose().getX(), lookAhead.getX());
                 yPower = yController.calculate(Robot.getPose().getY(), lookAhead.getY());
             }
