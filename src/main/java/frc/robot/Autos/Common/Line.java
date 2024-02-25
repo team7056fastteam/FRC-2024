@@ -6,8 +6,8 @@ public class Line {
     public enum LineType{Straight, Spline};
     public LineType type = LineType.Straight;
 
-    Point point0 = new Point(0,0);
-    Point point1 = new Point(0,0);
+    Point point0 = new Point(0,0,0);
+    Point point1 = new Point(0,0,0);
     double distance = 0;
 
     public Line(Point point, Point point2, LineType type){
@@ -25,9 +25,12 @@ public class Line {
     public double getDistance(){
         return distance;
     }
+    public double getHeading(){
+        return point1.getH();
+    }
 
     public Point LookAhead(double amount){
-        return new Point(getClosestPoint().getX() + amount, getXfromY(getClosestPoint().getX() + amount));
+        return new Point(getClosestPoint().getX() + amount, getXfromY(getClosestPoint().getX() + amount),0);
     }
 
     double DistanceRobotToPoint(Point point)
@@ -39,12 +42,12 @@ public class Line {
     //     return 0;
     // }
     Point getClosestPoint(){
-        return new Point(((Robot.getPose().getX() - getXfromY(Robot.getPose().getY()))/2),((Robot.getPose().getY() - getYfromX(Robot.getPose().getX()))/2));
+        return new Point(((Robot.getPose().getX() - getXfromY(Robot.getPose().getY()))/2),((Robot.getPose().getY() - getYfromX(Robot.getPose().getX()))/2),0);
     }
     double getYfromX(double x){
-        return ((point1.getY() - point0.getY())/(point1.getX() - point0.getX()))(x - point0.getX()) + point0.y;
+        return ((point1.getY() - point0.getY())/(point1.getX() - point0.getX()))*(x - point0.getX()) + point0.getY();
     }
     double getXfromY(double y){
-        return (1/((point1.getY() - point0.getY())/(point1.getX() - point0.getX())))(x - point0.getX()) + point0.y;
+        return (1/((point1.getY() - point0.getY())/(point1.getX() - point0.getX())))*(y - point0.getX()) + point0.getY();
     }
 }

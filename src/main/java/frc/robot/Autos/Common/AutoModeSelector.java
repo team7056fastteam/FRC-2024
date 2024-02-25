@@ -11,6 +11,8 @@ public class AutoModeSelector {
     private static FastAutoBase RedRightFourPiece = new RedRightFourPiece();
     private static FastAutoBase RedLeftThreePieceLong = new RedLeftThreePieceLong();
     private static FastAutoBase BlueMidLeftThreePiece = new BlueMidLeftThreePiece();
+
+    private static FastAutoBase Testing = new Testing();
     //private static FastAutoBase AutoB = new AutoB();
     private static SendableChooser<FastAutoBase> autoChooser = new SendableChooser<>();
 
@@ -24,6 +26,8 @@ public class AutoModeSelector {
 
         autoChooser.addOption("Red Side Right Four Piece", RedRightFourPiece);
         autoChooser.addOption("Red Side Left Three piece Long", RedLeftThreePieceLong);
+
+        autoChooser.addOption("Testing", Testing);
         // autoChooser.addOption("Auto B", AutoB);
         SmartDashboard.putData("Auto choices", autoChooser);
     }

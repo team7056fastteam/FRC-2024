@@ -13,4 +13,7 @@ public class Point {
     public double getY(){
         return y;
     }
+    public double getH(){
+        return degrees;
+    }
 }
