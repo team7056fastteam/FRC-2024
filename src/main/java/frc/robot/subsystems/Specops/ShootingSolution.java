@@ -56,6 +56,8 @@ public class ShootingSolution {
                 //     yaw = Math.toDegrees(Math.atan2((redGoal.getY() - Robot.getPose().getY()), (redGoal.getX() - Robot.getPose().getX())));
                 //     yaw = yaw < 0 ? yaw + 360 : yaw;
                 // }
+                topPID.setP(Specops.kPTOP);
+                bottomPID.setP(Specops.kPBOTTOM);
                 dist = Robot.GetTA()/15.22;
                 yaw = Robot.GetTX();
                 double pitch = pitchClamped(Math.toDegrees(Math.atan(targetHeight/dist)));
@@ -66,12 +68,16 @@ public class ShootingSolution {
                 _shooter.setYaw(yaw);
                 break;
             case kLow:
+                topPID.setP(Specops.kAmpPTOP);
+                bottomPID.setP(Specops.kAmpPBOTTOM);
                 topSpeed1 += topPID.calculate(Math.abs(_shooter.getTopRPM()),Specops.kLowTopRPM);
                 bottomSpeed1 += bottomPID.calculate(Math.abs(_shooter.getBottomRPM()),Specops.kLowBottomRPM);
                 _shooter.setState(50, topSpeed1, bottomSpeed1);
                 //_pitch.setState(PitchState.kPitching);
                 break;
             case kHigh:
+                topPID.setP(Specops.kPTOP);
+                bottomPID.setP(Specops.kPBOTTOM);
                 topSpeed2 += topPID.calculate(Math.abs(_shooter.getTopRPM()),Specops.kHighTopRPM);
                 bottomSpeed2 += bottomPID.calculate(Math.abs(_shooter.getBottomRPM()),Specops.kHighBottomRPM);
                 _shooter.setState(50, topSpeed2, bottomSpeed2);

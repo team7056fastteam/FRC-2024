@@ -2,6 +2,7 @@ package frc.robot.Autos.Common;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Robot;
 
@@ -23,7 +24,11 @@ public class NewPathRunner {
         //length = path.lines.size();
         selectedline = path.lines.get(currentLine);
         distanceLeft = (selectedline.distance - selectedline.DistanceRobotToPoint(selectedline.point0));
-        lookAhead = selectedline.LookAhead(2);
+        lookAhead = selectedline.LookAhead(15);
+
+        SmartDashboard.putNumber("distanceLeft", distanceLeft);
+        SmartDashboard.putString("lookAhead Point", "X: " + lookAhead.getX() + " Y: " + lookAhead.getY());
+        SmartDashboard.putString("Closest Point", "X: " + selectedline.getClosestPoint().getX() + " Y: " + selectedline.getClosestPoint().getY());
 
         if(length == currentLine){
             //endpoint

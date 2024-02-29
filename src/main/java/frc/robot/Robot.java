@@ -5,16 +5,18 @@
 package frc.robot;
 
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
+import java.util.List;
+
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
@@ -39,6 +41,7 @@ public class Robot extends TimedRobot {
   private static NavPod _navpod;
   public static NoteState _noteState;
   private Teleop _teleop;
+  PhotonCamera camera;
 
   //Auto
   private AutoModeRunner mAutoModeRunner;
@@ -46,8 +49,6 @@ public class Robot extends TimedRobot {
 
   double driveX , driveY , driveZ;
   TrajectoryConfig trajectoryConfig;
-  ProfiledPIDController limeX;
-  ProfiledPIDController limeZ;
 
   static double kx;
   static double ky;
@@ -70,16 +71,15 @@ public class Robot extends TimedRobot {
   };
   ChassisSpeeds targetChassisSpeeds;
   
-  static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  static NetworkTableEntry tv = table.getEntry("tv");
-  static NetworkTableEntry tx = table.getEntry("tx");
-  static NetworkTableEntry ta = table.getEntry("ta");
-  static NetworkTableEntry botPose = table.getEntry("botpose_wpiblue");
+  static PhotonPipelineResult result;
+  List<PhotonTrackedTarget> targets;
+  static PhotonTrackedTarget target;
   
   boolean lockAuton = false, trackTranslation = false;
 
   @Override
   public void robotInit() {
+    camera = new PhotonCamera("Kurt");
     //subsystems
     _navpod = new NavPod();
     _drive = new SwerveSubsystem();
@@ -122,14 +122,13 @@ public class Robot extends TimedRobot {
 
       // Keep heading calibrated
       _navpod.setAutoUpdate(0.02, update -> {gyroRotation = update.h; kx = update.x; ky = update.y; kgx = update.gx; kgy = update.gy; kgz = update.gz;});
-      setLimelightCamera(false);
-      table.getEntry("pipeline").setNumber(1);
     }
   }
 
   @Override
   public void robotPeriodic() {
     currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
+    if(camera != null){result = camera.getLatestResult();}
     RobotDashboard();
     _shooter.Dashboard();
     _ingest.Dashboard();
@@ -162,7 +161,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     mAutoModeRunner.stop();
-    setLimelightCamera(false);
   }
 
   /** This function is called periodically during operator control. */
@@ -181,14 +179,6 @@ public class Robot extends TimedRobot {
       return Rotation2d.fromDegrees(gyroRotation);
   }
 
-  public static void setLimelightCamera(boolean mode) {
-    if (mode == true) {
-      table.getEntry("pipeline").setNumber(0);
-    } else {
-      table.getEntry("pipeline").setNumber(1);
-    }
-  }
-
   public static void resetH(){
     _navpod.resetH(0);
   }
@@ -204,7 +194,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     stop();
-    setLimelightCamera(false);
   }
 
   @Override
@@ -220,10 +209,17 @@ public class Robot extends TimedRobot {
   }
 
   public static double GetTX(){
-    return tx.getDouble(0);
+    if(result.hasTargets() && result != null){target = result.getBestTarget();}
+    if(target == null){return 0;}
+    return target.getYaw();
   }
   public static double GetTA(){
-    return ta.getDouble(0);
+    if(result.hasTargets() && result != null){target = result.getBestTarget();}
+    if(target == null){return 0;}
+    return target.getArea();
+  }
+  public static boolean hasTargets(){
+    return result.hasTargets();
   }
 
   // public static void updateNavPodWithVision(){
@@ -236,6 +232,8 @@ public class Robot extends TimedRobot {
   void RobotDashboard(){
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
-    SmartDashboard.putNumber("Detecting", tv.getDouble(0));
+    if(target != null){
+      SmartDashboard.putNumber("Detecting", target.getFiducialId());
+    }
   }
 }

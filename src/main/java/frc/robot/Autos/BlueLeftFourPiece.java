@@ -53,39 +53,6 @@ public class BlueLeftFourPiece extends FastAutoBase{
         )))));
         runCommand(new KurtinatorCommand(KurtinatorState.kFeed));
         runCommand(new WaitCommand(1));
-        // runCommand(new RunPathCommand(paths,1));
-        // runCommand(new FastParallel(List.of(
-        //     new DriveCommand(0.5, 0, 0), 
-        //     new FastSeries(List.of(
-        //         new IngestCommand(IngestState.kForward), 
-        //         new KurtinatorCommand(KurtinatorState.kRunTilTrip),
-        //         new WaitForIntake(4))))));
-        // runCommand(new FastParallel(List.of(
-        //     new DriveCommand(0, 0, 0),
-        //     new FastSeries(List.of(
-        //         new IngestCommand(IngestState.kForward),
-        //         new KurtinatorCommand(KurtinatorState.kRunTilTrip))))));
-        
-        // runCommand(new RunPathCommand(paths,2));
-        // runCommand(new KurtinatorCommand(KurtinatorState.kFeed));
-        // runCommand(new WaitCommand(1));
-        // runCommand(new KurtinatorCommand(KurtinatorState.kIdle));
-        // runCommand(new RunPathCommand(paths,3));
-        // runCommand(new FastParallel(List.of(
-        //     new DriveCommand(0.5, 0, 0), 
-        //     new FastSeries(List.of(
-        //         new IngestCommand(IngestState.kForward), 
-        //         new KurtinatorCommand(KurtinatorState.kRunTilTrip),
-        //         new WaitForIntake(4))))));
-        // runCommand(new FastParallel(List.of(
-        //     new DriveCommand(0, 0, 0),
-        //     new FastSeries(List.of(
-        //         new IngestCommand(IngestState.kForward),
-        //         new KurtinatorCommand(KurtinatorState.kRunTilTrip))))));
-        // runCommand(new IngestCommand(IngestState.kIdle));
-        // runCommand(new RunPathCommand(paths,2));
-        // runCommand(new KurtinatorCommand(KurtinatorState.kFeed));
-        // runCommand(new WaitCommand(1));
         runCommand(new StopCommand());
     }
 }

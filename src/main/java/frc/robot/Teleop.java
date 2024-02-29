@@ -40,7 +40,7 @@ public class Teleop {
     SlewRateLimiter yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
     SlewRateLimiter zLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
 
-    PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0.1);
+    PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0);
 
     public void Driver(){
         if(get.speedAdjustment()){xT = 1.2;}else{xT = 0.45;}
@@ -68,17 +68,19 @@ public class Teleop {
         switch(mode){
             case fieldOriented:
                 Robot._drive.runChassis(driveX, driveY, driveZ);
-                Robot.setLimelightCamera(false);
                 break;
             case robotOriented:
                 Robot._drive.runRobotOrientedChassis(driveX, driveY, driveZ);
-                Robot.setLimelightCamera(false);
                 Robot._shooter.setSolutionState(shooterState.kIdle);
                 break;
             case Targeting:
-                Robot.setLimelightCamera(true);
-                double z = theta.calculate(Robot.GetTX());
-                Robot._drive.runChassis(driveX, driveY, z);
+                double z = theta.calculate(Robot.GetTX() + 3);
+                if(Robot.hasTargets()){
+                    Robot._drive.runChassis(driveX, driveY, z);
+                }
+                else{
+                    Robot._drive.runChassis(driveX, driveY, driveZ);
+                }
                 break;
             case RotationLock:
                 break;

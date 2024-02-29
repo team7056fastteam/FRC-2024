@@ -43,8 +43,9 @@ public class Line {
         if((point1.getX() == point0.getX())){
             return new Point(point0.getX(),Robot.getPose().getY(),0);
         }
-        return new Point(interceptX(point0, point1, new Point(Robot.getPose().getX(),Robot.getPose().getY(),0))
-        ,getYfromX(interceptX(point0, point1, new Point(Robot.getPose().getX(),Robot.getPose().getY(),0))),0);
+        // return new Point(interceptX(point0, point1, new Point(Robot.getPose().getX(),Robot.getPose().getY(),0))
+        // ,getYfromX(interceptX(point0, point1, new Point(Robot.getPose().getX(),Robot.getPose().getY(),0))),0);
+        return new Point(Robot.getPose().getX(), getYfromX(Robot.getPose().getX()),0);
     }
     double getYfromX(double x){
         double m = (point1.getY() - point0.getY())/(point1.getX() - point0.getX());
