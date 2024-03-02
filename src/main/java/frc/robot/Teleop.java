@@ -43,7 +43,7 @@ public class Teleop {
     PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0);
 
     public void Driver(){
-        if(get.speedAdjustment()){xT = 1.2;}else{xT = 0.45;}
+        if(get.speedAdjustment()){xT = 1.4;}else{xT = 0.45;}
 
         if(get.lockWheels()){mode = DriveMode.Locked;}
         //else if(get.robotOriented()){mode = DriveMode.robotOriented;}
@@ -54,12 +54,13 @@ public class Teleop {
 
         driveX = get.driverX() * xT;
         driveY = get.driverY() * xT;
-        driveZ = get.driverZ();
+        driveZ = get.speedAdjustment() ? get.driverZ() : get.driverZ() * 1.3;
 
         //apply deadband
         driveX = Math.abs(driveX) > DriveConstants.kDeadband ? driveX : 0.0;
         driveY = Math.abs(driveY) > DriveConstants.kDeadband ? driveY : 0.0;
         driveZ = Math.abs(driveZ) > DriveConstants.kDeadband ? driveZ : 0.0;
+
         //smoother
         driveX = xLimiter.calculate(driveX) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
         driveY = yLimiter.calculate(driveY) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
@@ -74,7 +75,7 @@ public class Teleop {
                 Robot._shooter.setSolutionState(shooterState.kIdle);
                 break;
             case Targeting:
-                double z = theta.calculate(Robot.GetTX() + 3);
+                double z = theta.calculate(Robot.GetTX()-2);
                 if(Robot.hasTargets()){
                     Robot._drive.runChassis(driveX, driveY, z);
                 }

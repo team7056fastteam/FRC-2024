@@ -16,7 +16,7 @@ public class RedRightThreePieceLong extends FastAutoBase{
     //{x,y,heading,error} 
     double[][] point0 = {{8.53,26.80,297.63,3}};
     double[][] point1 = {{4.56,75.71,0,3}, {8.53,26.80,297.63,3}};
-    double[][] point2 = {{14.51, 249.64, 0, 14, 3}, {14.51, 293.64, 0, 3}};
+    double[][] point2 = {{14.51, 249.64, 0, 14, 3}, {23.51, 293.64, 0, 3}};
     double[][] point3 = {{14.51, 105.21,0,14, 3},{8.53,26.80,300,3}};
 
     Path path0 = new Path(point0, WayPointBehavior.Standard);
@@ -44,7 +44,7 @@ public class RedRightThreePieceLong extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path2),
             new FastSeries(List.of(
-                new PassXYCommand(14.51, 249.64, 10),
+                new PassXYCommand(23.51, 249.64, 10),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward)
         )))));

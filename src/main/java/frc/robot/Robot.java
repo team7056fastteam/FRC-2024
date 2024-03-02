@@ -17,7 +17,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -27,6 +29,7 @@ import frc.robot.subsystems.Specops.Kurtinator;
 import frc.robot.subsystems.Specops.NoteState;
 import frc.robot.subsystems.Specops.Shooter;
 import frc.robot.subsystems.Specops.Slapper;
+import frc.robot.subsystems.Specops.NoteState.noteState;
 import frc.robot.Autos.Common.AutoModeRunner;
 import frc.robot.Autos.Common.AutoModeSelector;
 
@@ -42,6 +45,7 @@ public class Robot extends TimedRobot {
   public static NoteState _noteState;
   private Teleop _teleop;
   PhotonCamera camera;
+  private Spark blinkin;
 
   //Auto
   private AutoModeRunner mAutoModeRunner;
@@ -79,6 +83,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    PortForwarder.add(5800, "photonvision.local", 5800);
     camera = new PhotonCamera("Kurt");
     //subsystems
     _navpod = new NavPod();
@@ -92,6 +97,7 @@ public class Robot extends TimedRobot {
     mAutoModeRunner = new AutoModeRunner();
     _noteState = new NoteState();
     _teleop = new Teleop();
+    blinkin = new Spark(0);
 
     // Check if the NavPod is connected to RoboRIO
     if (_navpod.isValid()) {
@@ -129,6 +135,8 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
     if(camera != null){result = camera.getLatestResult();}
+    setBlinkin(_noteState.state == noteState.kNote);
+    _noteState.run();
     RobotDashboard();
     _shooter.Dashboard();
     _ingest.Dashboard();
@@ -154,7 +162,6 @@ public class Robot extends TimedRobot {
     _shooter.run();
     _ingest.run();
     _kurtinator.run();
-    _noteState.run();
   }
 
   /** This function is called once when teleop is enabled. */
@@ -172,7 +179,6 @@ public class Robot extends TimedRobot {
     _shooter.run();
     _ingest.run();
     _kurtinator.run();
-    _noteState.run();
   }
 
   public static Rotation2d getGyroscopeRotation2d() {
@@ -228,6 +234,14 @@ public class Robot extends TimedRobot {
   //     yOffset = -ky - Units.metersToInches(botPose.getDoubleArray(new double[6])[1]);
   //   }
   // }
+  void setBlinkin(boolean mode){
+    if(mode){
+      blinkin.set(0.15);
+    }
+    else{
+      blinkin.set(0.99);
+    }
+  }
 
   void RobotDashboard(){
     SmartDashboard.putString("Robot Location", currentPose.toString());
