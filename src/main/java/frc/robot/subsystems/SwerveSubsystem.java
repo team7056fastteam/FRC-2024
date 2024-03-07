@@ -9,6 +9,8 @@ import frc.robot.Constants.*;
 
 public class SwerveSubsystem extends SubsystemBase {
 
+    public double driveX = 0, driveY = 0;
+
     //sets the constants for each module
     private final static SwerveModule frontLeft = new SwerveModule(
             DriveConstants.kFrontLeftDriveMotorPort,
@@ -67,7 +69,9 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void runChassis(double driveX, double driveY, double driveZ){
-        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, Robot.getGyroscopeRotation2d());
+        this.driveX = driveX;
+        this.driveY = driveY;
+        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(this.driveX, this.driveY, driveZ, Robot.getGyroscopeRotation2d());
         SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         setModuleStates(moduleStates);
     }
