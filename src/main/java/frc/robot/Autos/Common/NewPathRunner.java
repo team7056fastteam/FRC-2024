@@ -24,7 +24,7 @@ public class NewPathRunner {
         //length = path.lines.size();
         selectedline = path.lines.get(currentLine);
         distanceLeft = (selectedline.distance - selectedline.DistanceRobotToPoint(selectedline.point0));
-        lookAhead = selectedline.LookAhead(15);
+        lookAhead = selectedline.LookAhead(5);
 
         SmartDashboard.putNumber("distanceLeft", distanceLeft);
         SmartDashboard.putString("lookAhead Point", "X: " + lookAhead.getX() + " Y: " + lookAhead.getY());
@@ -33,8 +33,14 @@ public class NewPathRunner {
         if(length == currentLine){
             //endpoint
             if(distanceLeft < 3){
-                xPower = xController.calculate(Robot.getPose().getX(), selectedline.point1.getX());
-                yPower = yController.calculate(Robot.getPose().getY(), selectedline.point1.getY());
+                if(distanceLeft < 8){
+                    xPower = xController.calculate(Robot.getPose().getX(), lookAhead.getX());
+                    yPower = yController.calculate(Robot.getPose().getY(), lookAhead.getY());
+                }
+                else{
+                    xPower = xController.calculate(Robot.getPose().getX(), selectedline.point1.getX());
+                    yPower = yController.calculate(Robot.getPose().getY(), selectedline.point1.getY());
+                }
             }
             else{
                 finished = true;

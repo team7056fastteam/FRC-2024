@@ -12,8 +12,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -39,38 +37,34 @@ public class Robot extends TimedRobot {
   public static Climber _climber;
   public static Slapper _slapper;
   private static NavPod _navpod;
-  public static NoteState _noteState;
-  private Teleop _teleop;
-  //PhotonCamera camera;
-  private Spark blinkin;
 
   //Auto
   private AutoModeRunner mAutoModeRunner;
   private AutoModeSelector modeSelector;
 
-  double driveX , driveY , driveZ;
-  TrajectoryConfig trajectoryConfig;
+  //Misc
+  public static NoteState _noteState;
+  private Teleop _teleop;
+  //private PhotonCamera camera;
+  private Spark blinkin;
 
   static double kx;
   static double ky;
   double kgx;
   double kgy;
   double kgz;
-  static double xOffset;
-  static double yOffset;
   static double gyroRotation;
   static Pose2d currentPose;
-  double clamp = 0;
 
-  SwerveModuleState[] moduleStates;
-  SwerveModuleState[] lockedStates = 
-  {
-    new SwerveModuleState(0, new Rotation2d(Math.toRadians(45))),
-    new SwerveModuleState(0, new Rotation2d(Math.toRadians(315))),
-    new SwerveModuleState(0, new Rotation2d(Math.toRadians(315))),
-    new SwerveModuleState(0, new Rotation2d(Math.toRadians(45)))
-  };
-  ChassisSpeeds targetChassisSpeeds;
+  // SwerveModuleState[] moduleStates;
+  // SwerveModuleState[] lockedStates = 
+  // {
+  //   new SwerveModuleState(0, new Rotation2d(Math.toRadians(45))),
+  //   new SwerveModuleState(0, new Rotation2d(Math.toRadians(315))),
+  //   new SwerveModuleState(0, new Rotation2d(Math.toRadians(315))),
+  //   new SwerveModuleState(0, new Rotation2d(Math.toRadians(45)))
+  // };
+  //ChassisSpeeds targetChassisSpeeds;
   
   //static PhotonPipelineResult result;
   //List<PhotonTrackedTarget> targets;
@@ -151,7 +145,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // Zero robot position
-    _navpod.resetXY(0, 0);
+    resetXY();
+    resetH();
+
     if(modeSelector.getAutoMode() != null){
       mAutoModeRunner.start();
     }
