@@ -9,8 +9,6 @@ import frc.robot.Constants.*;
 
 public class SwerveSubsystem extends SubsystemBase {
 
-    public double driveX = 0, driveY = 0;
-
     //sets the constants for each module
     private final static SwerveModule frontLeft = new SwerveModule(
             DriveConstants.kFrontLeftDriveMotorPort,
@@ -48,9 +46,6 @@ public class SwerveSubsystem extends SubsystemBase {
             DriveConstants.kBackRightDriveAbsoluteEncoderOffsetRad,
             DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
 
-    public SwerveSubsystem() {
-    }
-
     //sets the states for each module
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
@@ -69,19 +64,8 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void runChassis(double driveX, double driveY, double driveZ){
-        this.driveX = driveX;
-        this.driveY = driveY;
-        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(this.driveX, this.driveY, driveZ, Robot.getGyroscopeRotation2d());
+        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveX, driveY, driveZ, Robot.getGyroscopeRotation2d());
         SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         setModuleStates(moduleStates);
     }
-    public void runRobotOrientedChassis(double driveX, double driveY, double driveZ){
-        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(driveX, driveY, driveZ);
-        SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-        setModuleStates(moduleStates);
-    }
-
-    // public Pose2d getPose(){
-    //     return _robot.getPose();
-    // }
 }

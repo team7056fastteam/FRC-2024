@@ -1,12 +1,12 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Autos.Common.ControllerFunction;
+import frc.robot.Autos.Common.KurtMath;
 import frc.robot.Commands.TeleOpActions.*;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -22,7 +22,7 @@ public class Teleop {
     XboxController operator = new XboxController(1);
 
     ControllerFunction get = new ControllerFunction(driver, operator);
-    double xT, driveX, driveY, driveZ, tripped;
+    double xT, driveX, driveY, driveZ, tripped, z;
 
     public enum DriveMode{fieldOriented, robotOriented, Targeting, RotationLock, Locked}
 
@@ -36,18 +36,19 @@ public class Teleop {
         new SwerveModuleState(0, new Rotation2d(Math.toRadians(45)))
     };
 
-    SlewRateLimiter xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
-    SlewRateLimiter yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
-    SlewRateLimiter zLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
-
     PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0);
+    PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
+
+    public void TeleopInit(){
+        thetaController.enableContinuousInput(0,2 * Math.PI);
+    }
 
     public void Driver(){
         if(get.speedAdjustment()){xT = 1.4;}else{xT = 0.45;}
 
         if(get.lockWheels()){mode = DriveMode.Locked;}
-        //else if(get.robotOriented()){mode = DriveMode.robotOriented;}
-        else if(get.Target() || get.robotOriented()){mode = DriveMode.Targeting;}
+        else if(get.Target()){mode = DriveMode.robotOriented;}
+        else if(get.robotOriented()){mode = DriveMode.Targeting;}
         else{mode = DriveMode.fieldOriented;}
 
         get.Button(get.Reset(), new ResetAction());
@@ -61,7 +62,7 @@ public class Teleop {
         driveY = Math.abs(driveY) > DriveConstants.kDeadband ? driveY : 0.0;
         driveZ = Math.abs(driveZ) > DriveConstants.kDeadband ? driveZ : 0.0;
 
-        //smoother
+        //apply DriveConstants
         driveX = driveX * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
         driveY = driveY * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
         driveZ = driveZ * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
@@ -71,11 +72,15 @@ public class Teleop {
                 Robot._drive.runChassis(driveX, driveY, driveZ);
                 break;
             case robotOriented:
-                Robot._drive.runRobotOrientedChassis(driveX, driveY, driveZ);
+                z = theta.calculate(KurtMath.kurtAngle(
+                    Robot.getPose().getX(),Robot.getPose().getY(),0,0), 
+                    Robot.getPose().getRotation().getRadians()
+                    );
+                Robot._drive.runChassis(driveX, driveY, z);
                 Robot._shooter.setSolutionState(shooterState.kIdle);
                 break;
             case Targeting:
-                double z = theta.calculate(Robot.GetTX()-2);
+                z = theta.calculate(Robot.GetTX()-2);
                 if(Robot.hasTargets()){
                     Robot._drive.runChassis(driveX, driveY, z);
                 }
