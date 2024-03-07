@@ -48,5 +48,7 @@ public class Climber extends SubsystemBase{
 
     public void Dashboard(){
         SmartDashboard.putString("Climb State", state.toString());
+        SmartDashboard.putNumber("Climber Amps", climberMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Climber RPM", climberMotor.getEncoder().getVelocity());
     }
 }

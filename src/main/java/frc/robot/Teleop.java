@@ -62,9 +62,9 @@ public class Teleop {
         driveZ = Math.abs(driveZ) > DriveConstants.kDeadband ? driveZ : 0.0;
 
         //smoother
-        driveX = xLimiter.calculate(driveX) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-        driveY = yLimiter.calculate(driveY) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-        driveZ = zLimiter.calculate(driveZ) * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
+        driveX = driveX * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
+        driveY = driveY * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
+        driveZ = driveZ * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
 
         switch(mode){
             case fieldOriented:

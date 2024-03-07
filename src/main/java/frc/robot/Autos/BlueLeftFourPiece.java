@@ -57,7 +57,7 @@ public class BlueLeftFourPiece extends FastAutoBase{
     // }
     double[][] point0 = {{-8.53,26.80,65,3}};
     double[][] point1 = {{-4.56,73.71,0,3}, {50.59,58.58,0,3}};
-    double[][] point2 = {{53.59, 87.51,0,3},{89.68, 60.07,320.44,3}};
+    double[][] point2 = {{54.59, 87.51,0,3},{89.68, 60.07,320.44,3}};
     double[][] point3 = {{106.47,89.29, 338.44, 3}, {89.68, 60.07,338.44,3}};
 
     Path path0 = new Path(point0, WayPointBehavior.Standard);
@@ -85,7 +85,7 @@ public class BlueLeftFourPiece extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path2),
             new FastSeries(List.of(
-                new PassXYCommand(50.59, 87.51, 7),
+                new PassXYCommand(54.59, 87.51, 12),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward),
                 new PassXYCommand(89.68, 60.07, 3),

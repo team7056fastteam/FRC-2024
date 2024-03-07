@@ -4,12 +4,9 @@
 
 package frc.robot;
 
-
-import java.util.List;
-
-import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
+//import org.photonvision.PhotonCamera;
+//import org.photonvision.targeting.PhotonPipelineResult;
+//import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -44,7 +41,7 @@ public class Robot extends TimedRobot {
   private static NavPod _navpod;
   public static NoteState _noteState;
   private Teleop _teleop;
-  PhotonCamera camera;
+  //PhotonCamera camera;
   private Spark blinkin;
 
   //Auto
@@ -75,16 +72,20 @@ public class Robot extends TimedRobot {
   };
   ChassisSpeeds targetChassisSpeeds;
   
-  static PhotonPipelineResult result;
-  List<PhotonTrackedTarget> targets;
-  static PhotonTrackedTarget target;
+  //static PhotonPipelineResult result;
+  //List<PhotonTrackedTarget> targets;
+  //static PhotonTrackedTarget target;
   
   boolean lockAuton = false, trackTranslation = false;
 
   @Override
   public void robotInit() {
-    PortForwarder.add(5800, "photonvision.local", 5800);
-    camera = new PhotonCamera("Kurt");
+    PortForwarder.add(5800, "10.70.56.11", 5800);
+    PortForwarder.add(1181, "10.70.56.11", 1181);
+    PortForwarder.add(1182, "10.70.56.11", 1182);
+    PortForwarder.add(1183, "10.70.56.11", 1183);
+    PortForwarder.add(1184, "10.70.56.11", 1184);
+    //camera = new PhotonCamera("Kurt");
     //subsystems
     _navpod = new NavPod();
     _drive = new SwerveSubsystem();
@@ -134,7 +135,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
-    if(camera != null){result = camera.getLatestResult();}
+    //if(camera != null){result = camera.getLatestResult();}
     setBlinkin(_noteState.state == noteState.kNote);
     _noteState.run();
     RobotDashboard();
@@ -215,17 +216,20 @@ public class Robot extends TimedRobot {
   }
 
   public static double GetTX(){
-    if(result.hasTargets() && result != null){target = result.getBestTarget();}
-    if(target == null){return 0;}
-    return target.getYaw();
+    //if(result.hasTargets() && result != null){target = result.getBestTarget();}
+    //if(target == null){return 0;}
+    //return target.getYaw();
+    return 0;
   }
   public static double GetTA(){
-    if(result.hasTargets() && result != null){target = result.getBestTarget();}
-    if(target == null){return 0;}
-    return target.getArea();
+    //if(result.hasTargets() && result != null){target = result.getBestTarget();}
+    //if(target == null){return 0;}
+    //return target.getArea();
+    return 0;
   }
   public static boolean hasTargets(){
-    return result.hasTargets();
+    //return result.hasTargets();
+    return false;
   }
 
   // public static void updateNavPodWithVision(){
@@ -246,8 +250,8 @@ public class Robot extends TimedRobot {
   void RobotDashboard(){
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
-    if(target != null){
-      SmartDashboard.putNumber("Detecting", target.getFiducialId());
-    }
+    //if(target != null){
+    //  SmartDashboard.putNumber("Detecting", target.getFiducialId());
+    //}
   }
 }

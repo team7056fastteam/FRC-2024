@@ -140,8 +140,8 @@ public class Constants {
         public static final int kLowTopRPM = 1800;
         public static final int kLowBottomRPM = 2600;
         //rpm control
-        public static final double kPTOP = 0.000005;
-        public static final double kPBOTTOM = 0.000005;
+        public static final double kPTOP = 0.0000035;
+        public static final double kPBOTTOM = 0.0000035;
 
         public static final double kAmpPTOP = 0.000005;
         public static final double kAmpPBOTTOM = 0.000005;

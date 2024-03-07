@@ -6,6 +6,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Specops;
+import frc.robot.subsystems.Specops.NoteState.noteState;
+import frc.robot.Robot;
 
 public class Ingest extends SubsystemBase{
     public enum IngestState{ kIdle, kForward, kReversed}
@@ -27,7 +29,7 @@ public class Ingest extends SubsystemBase{
                 setIngestSpeed(0);
                 break;
             case kForward:
-                setIngestSpeed(Specops.kIngestForwardSpeed);
+                if(Robot._noteState.state == noteState.kNoNote){ setIngestSpeed(Specops.kIngestForwardSpeed); } else { setIngestSpeed(Specops.kIngestReversedSpeed); }
                 break;
             case kReversed:
                 setIngestSpeed(Specops.kIngestReversedSpeed);
