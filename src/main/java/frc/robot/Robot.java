@@ -55,20 +55,6 @@ public class Robot extends TimedRobot {
   double kgz;
   static double gyroRotation;
   static Pose2d currentPose;
-
-  // SwerveModuleState[] moduleStates;
-  // SwerveModuleState[] lockedStates = 
-  // {
-  //   new SwerveModuleState(0, new Rotation2d(Math.toRadians(45))),
-  //   new SwerveModuleState(0, new Rotation2d(Math.toRadians(315))),
-  //   new SwerveModuleState(0, new Rotation2d(Math.toRadians(315))),
-  //   new SwerveModuleState(0, new Rotation2d(Math.toRadians(45)))
-  // };
-  //ChassisSpeeds targetChassisSpeeds;
-  
-  //static PhotonPipelineResult result;
-  //List<PhotonTrackedTarget> targets;
-  //static PhotonTrackedTarget target;
   
   boolean lockAuton = false, trackTranslation = false;
 
