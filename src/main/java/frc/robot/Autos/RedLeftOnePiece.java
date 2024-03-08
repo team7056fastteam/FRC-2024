@@ -1,9 +1,11 @@
 package frc.robot.Autos;
 
-import frc.robot.Autos.Common.FastAutoBase;
-import frc.robot.Autos.Common.Path;
-import frc.robot.Autos.Common.Path.WayPointBehavior;
-import frc.robot.Commands.*;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.AutoCommands.*;
+import frc.robot.Common.FastAutoBase;
+import frc.robot.Common.Path;
+import frc.robot.Common.Path.WayPointBehavior;
 import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
 import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 
@@ -21,4 +23,8 @@ public class RedLeftOnePiece extends FastAutoBase{
         runCommand(new StopCommand());
     }
     
+    @Override
+    public Pose2d getStartingPose() {
+        return new Pose2d(0,0, Rotation2d.fromRadians(0));
+    }
 }

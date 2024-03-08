@@ -2,13 +2,14 @@ package frc.robot.Autos;
 
 import java.util.List;
 
-import frc.robot.Autos.Common.FastAutoBase;
-import frc.robot.Autos.Common.Line;
-import frc.robot.Autos.Common.NewPath;
-import frc.robot.Autos.Common.Point;
-//import frc.robot.Autos.Common.Line.LineType;
-import frc.robot.Autos.Common.NewPath.WayPointBehavior;
-import frc.robot.Commands.NewPathCommand;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.AutoCommands.NewPathCommand;
+import frc.robot.Common.FastAutoBase;
+import frc.robot.Common.Line;
+import frc.robot.Common.NewPath;
+import frc.robot.Common.Point;
+import frc.robot.Common.NewPath.WayPointBehavior;
 
 public class Testing extends FastAutoBase{
     Line line0 = new Line(new Point(0,0,0), new Point(100,0,0));
@@ -18,5 +19,10 @@ public class Testing extends FastAutoBase{
     @Override
     public void routine() throws Exception {
         runCommand(new NewPathCommand(path0));
+    }
+
+    @Override
+    public Pose2d getStartingPose() {
+        return new Pose2d(0,0, Rotation2d.fromRadians(0));
     }
 }
