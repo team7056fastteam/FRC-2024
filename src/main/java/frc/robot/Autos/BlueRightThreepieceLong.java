@@ -1,12 +1,14 @@
 package frc.robot.Autos;
 import java.util.List;
 
-import frc.robot.Autos.Common.FastAutoBase;
-import frc.robot.Autos.Common.FastParallel;
-import frc.robot.Autos.Common.FastSeries;
-import frc.robot.Autos.Common.Path;
-import frc.robot.Autos.Common.Path.WayPointBehavior;
-import frc.robot.Commands.*;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.AutoCommands.*;
+import frc.robot.Common.FastAutoBase;
+import frc.robot.Common.FastParallel;
+import frc.robot.Common.FastSeries;
+import frc.robot.Common.Path;
+import frc.robot.Common.Path.WayPointBehavior;
 import frc.robot.subsystems.Specops.Ingest.IngestState;
 import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
 import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
@@ -54,5 +56,10 @@ public class BlueRightThreepieceLong extends FastAutoBase{
         )))));
         runCommand(new WaitCommand(0.5));
         runCommand(new StopCommand());
+    }
+
+    @Override
+    public Pose2d getStartingPose() {
+        return new Pose2d(0,0, Rotation2d.fromRadians(0));
     }
 }

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+
 //import org.photonvision.PhotonCamera;
 //import org.photonvision.targeting.PhotonPipelineResult;
 //import org.photonvision.targeting.PhotonTrackedTarget;
@@ -16,6 +17,8 @@ import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Common.AutoModeRunner;
+import frc.robot.Common.AutoModeSelector;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Specops.Climber;
@@ -25,8 +28,6 @@ import frc.robot.subsystems.Specops.NoteState;
 import frc.robot.subsystems.Specops.Shooter;
 import frc.robot.subsystems.Specops.Slapper;
 import frc.robot.subsystems.Specops.NoteState.noteState;
-import frc.robot.Autos.Common.AutoModeRunner;
-import frc.robot.Autos.Common.AutoModeSelector;
 
 public class Robot extends TimedRobot {
   //Subsytems
@@ -55,8 +56,6 @@ public class Robot extends TimedRobot {
   double kgz;
   static double gyroRotation;
   static Pose2d currentPose;
-  
-  boolean lockAuton = false, trackTranslation = false;
 
   @Override
   public void robotInit() {
@@ -131,10 +130,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // Zero robot position
-    resetXY();
+    setXY(0,0);
     resetH();
 
     if(modeSelector.getAutoMode() != null){
+      setXY(modeSelector.getAutoMode().getStartingPose().getX(),modeSelector.getAutoMode().getStartingPose().getY());
       mAutoModeRunner.start();
     }
   }
@@ -171,8 +171,8 @@ public class Robot extends TimedRobot {
   public static void resetH(){
     _navpod.resetH(0);
   }
-  public static void resetXY(){
-    _navpod.resetXY(0,0);
+  public static void setXY(double x, double y){
+    _navpod.resetXY(x,y);
   }
 
   public void stop() {
@@ -201,7 +201,7 @@ public class Robot extends TimedRobot {
     //if(result.hasTargets() && result != null){target = result.getBestTarget();}
     //if(target == null){return 0;}
     //return target.getYaw();
-    return 0;
+    return 2;
   }
   public static double GetTA(){
     //if(result.hasTargets() && result != null){target = result.getBestTarget();}
