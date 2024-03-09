@@ -37,7 +37,7 @@ public class Teleop {
     };
 
     PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0);
-    PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
+    PIDController thetaController = new PIDController(AutoConstants.kPThetaController0, 0, 0);
 
     public void TeleopInit(){
         thetaController.enableContinuousInput(0,2 * Math.PI);
@@ -108,7 +108,7 @@ public class Teleop {
 
         get.Button(get.IngestIn(), new IngestAction(IngestState.kForward, KurtinatorState.kRunTilTrip));
         get.Button(get.IngestOut(), new IngestAction(IngestState.kReversed, KurtinatorState.kReversed));
-        get.Button(get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kFeed));
+        get.Button(get.Feed(), new IngestAction(IngestState.kForward, KurtinatorState.kFeed));
         get.Button(!get.IngestIn() && !get.IngestOut() && !get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kIdle));
 
         get.Button(get.Climb(), new ClimberAction(ClimbState.kClimb));

@@ -16,8 +16,8 @@ import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 
 public class RedLeftThreePiece extends FastAutoBase{
     double[][] point0 = {{-8.53,26.80,65,3}};
-    double[][] point1 = {{-4.56,75.71,0,3}, {50.59,58.58,0,3}};
-    double[][] point2 = {{52.76, 89.51,0,3}, {50.59,58.58,0,3}};
+    double[][] point1 = {{-4.56,83.71,0,3}, {60.59,58.58,0,3}};
+    double[][] point2 = {{62.76, 89.51,0,3}, {60.59,58.58,0,3}};
 
     Path path0 = new Path(point0, WayPointBehavior.Standard);
     Path path1 = new Path(point1, WayPointBehavior.Standard);
@@ -32,10 +32,10 @@ public class RedLeftThreePiece extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path1),
             new FastSeries(List.of(
-                new PassXYCommand(-4.56, 73.71, 7),
+                new PassXYCommand(-4.56, 83.71, 10),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward),
-                new PassXYCommand(50.59, 58.58, 3),
+                new PassXYCommand(60.59, 58.58, 3),
                 new KurtinatorCommand(KurtinatorState.kFeed),
                 new IngestCommand(IngestState.kIdle)
         )))));
@@ -43,10 +43,10 @@ public class RedLeftThreePiece extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path2),
             new FastSeries(List.of(
-                new PassXYCommand(52.76, 87.51, 7),
+                new PassXYCommand(62.76, 87.51, 10),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward),
-                new PassXYCommand(50.59, 58.58, 3),
+                new PassXYCommand(60.59, 58.58, 3),
                 new KurtinatorCommand(KurtinatorState.kFeed),
                 new IngestCommand(IngestState.kIdle)
         )))));

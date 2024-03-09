@@ -107,6 +107,7 @@ public class Constants {
         
         public static final double kPThetaController1 = 7;
         public static final double kPThetaController = 1.7; //3
+        public static final double kPThetaController0 = 2;
         public static final double kPTargetController = 0.075;
 
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
@@ -134,17 +135,17 @@ public class Constants {
         public static final int kLeftLimit = 0;
         public static final int kRightLimit = 1;
 
-        public static final int kHighTopRPM = 4500;
-        public static final int kHighBottomRPM = 4500;
+        public static final int kHighTopRPM = 5000;
+        public static final int kHighBottomRPM = 5000;
 
         public static final int kLowTopRPM = 1800;
         public static final int kLowBottomRPM = 2600;
         //rpm control
-        public static final double kPTOP = 0.0000035;
-        public static final double kPBOTTOM = 0.0000035;
+        public static final double kPTOP = 0.000008;
+        public static final double kPBOTTOM = 0.000008;
 
-        public static final double kAmpPTOP = 0.000005;
-        public static final double kAmpPBOTTOM = 0.000005;
+        public static final double kAmpPTOP = 0.000006;
+        public static final double kAmpPBOTTOM = 0.000006;
 
         public static final double kPPitch = 0.01;
 

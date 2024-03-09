@@ -27,8 +27,8 @@ public class ShootingSolution {
     Translation2d redGoal = new Translation2d(0,0);
 
     public ShootingSolution(Shooter _shooter){
-        topPID = new PIDController(Specops.kPTOP, 0, 0);
-        bottomPID = new PIDController(Specops.kPBOTTOM, 0, 0);
+        topPID = new PIDController(Specops.kPTOP, 0.000000001, 0);
+        bottomPID = new PIDController(Specops.kPBOTTOM, 0.000000001, 0);
         this._shooter = _shooter;
     }
     public void setState(shooterState State){
@@ -41,6 +41,12 @@ public class ShootingSolution {
                 _shooter.setState(50, 0, 0);
                 bottomPID.reset();
                 topPID.reset();
+                topSpeed2 = 0;
+                bottomSpeed2 = 0;
+                topSpeed1 = 0;
+                bottomSpeed1 = 0;
+                topSpeed0 = 0;
+                bottomSpeed0 = 0;
                 //_pitch.setState(PitchState.kPitching);
                 break;
             case kTarget:
