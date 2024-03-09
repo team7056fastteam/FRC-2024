@@ -7,7 +7,7 @@ public class ResetAction extends FastTeleOpAction{
     
     @Override
     public void run() {
-        Robot.setXY(0,0);
+        Robot.setXY(60,0);
         Robot.resetH();
     }
 }

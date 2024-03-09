@@ -72,10 +72,15 @@ public class Teleop {
                 Robot._drive.runChassis(driveX, driveY, driveZ);
                 break;
             case robotOriented:
-                z = theta.calculate(KurtMath.kurtAngle(
-                    Robot.getPose().getX(),Robot.getPose().getY(),0,0), 
-                    Robot.getPose().getRotation().getRadians()
+                z = thetaController.calculate(
+                    Robot.getPose().getRotation().getRadians(),
+                    KurtMath.kurtAngle(0,0,
+                    Robot.getPose().getX(),Robot.getPose().getY())
                     );
+                SmartDashboard.putNumber("Target Angle", KurtMath.kurtAngle(0,0,
+                    Robot.getPose().getX(),Robot.getPose().getY())
+                    );
+                SmartDashboard.putNumber("double z", z);
                 Robot._drive.runChassis(driveX, driveY, z);
                 Robot._shooter.setSolutionState(shooterState.kIdle);
                 break;
