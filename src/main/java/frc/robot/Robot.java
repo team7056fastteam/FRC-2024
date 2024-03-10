@@ -5,6 +5,8 @@
 package frc.robot;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -13,16 +15,16 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.net.PortForwarder;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Common.AutoModeRunner;
@@ -53,7 +55,7 @@ public class Robot extends TimedRobot {
   //Misc
   public static NoteState _noteState;
   private Teleop _teleop;
-  private PhotonCamera camera = new PhotonCamera("Kurt");
+  private static PhotonCamera camera = new PhotonCamera("Kurt");
   private Spark blinkin;
 
   static double kx;
@@ -66,7 +68,9 @@ public class Robot extends TimedRobot {
   static PhotonPipelineResult result;
   static PhotonTrackedTarget target;
 
-  AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  static AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  static Transform3d robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0), new Rotation3d(0,0,0)); 
+  static PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, robotToCam);
 
   @Override
   public void robotInit() {
@@ -210,10 +214,10 @@ public class Robot extends TimedRobot {
   }
 
   public static Pose2d getAprilTagPose(){
-    if(result.hasTargets() && result != null){target = result.getBestTarget();}
-    Pose2d targetPose = new Pose2d(0,0, new Rotation2d());
-    Transform2d robotToCam = new Transform2d(new Translation2d(0,.5), new Rotation2d());
-    return PhotonUtils.estimateFieldToRobot(0, 2, Math.toRadians(60), 0, Rotation2d.fromDegrees(-target.getYaw()), getGyroscopeRotation2d(), targetPose, robotToCam);
+  Transform2d cameraToRobot =  new Transform2d(new Translation2d(0,0.25), new Rotation2d());
+  return PhotonUtils.estimateFieldToRobot(
+  0, 2, Math.toDegrees(40), Math.toDegrees(20), 
+  Rotation2d.fromDegrees(-target.getYaw()), getGyroscopeRotation2d(), new Pose2d(0,0,new Rotation2d()), cameraToRobot);
   }
   public static boolean hasTargets(){
     return result.hasTargets();
