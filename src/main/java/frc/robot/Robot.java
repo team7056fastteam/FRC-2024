@@ -230,15 +230,9 @@ public class Robot extends TimedRobot {
   void RobotDashboard(){
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
-<<<<<<< Updated upstream
     if(hasTargets()){
       SmartDashboard.putString("AprilTag Transfrom", getAprilTagPose().toString());
     }
-=======
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
-    //if(target != null){
-    //  SmartDashboard.putNumber("Detecting", target.getFiducialId());
-    //}
->>>>>>> Stashed changes
   }
 }
