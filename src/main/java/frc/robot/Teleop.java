@@ -85,7 +85,7 @@ public class Teleop {
                 Robot._shooter.setSolutionState(shooterState.kIdle);
                 break;
             case Targeting:
-                z = theta.calculate(Robot.GetTX()-2);
+                //z = theta.calculate(Robot.GetTX()-2);
                 if(Robot.hasTargets()){
                     Robot._drive.runChassis(driveX, driveY, z);
                 }

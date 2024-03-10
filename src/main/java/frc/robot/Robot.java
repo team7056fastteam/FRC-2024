@@ -4,11 +4,12 @@
 
 package frc.robot;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
-//import org.photonvision.PhotonCamera;
-//import org.photonvision.targeting.PhotonPipelineResult;
-//import org.photonvision.targeting.PhotonTrackedTarget;
-
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -17,17 +18,17 @@ import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Common.AutoModeRunner;
 import frc.robot.Common.AutoModeSelector;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Specops.Climber;
 import frc.robot.subsystems.Specops.Ingest;
 import frc.robot.subsystems.Specops.Kurtinator;
 import frc.robot.subsystems.Specops.NoteState;
+import frc.robot.subsystems.Specops.NoteState.noteState;
 import frc.robot.subsystems.Specops.Shooter;
 import frc.robot.subsystems.Specops.Slapper;
-import frc.robot.subsystems.Specops.NoteState.noteState;
 
 public class Robot extends TimedRobot {
   //Subsytems
@@ -46,7 +47,7 @@ public class Robot extends TimedRobot {
   //Misc
   public static NoteState _noteState;
   private Teleop _teleop;
-  //private PhotonCamera camera;
+  private PhotonCamera camera = new PhotonCamera("Kurt");
   private Spark blinkin;
 
   static double kx;
@@ -56,6 +57,10 @@ public class Robot extends TimedRobot {
   double kgz;
   static double gyroRotation;
   static Pose2d currentPose;
+  static PhotonPipelineResult result;
+  static PhotonTrackedTarget target;
+
+  AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
   @Override
   public void robotInit() {
@@ -64,7 +69,7 @@ public class Robot extends TimedRobot {
     PortForwarder.add(1182, "10.70.56.11", 1182);
     PortForwarder.add(1183, "10.70.56.11", 1183);
     PortForwarder.add(1184, "10.70.56.11", 1184);
-    //camera = new PhotonCamera("Kurt");
+    
     //subsystems
     _navpod = new NavPod();
     _drive = new SwerveSubsystem();
@@ -114,7 +119,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
-    //if(camera != null){result = camera.getLatestResult();}
+    if(camera != null){result = camera.getLatestResult();}
     setBlinkin(_noteState.state == noteState.kNote);
     _noteState.run();
     RobotDashboard();
@@ -198,29 +203,17 @@ public class Robot extends TimedRobot {
     return currentPose;
   }
 
-  public static double GetTX(){
-    //if(result.hasTargets() && result != null){target = result.getBestTarget();}
-    //if(target == null){return 0;}
-    //return target.getYaw();
-    return 2;
-  }
-  public static double GetTA(){
-    //if(result.hasTargets() && result != null){target = result.getBestTarget();}
-    //if(target == null){return 0;}
-    //return target.getArea();
-    return 0;
+  public static Pose2d getAprilTagPose(){
+    if(result.hasTargets() && result != null){target = result.getBestTarget();}
+    return new Pose2d(target.getBestCameraToTarget().getX(),target.getBestCameraToTarget().getY(),new Rotation2d());
   }
   public static boolean hasTargets(){
-    //return result.hasTargets();
-    return false;
+    return result.hasTargets();
   }
 
-  // public static void updateNavPodWithVision(){
-  //   if(tv.getDouble(0) > 0){
-  //     xOffset = -kx - Units.metersToInches(botPose.getDoubleArray(new double[6])[0]);
-  //     yOffset = -ky - Units.metersToInches(botPose.getDoubleArray(new double[6])[1]);
-  //   }
-  // }
+  public static void updateNavPodWithVision(){
+
+  }
   void setBlinkin(boolean mode){
     if(mode){
       blinkin.set(0.15);
@@ -233,8 +226,8 @@ public class Robot extends TimedRobot {
   void RobotDashboard(){
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
-    //if(target != null){
-    //  SmartDashboard.putNumber("Detecting", target.getFiducialId());
-    //}
+    if(hasTargets()){
+      SmartDashboard.putString("AprilTag Transfrom", getAprilTagPose().toString());
+    }
   }
 }

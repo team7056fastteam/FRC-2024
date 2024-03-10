@@ -16,6 +16,9 @@ public class Point {
     public double getRadians(){
         return radians;
     }
+    public double getDegrees(){
+        return Math.toDegrees(radians);
+    }
     public void setX(double x){
         this.x = x;
     }
@@ -32,5 +35,9 @@ public class Point {
     }
     public void setDegrees(double degrees){
         this.radians = Math.toRadians(degrees);
+    }
+
+    public String toString(){
+        return "X: " + x + " Y: " + y + " Heading( Radians: " + radians + " Degrees: " + getDegrees() + " )";
     }
 }

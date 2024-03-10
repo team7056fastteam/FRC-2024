@@ -64,8 +64,8 @@ public class ShootingSolution {
                 // }
                 topPID.setP(Specops.kPTOP);
                 bottomPID.setP(Specops.kPBOTTOM);
-                dist = Robot.GetTA()/15.22;
-                yaw = Robot.GetTX();
+                // dist = Robot.GetTA()/15.22;
+                // yaw = Robot.GetTX();
                 double pitch = pitchClamped(Math.toDegrees(Math.atan(targetHeight/dist)));
                 topSpeed0 += topPID.calculate(Math.abs(_shooter.getTopRPM()),Specops.kHighTopRPM);
                 bottomSpeed0 += bottomPID.calculate(Math.abs(_shooter.getBottomRPM()),Specops.kHighBottomRPM);
