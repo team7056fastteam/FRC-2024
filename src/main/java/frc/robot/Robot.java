@@ -5,6 +5,7 @@
 package frc.robot;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -12,6 +13,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.net.PortForwarder;
@@ -209,7 +211,9 @@ public class Robot extends TimedRobot {
 
   public static Pose2d getAprilTagPose(){
     if(result.hasTargets() && result != null){target = result.getBestTarget();}
-    return new Pose2d(target.getBestCameraToTarget().getX(),target.getBestCameraToTarget().getY(),new Rotation2d());
+    Pose2d targetPose = new Pose2d(0,0, new Rotation2d());
+    Transform2d robotToCam = new Transform2d(new Translation2d(0,.5), new Rotation2d());
+    return PhotonUtils.estimateFieldToRobot(0, 2, Math.toRadians(60), 0, Rotation2d.fromDegrees(-target.getYaw()), getGyroscopeRotation2d(), targetPose, robotToCam);
   }
   public static boolean hasTargets(){
     return result.hasTargets();
