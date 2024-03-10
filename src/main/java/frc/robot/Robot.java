@@ -15,8 +15,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Common.AutoModeRunner;
@@ -226,8 +230,15 @@ public class Robot extends TimedRobot {
   void RobotDashboard(){
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
+<<<<<<< Updated upstream
     if(hasTargets()){
       SmartDashboard.putString("AprilTag Transfrom", getAprilTagPose().toString());
     }
+=======
+    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+    //if(target != null){
+    //  SmartDashboard.putNumber("Detecting", target.getFiducialId());
+    //}
+>>>>>>> Stashed changes
   }
 }
