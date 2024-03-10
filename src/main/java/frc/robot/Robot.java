@@ -4,22 +4,14 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -67,10 +59,6 @@ public class Robot extends TimedRobot {
   static Pose2d currentPose;
   static PhotonPipelineResult result;
   static PhotonTrackedTarget target;
-
-  static AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-  static Transform3d robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0), new Rotation3d(0,0,0)); 
-  static PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, robotToCam);
 
   @Override
   public void robotInit() {
@@ -130,6 +118,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
     if(camera != null){result = camera.getLatestResult();}
+    target = getTarget();
     setBlinkin(_noteState.state == noteState.kNote);
     _noteState.run();
     RobotDashboard();
@@ -212,12 +201,12 @@ public class Robot extends TimedRobot {
   public static Pose2d getPose(){
     return currentPose;
   }
-
-  public static Pose2d getAprilTagPose(){
-  Transform2d cameraToRobot =  new Transform2d(new Translation2d(0,0.25), new Rotation2d());
-  return PhotonUtils.estimateFieldToRobot(
-  0, 2, Math.toDegrees(40), Math.toDegrees(20), 
-  Rotation2d.fromDegrees(-target.getYaw()), getGyroscopeRotation2d(), new Pose2d(0,0,new Rotation2d()), cameraToRobot);
+  public static double getTy(){
+    if(target == null){return 0;}
+    return target.getYaw();
+  }
+  public static double getTa(){
+    return target.getArea();
   }
   public static boolean hasTargets(){
     return result.hasTargets();
@@ -234,13 +223,23 @@ public class Robot extends TimedRobot {
       blinkin.set(0.99);
     }
   }
+  public static PhotonTrackedTarget getTarget(){
+    List<PhotonTrackedTarget> targets = result.getTargets();
+    for(PhotonTrackedTarget target0 : targets){
+      if(target0.getFiducialId() == 7 || target0.getFiducialId() == 4){
+         return target0;
+      }
+    }
+    return null;
+  }
+  public static double getId(){
+    return target != null ? target.getFiducialId() : -1;
+  }
 
   void RobotDashboard(){
     SmartDashboard.putString("Robot Location", currentPose.toString());
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
-    if(hasTargets()){
-      SmartDashboard.putString("AprilTag Transfrom", getAprilTagPose().toString());
-    }
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+    SmartDashboard.putNumber("Id", getId());
   }
 }

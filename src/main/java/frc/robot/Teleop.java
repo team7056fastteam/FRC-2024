@@ -72,26 +72,19 @@ public class Teleop {
                 Robot._drive.runChassis(driveX, driveY, driveZ);
                 break;
             case robotOriented:
-                z = thetaController.calculate(
-                    Robot.getPose().getRotation().getRadians(),
-                    KurtMath.kurtAngle(0,0,
-                    Robot.getPose().getX(),Robot.getPose().getY())
-                    );
-                SmartDashboard.putNumber("Target Angle", KurtMath.kurtAngle(0,0,
-                    Robot.getPose().getX(),Robot.getPose().getY())
-                    );
-                SmartDashboard.putNumber("double z", z);
-                Robot._drive.runChassis(driveX, driveY, z);
-                Robot._shooter.setSolutionState(shooterState.kIdle);
                 break;
             case Targeting:
-                //z = theta.calculate(Robot.GetTX()-2);
                 if(Robot.hasTargets()){
-                    Robot._drive.runChassis(driveX, driveY, z);
+                    z = theta.calculate(Robot.getTy());
                 }
                 else{
-                    Robot._drive.runChassis(driveX, driveY, driveZ);
+                    z = thetaController.calculate(
+                    Robot.getPose().getRotation().getRadians(),
+                    KurtMath.kurtAngle(60,0,
+                    Robot.getPose().getX(),Robot.getPose().getY())
+                    );
                 }
+                Robot._drive.runChassis(driveX, driveY, z);
                 break;
             case RotationLock:
                 break;
@@ -104,7 +97,7 @@ public class Teleop {
         get.Button(get.HighShot(), new ShooterAction(shooterState.kHigh));
         get.Button(get.LowShot(), new ShooterAction(shooterState.kLow));
         get.Button(mode == DriveMode.Targeting, new ShooterAction(shooterState.kTarget));
-        get.Button(!get.HighShot() && !get.LowShot() && mode != DriveMode.Targeting, new ShooterAction(shooterState.kIdle));
+        get.Button(!get.HighShot() && !get.LowShot(), new ShooterAction(shooterState.kIdle));
 
         get.Button(get.IngestIn(), new IngestAction(IngestState.kForward, KurtinatorState.kRunTilTrip));
         get.Button(get.IngestOut(), new IngestAction(IngestState.kReversed, KurtinatorState.kReversed));
