@@ -77,8 +77,9 @@ public class Teleop {
                 Robot._drive.runChassis(driveX, driveY, driveZ);
                 break;
             case noteTargeting:
-                double x = diagonalController.calculate(Robot.getTx()) * Math.sin(Robot.getPose().getRotation().getRadians());
-                double y = diagonalController.calculate(Robot.getTx()) * Math.cos(Robot.getPose().getRotation().getRadians());
+                double a = Math.toRadians(360 - Robot.getPose().getRotation().getDegrees());
+                double x = diagonalController.calculate(Robot.getTx()) * Math.sin(a);
+                double y = diagonalController.calculate(Robot.getTx()) * Math.cos(a);
                 Robot._drive.runChassis(driveX + x, driveY + y, driveZ);
                 break;
             case Targeting:
