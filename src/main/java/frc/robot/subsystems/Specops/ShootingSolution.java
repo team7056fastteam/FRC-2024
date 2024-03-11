@@ -2,7 +2,6 @@ package frc.robot.subsystems.Specops;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.Robot;
 import frc.robot.Constants.Specops;
 //import frc.robot.subsystems.Specops.Pitchinator.PitchState;
 
@@ -23,8 +22,7 @@ public class ShootingSolution {
     double bottomSpeed0, bottomSpeed1, bottomSpeed2;
 
     PIDController topPID, bottomPID;
-    Translation2d blueGoal = new Translation2d(0,-57);
-    Translation2d redGoal = new Translation2d(0,0);
+    Translation2d blueGoal = new Translation2d(0,60);
 
     public ShootingSolution(Shooter _shooter){
         topPID = new PIDController(Specops.kPTOP, 0.000000001, 0);
@@ -50,28 +48,13 @@ public class ShootingSolution {
                 //_pitch.setState(PitchState.kPitching);
                 break;
             case kTarget:
-                // Robot.updateNavPodWithVision();
-                // if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue){
-                //     dist = Math.sqrt(Math.pow((blueGoal.getY() - Robot.getPose().getY()), 2) + Math.pow((blueGoal.getX() - Robot.getPose().getX()), 2));
-                //     yaw = Math.toDegrees(Math.atan2((blueGoal.getY() - Robot.getPose().getX()), (Robot.getPose().getY())));
-                //     yaw = yaw < 0 ? yaw + 360 : yaw;
-
-                // }
-                // else{
-                //     dist = Math.sqrt(Math.pow((blueGoal.getY() - Robot.getPose().getY()), 2) + Math.pow((blueGoal.getX() - Robot.getPose().getX()), 2));
-                //     yaw = Math.toDegrees(Math.atan2((redGoal.getY() - Robot.getPose().getY()), (redGoal.getX() - Robot.getPose().getX())));
-                //     yaw = yaw < 0 ? yaw + 360 : yaw;
-                // }
                 topPID.setP(Specops.kPTOP);
                 bottomPID.setP(Specops.kPBOTTOM);
-                // dist = Robot.GetTA()/15.22;
-                // yaw = Robot.GetTX();
                 double pitch = pitchClamped(Math.toDegrees(Math.atan(targetHeight/dist)));
                 topSpeed0 += topPID.calculate(Math.abs(_shooter.getTopRPM()),Specops.kHighTopRPM);
                 bottomSpeed0 += bottomPID.calculate(Math.abs(_shooter.getBottomRPM()),Specops.kHighBottomRPM);
                 _shooter.setState(pitch, topSpeed0, bottomSpeed0);
                 //_pitch.setState(PitchState.kPitching);
-                _shooter.setYaw(yaw);
                 break;
             case kLow:
                 topPID.setP(Specops.kAmpPTOP);

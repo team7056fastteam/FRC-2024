@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,7 +25,9 @@ public class Teleop {
     ControllerFunction get = new ControllerFunction(driver, operator);
     double xT, driveX, driveY, driveZ, tripped, z;
 
-    public enum DriveMode{fieldOriented, robotOriented, Targeting, RotationLock, Locked}
+    Translation2d xY = new Translation2d(0,0);
+
+    public enum DriveMode{fieldOriented, noteTargeting, Targeting, Locked}
 
     DriveMode mode = DriveMode.fieldOriented;
 
@@ -38,16 +41,18 @@ public class Teleop {
 
     PIDController theta = new PIDController(AutoConstants.kPTargetController, 0, 0);
     PIDController thetaController = new PIDController(AutoConstants.kPThetaController0, 0, 0);
+    PIDController diagonalController = new PIDController(AutoConstants.diagonalController, 0, 0);
 
     public void TeleopInit(){
         thetaController.enableContinuousInput(0,2 * Math.PI);
     }
 
     public void Driver(){
+        xY = Robot.getGoalTranslation();
         if(get.speedAdjustment()){xT = 1.4;}else{xT = 0.45;}
 
         if(get.lockWheels()){mode = DriveMode.Locked;}
-        else if(get.Target()){mode = DriveMode.robotOriented;}
+        else if(get.Target()){mode = DriveMode.noteTargeting;}
         else if(get.robotOriented()){mode = DriveMode.Targeting;}
         else{mode = DriveMode.fieldOriented;}
 
@@ -71,7 +76,10 @@ public class Teleop {
             case fieldOriented:
                 Robot._drive.runChassis(driveX, driveY, driveZ);
                 break;
-            case robotOriented:
+            case noteTargeting:
+                double x = diagonalController.calculate(Robot.getTx()) * Math.sin(Robot.getPose().getRotation().getRadians());
+                double y = diagonalController.calculate(Robot.getTx()) * Math.cos(Robot.getPose().getRotation().getRadians());
+                Robot._drive.runChassis(driveX + x, driveY + y, driveZ);
                 break;
             case Targeting:
                 if(Robot.hasTargets()){
@@ -85,8 +93,6 @@ public class Teleop {
                     );
                 }
                 Robot._drive.runChassis(driveX, driveY, z);
-                break;
-            case RotationLock:
                 break;
             case Locked:
                 Robot._drive.setModuleStatesUnrestricted(lockedStates);

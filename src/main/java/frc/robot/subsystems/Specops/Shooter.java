@@ -13,7 +13,7 @@ import frc.robot.Constants.Specops;
 public class Shooter extends SubsystemBase{
     ShootingSolution _solution = new ShootingSolution(this);
 
-    double pitch, yaw, topSpeed, bottomSpeed;
+    double pitch, topSpeed, bottomSpeed;
 
     CANSparkMax ShooterMotorTop;
     CANSparkMax ShooterMotorBottom;
@@ -35,7 +35,6 @@ public class Shooter extends SubsystemBase{
         BottomEncoder.setVelocityConversionFactor(1);
 
         pitch = 50;
-        yaw = 0;
     }
 
     public void setState(double pitch, double topSpeed, double bottomSpeed){
@@ -48,14 +47,6 @@ public class Shooter extends SubsystemBase{
         setTopSpeed(topSpeed);
         setBottomSpeed(bottomSpeed);
         _solution.run();
-    }
-
-    public void setYaw(double yaw){
-        this.yaw = yaw;
-    }
-
-    public double getYaw(){
-        return yaw;
     }
 
     public void setSolutionState(shooterState State){
@@ -77,7 +68,6 @@ public class Shooter extends SubsystemBase{
     }
 
     public void Dashboard(){
-        SmartDashboard.putNumber("Yaw", yaw);
         SmartDashboard.putNumber("Pitch", pitch);
         SmartDashboard.putNumber("Top", TopEncoder.getVelocity());
         SmartDashboard.putNumber("Bottom", BottomEncoder.getVelocity());

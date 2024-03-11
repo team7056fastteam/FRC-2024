@@ -60,6 +60,8 @@ public class Robot extends TimedRobot {
   static PhotonPipelineResult result;
   static PhotonTrackedTarget target;
 
+  static Translation2d xY = new Translation2d(60,0);
+
   @Override
   public void robotInit() {
     PortForwarder.add(5800, "10.70.56.11", 5800);
@@ -211,6 +213,9 @@ public class Robot extends TimedRobot {
   public static boolean hasTargets(){
     return result.hasTargets();
   }
+  public static double getTx(){
+    return 0;
+  }
 
   public static void updateNavPodWithVision(){
 
@@ -234,6 +239,12 @@ public class Robot extends TimedRobot {
   }
   public static double getId(){
     return target != null ? target.getFiducialId() : -1;
+  }
+  public static void setGoalTranslation(Translation2d d){
+    xY = d;
+  }
+  public static Translation2d getGoalTranslation(){
+    return xY;
   }
 
   void RobotDashboard(){

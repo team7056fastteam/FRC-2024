@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.AutoCommands.*;
 import frc.robot.Common.FastAutoBase;
 import frc.robot.Common.FastParallel;
@@ -26,6 +27,7 @@ public class RedRightThreePiece extends FastAutoBase{
 
     @Override
     public void routine() throws Exception {
+        runCommand(new SetGoalTranslation(new Translation2d(-60,0)));
         runCommand(new ShooterCommand(shooterState.kHigh));
         runCommand(new RunPathCommand(path0));
         runCommand(new KurtinatorCommand(KurtinatorState.kFeed));
