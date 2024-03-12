@@ -14,6 +14,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -61,6 +64,9 @@ public class Robot extends TimedRobot {
   static PhotonTrackedTarget target;
 
   static Translation2d xY = new Translation2d(60,0);
+
+  static NetworkTable limeLight = NetworkTableInstance.getDefault().getTable("limelight");
+  static NetworkTableEntry tx = limeLight.getEntry("tx");
 
   @Override
   public void robotInit() {
@@ -214,7 +220,7 @@ public class Robot extends TimedRobot {
     return result.hasTargets();
   }
   public static double getTx(){
-    return 0;
+    return tx.getDouble(0.0);
   }
 
   public static void updateNavPodWithVision(){

@@ -52,7 +52,7 @@ public class Teleop {
         if(get.speedAdjustment()){xT = 1.4;}else{xT = 0.45;}
 
         if(get.lockWheels()){mode = DriveMode.Locked;}
-        else if(get.Target()){mode = DriveMode.noteTargeting;}
+        else if(get.AngleLock()){mode = DriveMode.noteTargeting;}
         else if(get.robotOriented()){mode = DriveMode.Targeting;}
         else{mode = DriveMode.fieldOriented;}
 
@@ -77,13 +77,12 @@ public class Teleop {
                 Robot._drive.runChassis(driveX, driveY, driveZ);
                 break;
             case noteTargeting:
-                double a = Math.toRadians(360 - Robot.getPose().getRotation().getDegrees());
-                double x = diagonalController.calculate(Robot.getTx()) * Math.sin(a);
-                double y = diagonalController.calculate(Robot.getTx()) * Math.cos(a);
-                Robot._drive.runChassis(driveX + x, driveY + y, driveZ);
+                z = theta.calculate(Robot.getTx(),10);
+                if(Robot.getTx() == 0){ z = 0;}
+                Robot._drive.runChassis(driveX, driveY, driveZ + z);
                 break;
             case Targeting:
-                if(Robot.hasTargets()){
+                if(Robot.getId() > -1){
                     z = theta.calculate(Robot.getTy());
                 }
                 else{
@@ -104,12 +103,13 @@ public class Teleop {
         get.Button(get.HighShot(), new ShooterAction(shooterState.kHigh));
         get.Button(get.LowShot(), new ShooterAction(shooterState.kLow));
         get.Button(mode == DriveMode.Targeting, new ShooterAction(shooterState.kTarget));
-        get.Button(!get.HighShot() && !get.LowShot(), new ShooterAction(shooterState.kIdle));
+        get.Button(!get.HighShot() && !get.LowShot() && mode != DriveMode.Targeting, new ShooterAction(shooterState.kIdle));
 
         get.Button(get.IngestIn(), new IngestAction(IngestState.kForward, KurtinatorState.kRunTilTrip));
+        get.Button(get.AngleLock(), new IngestAction(IngestState.kForward, KurtinatorState.kRunTilTrip));
         get.Button(get.IngestOut(), new IngestAction(IngestState.kReversed, KurtinatorState.kReversed));
         get.Button(get.Feed(), new IngestAction(IngestState.kForward, KurtinatorState.kFeed));
-        get.Button(!get.IngestIn() && !get.IngestOut() && !get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kIdle));
+        get.Button(!get.IngestIn() && !get.IngestOut() && !get.Feed()&& !get.AngleLock(), new IngestAction(IngestState.kIdle, KurtinatorState.kIdle));
 
         get.Button(get.Climb(), new ClimberAction(ClimbState.kClimb));
         get.Button(get.UnClimb(), new ClimberAction(ClimbState.kUnClimb));
