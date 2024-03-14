@@ -106,10 +106,9 @@ public class Teleop {
         get.Button(!get.HighShot() && !get.LowShot() && mode != DriveMode.Targeting, new ShooterAction(shooterState.kIdle));
 
         get.Button(get.IngestIn(), new IngestAction(IngestState.kForward, KurtinatorState.kRunTilTrip));
-        get.Button(get.AngleLock(), new IngestAction(IngestState.kForward, KurtinatorState.kRunTilTrip));
         get.Button(get.IngestOut(), new IngestAction(IngestState.kReversed, KurtinatorState.kReversed));
         get.Button(get.Feed(), new IngestAction(IngestState.kForward, KurtinatorState.kFeed));
-        get.Button(!get.IngestIn() && !get.IngestOut() && !get.Feed()&& !get.AngleLock(), new IngestAction(IngestState.kIdle, KurtinatorState.kIdle));
+        get.Button(!get.IngestIn() && !get.IngestOut() && !get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kIdle));
 
         get.Button(get.Climb(), new ClimberAction(ClimbState.kClimb));
         get.Button(get.UnClimb(), new ClimberAction(ClimbState.kUnClimb));

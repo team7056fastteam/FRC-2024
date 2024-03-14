@@ -21,7 +21,7 @@ public class SetGoalTranslation extends FastCommand{
 
     @Override
     public Boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override

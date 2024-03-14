@@ -72,8 +72,8 @@ public class Pathrunner {
                 }
             }
             else{
-                xPower = path.points[selectedPoint][4] * Math.sin(Math.toRadians(angle));
-                yPower = path.points[selectedPoint][4] * Math.cos(Math.toRadians(angle));
+               xPower = path.points[selectedPoint][4] * Math.sin(Math.toRadians(angle));
+               yPower = path.points[selectedPoint][4] * Math.cos(Math.toRadians(angle));
             }
             
             if(error < selectedError){
