@@ -22,6 +22,7 @@ public class AutoModeSelector {
     private static FastAutoBase RedLeftThreePieceLongShiny = new RedLeftThreePieceLongShiny();
     private static FastAutoBase RedRightFourPiece = new RedRightFourPiece();
     private static FastAutoBase RedLeftThreePieceLong = new RedLeftThreePieceLong();
+    private static FastAutoBase RedLeftThreePieceSuperLong = new RedLeftThreePieceSuperLong();
     private static FastAutoBase RedMidLeftThreePiece = new RedMidLeftThreePiece();
     private static FastAutoBase RedMidRightThreePiece = new RedMidRightThreePiece();
     private static FastAutoBase RedLeftOnePiece = new RedLeftOnePiece();
@@ -50,6 +51,7 @@ public class AutoModeSelector {
         autoChooser.addOption("Red Side Right Three Piece", RedRightThreePiece);
         autoChooser.addOption("Red Side Right Three Piece Long", RedRightThreePieceLong);
         autoChooser.addOption("Red Side Left Three Piece Long Super Shiny", RedLeftThreePieceLongShiny);
+        autoChooser.addOption("Red Side Left Three Piece Super Long", RedLeftThreePieceSuperLong);
         autoChooser.addOption("Red Side Left Three piece Long", RedLeftThreePieceLong);
         autoChooser.addOption("Red Side Left Three piece", RedLeftThreePiece);
         autoChooser.addOption("Red Side Mid Left Three Piece", RedMidLeftThreePiece);

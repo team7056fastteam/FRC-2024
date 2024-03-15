@@ -86,13 +86,14 @@ public class Teleop {
                     z = theta.calculate(Robot.getTy());
                 }
                 else{
-                    z = thetaController.calculate(
-                    Robot.getPose().getRotation().getRadians(),
-                    KurtMath.kurtAngle(60,0,
-                    Robot.getPose().getX(),Robot.getPose().getY())
-                    );
+                    // z = thetaController.calculate(
+                    // Robot.getPose().getRotation().getRadians(),
+                    // KurtMath.kurtAngle(60,0,
+                    // Robot.getPose().getX(),Robot.getPose().getY())
+                    // );
+                    z=0;
                 }
-                Robot._drive.runChassis(driveX, driveY, z);
+                Robot._drive.runChassis(driveX, driveY, driveZ + z);
                 break;
             case Locked:
                 Robot._drive.setModuleStatesUnrestricted(lockedStates);
@@ -107,7 +108,7 @@ public class Teleop {
 
         get.Button(get.IngestIn(), new IngestAction(IngestState.kForward, KurtinatorState.kRunTilTrip));
         get.Button(get.IngestOut(), new IngestAction(IngestState.kReversed, KurtinatorState.kReversed));
-        get.Button(get.Feed(), new IngestAction(IngestState.kForward, KurtinatorState.kFeed));
+        get.Button(get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kFeed));
         get.Button(!get.IngestIn() && !get.IngestOut() && !get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kIdle));
 
         get.Button(get.Climb(), new ClimberAction(ClimbState.kClimb));
