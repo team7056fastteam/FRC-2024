@@ -61,7 +61,7 @@ public class RedLeftThreePieceSuperLong extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path3),
             new FastSeries(List.of(
-                new PassXYCommand(4.97, 41.97, 7),
+                new PassXYCommand(4.97, 41.97, 12),
                 new KurtinatorCommand(KurtinatorState.kFeed),
                 new IngestCommand(IngestState.kIdle)
         )))));

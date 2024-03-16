@@ -23,7 +23,7 @@ public class Teleop {
     XboxController operator = new XboxController(1);
 
     ControllerFunction get = new ControllerFunction(driver, operator);
-    double xT, driveX, driveY, driveZ, tripped, z;
+    double xT, driveX, driveY, driveZ, tripped, z, yawOffset;
 
     Translation2d xY = new Translation2d(0,0);
 
@@ -49,7 +49,7 @@ public class Teleop {
 
     public void Driver(){
         xY = Robot.getGoalTranslation();
-        if(get.speedAdjustment()){xT = 1.4;}else{xT = 0.45;}
+        if(get.speedAdjustment()){xT = 1.4;}else{xT = 0.675;}
 
         if(get.lockWheels()){mode = DriveMode.Locked;}
         else if(get.AngleLock()){mode = DriveMode.noteTargeting;}
@@ -57,9 +57,10 @@ public class Teleop {
         else{mode = DriveMode.fieldOriented;}
 
         get.Button(get.Reset(), new ResetAction());
+        if(get.ResetYaw() && Robot.getId() > -1){ yawOffset = Robot.getTy();}
 
-        driveX = get.driverX() * xT;
-        driveY = get.driverY() * xT;
+        driveX = get.driverX();
+        driveY = get.driverY();
         driveZ = get.speedAdjustment() ? get.driverZ() : get.driverZ() * 1.3;
 
         //apply deadband
@@ -68,22 +69,25 @@ public class Teleop {
         driveZ = Math.abs(driveZ) > DriveConstants.kDeadband ? driveZ : 0.0;
 
         //apply DriveConstants
-        driveX = driveX * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-        driveY = driveY * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
+        driveX = driveX * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond * xT;
+        driveY = driveY * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond * xT;
         driveZ = driveZ * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
 
         switch(mode){
             case fieldOriented:
                 Robot._drive.runChassis(driveX, driveY, driveZ);
+                Robot.enableLimeLight(false);
                 break;
             case noteTargeting:
-                z = theta.calculate(Robot.getTx(),10);
+                Robot.enableLimeLight(true);
+                z = theta.calculate(Robot.getTx(),30);
                 if(Robot.getTx() == 0){ z = 0;}
                 Robot._drive.runChassis(driveX, driveY, driveZ + z);
                 break;
             case Targeting:
+                Robot.enableLimeLight(false);
                 if(Robot.getId() > -1){
-                    z = theta.calculate(Robot.getTy());
+                    z = theta.calculate(Robot.getTy() - yawOffset);
                 }
                 else{
                     // z = thetaController.calculate(
@@ -96,6 +100,7 @@ public class Teleop {
                 Robot._drive.runChassis(driveX, driveY, driveZ + z);
                 break;
             case Locked:
+                Robot.enableLimeLight(false);
                 Robot._drive.setModuleStatesUnrestricted(lockedStates);
                 break;
         }

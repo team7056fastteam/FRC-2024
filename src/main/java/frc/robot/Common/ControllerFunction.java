@@ -20,6 +20,10 @@ public class ControllerFunction {
     public boolean Reset(){
         return driver.getAButton();
     }
+    /**Driver D-Pad Up*/
+    public boolean ResetYaw(){
+        return driver.getPOV() == 0;
+    }
     /**Driver Right Bumper*/
     public boolean AngleLock(){
         return driver.getRightBumper();

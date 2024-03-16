@@ -215,8 +215,12 @@ public class Robot extends TimedRobot {
     return tx.getDouble(0.0);
   }
 
-  public static void updateNavPodWithVision(){
-
+  public static void enableLimeLight(boolean bool){
+    if(bool){
+      limeLight.getEntry("pipeline").setNumber(0);
+    }else{
+      limeLight.getEntry("pipeline").setNumber(1);
+    }
   }
   void setBlinkin(boolean mode){
     if(mode){
@@ -250,5 +254,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Navpod Gravity Vectors", "GX" + kgx + "GY" + kgy + "GZ" + kgz);
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     SmartDashboard.putNumber("Id", getId());
+    if(getId() > -1){ SmartDashboard.putNumber("Get Yaw", getTy()); }
   }
 }
