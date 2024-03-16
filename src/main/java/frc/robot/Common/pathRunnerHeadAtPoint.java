@@ -25,7 +25,7 @@ public class pathRunnerHeadAtPoint {
 
         double selectedX = path.points[selectedPoint][0];
         double selectedY = path.points[selectedPoint][1];
-        double selectedH = KurtMath.kurtAngle(Robot.getPose().getX(),Robot.getPose().getY(),x,y);
+        double selectedH = KurtMath.kurtAngle(x,y,Robot.getPose().getX(),Robot.getPose().getY());
 
         double selectedError = path.points[selectedPoint][3];
 

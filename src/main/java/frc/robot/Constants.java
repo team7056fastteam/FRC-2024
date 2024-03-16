@@ -165,4 +165,17 @@ public class Constants {
         public static final double kSlappReducedReversedSpeed = 0.05;
         public static final double kSlappAmpLimit = 23;
     }
+    
+    public static NavPodConfig getNavPodConfig(){
+        NavPodConfig config = new NavPodConfig();
+        config.cableMountAngle = 270;
+        config.fieldOrientedEnabled = true;
+        config.initialHeadingAngle = 0;
+        config.mountOffsetX = 0;
+        config.mountOffsetY = 0;
+        config.rotationScaleFactorX = 0.0; // 0.0675
+        config.rotationScaleFactorY = 0.0; // 0.02
+        config.translationScaleFactor = 0.0077706795; // 0.008567
+        return config;
+    }
 }

@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Autos.AutoModeSelector;
 import frc.robot.Common.AutoModeRunner;
-import frc.robot.Common.AutoModeSelector;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Specops.Climber;
 import frc.robot.subsystems.Specops.Ingest;
@@ -92,15 +92,7 @@ public class Robot extends TimedRobot {
 
     // Check if the NavPod is connected to RoboRIO
     if (_navpod.isValid()) {
-      NavPodConfig config = new NavPodConfig();
-      config.cableMountAngle = 270;
-      config.fieldOrientedEnabled = true;
-      config.initialHeadingAngle = 0;
-      config.mountOffsetX = 0;
-      config.mountOffsetY = 0;
-      config.rotationScaleFactorX = 0.0; // 0.0675
-      config.rotationScaleFactorY = 0.0; // 0.02
-      config.translationScaleFactor = 0.0077706795; // 0.008567
+      NavPodConfig config = Constants.getNavPodConfig();
       _navpod.setConfig(config);
 
       // Report values to the console

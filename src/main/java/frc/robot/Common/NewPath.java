@@ -6,8 +6,7 @@ public class NewPath {
     public enum WayPointBehavior{Standard, Velocity};
     public List<Line> lines;
     public WayPointBehavior way = WayPointBehavior.Standard;
-
-    double totaldistance = 0;
+    private double totaldistance;
 
     public NewPath(List<Line> lines, WayPointBehavior way){
         this.lines = lines;

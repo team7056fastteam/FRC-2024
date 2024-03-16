@@ -1,9 +1,9 @@
-package frc.robot.Common;
+package frc.robot.Autos;
 
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Autos.*;
+import frc.robot.Common.FastAutoBase;
 
 public class AutoModeSelector {
     private static FastAutoBase BlueLeftFourPiece = new BlueLeftFourPiece();
