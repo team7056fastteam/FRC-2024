@@ -18,8 +18,8 @@ import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 public class RedRightThreePiece extends FastAutoBase{
     //{x,y,heading,error} 
     double[][] point0 = {{8.53,26.80,297.63,3}};
-    double[][] point1 = {{4.56,73.71,0,3},{-50.59,58.58,0,3}};
-    double[][] point2 = {{-52.76, 87.51,0,3},{-50.59,58.58,0,3}};
+    double[][] point1 = {{4.56,85.71,0,3},{-50.59,58.58,0,3}};
+    double[][] point2 = {{-52.76, 90.51,0,3},{-50.59,58.58,0,3}};
 
     Path path0 = new Path(point0, WayPointBehavior.Standard);
     Path path1 = new Path(point1, WayPointBehavior.Standard);
@@ -35,7 +35,7 @@ public class RedRightThreePiece extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path1),
             new FastSeries(List.of(
-                new PassXYCommand(4.56, 73.71, 7),
+                new PassXYCommand(4.56, 85.71, 7),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward),
                 new PassXYCommand(-50.59, 58.58, 3),
@@ -46,7 +46,7 @@ public class RedRightThreePiece extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path2),
             new FastSeries(List.of(
-                new PassXYCommand(-52.76, 87.51, 7),
+                new PassXYCommand(-52.76, 90.51, 7),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward),
                 new PassXYCommand(-50.59, 58.58, 3),
