@@ -71,8 +71,8 @@ public class Constants {
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
 
         //adjust wheel offsets
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-36.03528);
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(124.8048);
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-35.03528);
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(125.8048);
         public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(92.72448);
         public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(43.06644);
 
