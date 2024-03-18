@@ -1,4 +1,4 @@
-package frc.robot.Autos;
+package frc.robot.Autos.Blue;
 
 import java.util.List;
 
@@ -15,14 +15,21 @@ import frc.robot.subsystems.Specops.Ingest.IngestState;
 import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
 import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 
-public class BlueLeftThreePiece extends FastAutoBase{
+public class BlueLeftFourPiece extends FastAutoBase{
+    //{x,y,heading,error}
     double[][] point0 = {{-8.53,26.80,65,3}};
     double[][] point1 = {{-4.56,85.71,0,3}, {50.59,58.58,0,3}};
-    double[][] point2 = {{52.76, 87.51,0,3},{50.59,58.58,0,3}};
+    double[][] point2 = {{54.59, 87.51,0,3},{89.68, 60.07,320.44,3}};
+    double[][] point3 = {{106.47,89.29, 338.44, 3}, {89.68, 60.07,338.44,3}};
+    double[][] point4 = {{ 27.71, 100.54, 0, 10, 2.5},{110.64, 192.43, 0, 10, 2.5}, {110.64, 286.15, 0, 10, 2.5},{110.64, 296.15, 0, 3}};
+    double[][] point5 = {{110.64, 192.43, 0, 10, 2.5}, {44.63, 137.87, 0, 10, 2.5}, { 52.95, 61.50, 0 ,3}};
 
     Path path0 = new Path(point0, WayPointBehavior.Standard);
     Path path1 = new Path(point1, WayPointBehavior.Standard);
     Path path2 = new Path(point2, WayPointBehavior.Standard);
+    Path path3 = new Path(point3, WayPointBehavior.Standard);
+    Path path4 = new Path(point4, WayPointBehavior.Velocity);
+    Path path5 = new Path(point5, WayPointBehavior.Velocity);
 
     @Override
     public void routine() throws Exception {
@@ -34,10 +41,10 @@ public class BlueLeftThreePiece extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path1),
             new FastSeries(List.of(
-                new PassXYCommand(-5, 60, 7),
+                new PassXYCommand(-4.56, 85.71, 7),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward),
-                new PassXYCommand(50, 58, 3),
+                new PassXYCommand(50.59, 58.58, 3),
                 new KurtinatorCommand(KurtinatorState.kFeed),
                 new IngestCommand(IngestState.kIdle)
         )))));
@@ -45,19 +52,44 @@ public class BlueLeftThreePiece extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path2),
             new FastSeries(List.of(
-                new PassXYCommand(54, 70, 10),
+                new PassXYCommand(54.59, 87.51, 12),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward),
-                new PassXYCommand(50, 58, 3),
+                new PassXYCommand(89.68, 60.07, 3),
+                new KurtinatorCommand(KurtinatorState.kFeed),
+                new IngestCommand(IngestState.kIdle)
+        )))));
+        runCommand(new WaitCommand(0.1));
+        runCommand(new FastParallel(List.of(
+            new RunPathCommand(path3),
+            new FastSeries(List.of(
+                new PassXYCommand(106.47,87.29, 7),
+                new KurtinatorCommand(KurtinatorState.kRunTilTrip),
+                new IngestCommand(IngestState.kForward),
+                new PassXYCommand(89.68, 60.07, 3),
+                new KurtinatorCommand(KurtinatorState.kFeed),
+                new IngestCommand(IngestState.kIdle)
+        )))));
+        runCommand(new FastParallel(List.of(
+            new RunPathCommand(path4),
+            new FastSeries(List.of(
+                new PassXYCommand(110.64, 286.15, 7),
+                new KurtinatorCommand(KurtinatorState.kRunTilTrip),
+                new IngestCommand(IngestState.kForward)
+        )))));
+        runCommand(new FastParallel(List.of(
+            new RunPathCommand(path5),
+            new FastSeries(List.of(
+                new PassXYCommand(52.95, 61.50, 7),
                 new KurtinatorCommand(KurtinatorState.kFeed),
                 new IngestCommand(IngestState.kIdle)
         )))));
         runCommand(new WaitCommand(1));
         runCommand(new StopCommand());
     }
-    
+
     @Override
-    public Pose2d getStartingPose(){
+    public Pose2d getStartingPose() {
         return new Pose2d(0,0, Rotation2d.fromRadians(0));
     }
 }

@@ -1,4 +1,4 @@
-package frc.robot.Autos;
+package frc.robot.Autos.Red;
 
 import java.util.List;
 

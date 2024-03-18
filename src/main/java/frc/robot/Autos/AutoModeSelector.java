@@ -1,6 +1,7 @@
 package frc.robot.Autos;
 
-
+import frc.robot.Autos.Blue.*;
+import frc.robot.Autos.Red.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Common.FastAutoBase;
@@ -8,9 +9,11 @@ import frc.robot.Common.FastAutoBase;
 public class AutoModeSelector {
     private static FastAutoBase BlueLeftFourPiece = new BlueLeftFourPiece();
     private static FastAutoBase BlueRightThreePiece = new BlueRightThreePiece();
-    private static FastAutoBase BlueRightThreepieceLong = new BlueRightThreepieceLong();
+    private static FastAutoBase BlueRightThreepieceLong = new BlueRightThreepieceLongShiny();
     private static FastAutoBase BlueMidLeftThreePiece = new BlueMidLeftThreePiece();
     private static FastAutoBase BlueMidRightThreePiece = new BlueMidRightThreePiece();
+    private static FastAutoBase BlueRightThreePieceSuperLong = new BlueRightThreePieceSuperLong();
+    private static FastAutoBase BlueMidLong = new BlueMidLong();
     private static FastAutoBase BlueLeftThreePieceLong = new BlueLeftThreePieceLong();
     private static FastAutoBase BlueLeftThreePiece = new BlueLeftThreePiece();
     private static FastAutoBase BlueLeftOnePiece = new BlueLeftOnePiece();
@@ -18,13 +21,13 @@ public class AutoModeSelector {
 
     private static FastAutoBase RedLeftThreePiece = new RedLeftThreePiece();
     private static FastAutoBase RedRightThreePiece = new RedRightThreePiece();
-    private static FastAutoBase RedMidLong = new RedMidLong();
     private static FastAutoBase RedLeftThreePieceLongShiny = new RedLeftThreePieceLongShiny();
     private static FastAutoBase RedRightFourPiece = new RedRightFourPiece();
-    private static FastAutoBase RedLeftThreePieceLong = new RedLeftThreePieceLong();
     private static FastAutoBase RedLeftThreePieceSuperLong = new RedLeftThreePieceSuperLong();
     private static FastAutoBase RedMidLeftThreePiece = new RedMidLeftThreePiece();
+    private static FastAutoBase RedMidLong = new RedMidLong();
     private static FastAutoBase RedMidRightThreePiece = new RedMidRightThreePiece();
+    private static FastAutoBase RedRightThreePieceLong = new RedRightThreePieceLong();
     private static FastAutoBase RedLeftOnePiece = new RedLeftOnePiece();
     private static FastAutoBase RedRightOnePiece = new RedRightOnePiece();
 
@@ -37,22 +40,25 @@ public class AutoModeSelector {
     public AutoModeSelector(){
         //Auto Chooser
         autoChooser.setDefaultOption("Blue Side Left Four piece", BlueLeftFourPiece);
+
         autoChooser.addOption("Blue Side Left Four piece", BlueLeftFourPiece);
         autoChooser.addOption("Blue Side Left Three piece", BlueLeftThreePiece);
         autoChooser.addOption("Blue Side Left Three piece Long", BlueLeftThreePieceLong);
         autoChooser.addOption("Blue Side Right Three piece Long", BlueRightThreepieceLong);
+        autoChooser.addOption("Blue Side Right Three piece Super Long", BlueRightThreePieceSuperLong);
         autoChooser.addOption("Blue Side Right Three piece", BlueRightThreePiece);
         autoChooser.addOption("Blue Side Mid Left Three Piece", BlueMidLeftThreePiece);
+        autoChooser.addOption("Blue Side Middle Long", BlueMidLong);
         autoChooser.addOption("Blue Side Mid Right Three Piece", BlueMidRightThreePiece);
         autoChooser.addOption("Blue Side Left One Piece", BlueLeftOnePiece);
         autoChooser.addOption("Blue Side Right One Piece", BlueRightOnePiece);
 
         autoChooser.addOption("Red Side Right Four Piece", RedRightFourPiece);
         autoChooser.addOption("Red Side Right Three Piece", RedRightThreePiece);
+        autoChooser.addOption("Red Side Right Three Piece Long", RedRightThreePieceLong);
         autoChooser.addOption("Red Side Middle Long", RedMidLong);
         autoChooser.addOption("Red Side Left Three Piece Long", RedLeftThreePieceLongShiny);
         autoChooser.addOption("Red Side Left Three Piece Super Long", RedLeftThreePieceSuperLong);
-        autoChooser.addOption("Red Side Left Three piece Long", RedLeftThreePieceLong);
         autoChooser.addOption("Red Side Left Three piece", RedLeftThreePiece);
         autoChooser.addOption("Red Side Mid Left Three Piece", RedMidLeftThreePiece);
         autoChooser.addOption("Red Side Mid Right Three Piece", RedMidRightThreePiece);
