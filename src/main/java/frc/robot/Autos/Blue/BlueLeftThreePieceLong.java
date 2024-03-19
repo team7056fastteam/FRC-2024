@@ -15,14 +15,16 @@ import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
 import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 
 public class BlueLeftThreePieceLong extends FastAutoBase{
-    double[][] point0 = {{-8.53,26.80,65,3}};
-    double[][] point1 = {{-4.56,73.71,0,3}, {-8.53,26.80,65,3}};
-    double[][] point2 = {{-32.35, 249.64, 0, 14, 3}, {-32.35, 293.64, 0, 3}};
-    double[][] point3 = {{-23.60, 105.21,0,14, 3},{-8.53,26.80,65,3}};
+    double[][] point0 = {{4.01,39.13,45.63,3}};
+    double[][] point1 = {{-4.56,73.71,0,3}, {4.01,39.13,45.63,3}};
+    double[][] point2 = {{-22.35, 249.64, 0, 14, 3}, {-22.35, 305.64, 0, 3}};
+    double[][] point3 = {{-23.60, 105.21,0,14, 3},{4.01,39.13,45.63,3}};
+    double[][] point4 = {{15, 219.64, 0, 14, 3}, {45.35, 305.64, 0, 3}};
 
     Path path0 = new Path(point0, WayPointBehavior.Standard);
     Path path1 = new Path(point1, WayPointBehavior.Standard);
     Path path2 = new Path(point2, WayPointBehavior.Velocity);
+    Path path4 = new Path(point4, WayPointBehavior.Velocity);
     Path path3 = new Path(point3, WayPointBehavior.Velocity);
 
     @Override
@@ -37,7 +39,7 @@ public class BlueLeftThreePieceLong extends FastAutoBase{
                 new PassXYCommand(-3, 73, 7),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward),
-                new PassXYCommand(-8.53, 26.8, 3),
+                new PassXYCommand(4.01, 39.13, 3),
                 new KurtinatorCommand(KurtinatorState.kFeed),
                 new IngestCommand(IngestState.kIdle)
         )))));
@@ -45,16 +47,24 @@ public class BlueLeftThreePieceLong extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path2),
             new FastSeries(List.of(
-                new PassXYCommand(-32.35, 249.64, 7),
+                new PassXYCommand(-22.35, 249.64, 7),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward)
         )))));
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path3),
             new FastSeries(List.of(
-                new PassXYCommand(-8.53, 26.8, 3),
+                new PassXYCommand(4.01, 39.13, 3),
                 new KurtinatorCommand(KurtinatorState.kFeed),
                 new IngestCommand(IngestState.kIdle)
+        )))));
+        runCommand(new WaitCommand(0.5));
+        runCommand(new FastParallel(List.of(
+            new RunPathCommand(path4),
+            new FastSeries(List.of(
+                new PassXYCommand(15, 219.64, 14),
+                new KurtinatorCommand(KurtinatorState.kRunTilTrip),
+                new IngestCommand(IngestState.kForward)
         )))));
         runCommand(new WaitCommand(1));
         runCommand(new StopCommand());

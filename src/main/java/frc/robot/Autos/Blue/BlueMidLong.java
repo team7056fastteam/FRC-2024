@@ -16,8 +16,8 @@ import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 public class BlueMidLong extends FastAutoBase{
     double[][] point0 = {{0,17.92,0,3}};
     double[][] point1 = {{0,50,0,3}, {0,17.92,0,3}};
-    double[][] point2 = {{60.39, 255.89,0,14,3},{60.39, 275.89,0,3}};
-    double[][] point3 = {{60.39, 255.89,0,14,3},{0,50,0,14,3}, {0,19.92,0,3}};
+    double[][] point2 = {{55.39, 215.89,0,14,3},{55.39, 275.89,0,3}};
+    double[][] point3 = {{55.39, 215.89,0,14,3},{0,50,0,14,3}, {0,19.92,0,3}};
 
     Path path0 = new Path(point0, WayPointBehavior.Standard);
     Path path1 = new Path(point1, WayPointBehavior.Standard);
@@ -44,7 +44,7 @@ public class BlueMidLong extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path2),
             new FastSeries(List.of(
-                new PassXYCommand(60.39, 255.89, 10),
+                new PassXYCommand(55.39, 215.89, 10),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward)
         )))));

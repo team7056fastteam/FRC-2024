@@ -9,7 +9,7 @@ import frc.robot.Common.FastAutoBase;
 public class AutoModeSelector {
     private static FastAutoBase BlueLeftFourPiece = new BlueLeftFourPiece();
     private static FastAutoBase BlueRightThreePiece = new BlueRightThreePiece();
-    private static FastAutoBase BlueRightThreepieceLong = new BlueRightThreepieceLongShiny();
+    private static FastAutoBase BlueRightThreepieceLong = new BlueRightThreepieceLong();
     private static FastAutoBase BlueMidLeftThreePiece = new BlueMidLeftThreePiece();
     private static FastAutoBase BlueMidRightThreePiece = new BlueMidRightThreePiece();
     private static FastAutoBase BlueRightThreePieceSuperLong = new BlueRightThreePieceSuperLong();

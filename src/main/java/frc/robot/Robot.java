@@ -136,6 +136,7 @@ public class Robot extends TimedRobot {
     // Zero robot position
     setXY(0,0);
     resetH();
+    enableLimeLight(true);
 
     if(modeSelector.getAutoMode() != null){
       setXY(modeSelector.getAutoMode().getStartingPose().getX(),modeSelector.getAutoMode().getStartingPose().getY());
@@ -154,6 +155,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    enableLimeLight(false);
     _teleop.TeleopInit();
     mAutoModeRunner.stop();
   }
