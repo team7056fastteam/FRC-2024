@@ -46,9 +46,6 @@ public class SwerveSubsystem extends SubsystemBase {
             DriveConstants.kBackRightDriveAbsoluteEncoderOffsetRad,
             DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
 
-    public SwerveSubsystem() {
-    }
-
     //sets the states for each module
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
@@ -71,13 +68,4 @@ public class SwerveSubsystem extends SubsystemBase {
         SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         setModuleStates(moduleStates);
     }
-    public void runRobotOrientedChassis(double driveX, double driveY, double driveZ){
-        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(driveX, driveY, driveZ);
-        SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-        setModuleStates(moduleStates);
-    }
-
-    // public Pose2d getPose(){
-    //     return _robot.getPose();
-    // }
 }

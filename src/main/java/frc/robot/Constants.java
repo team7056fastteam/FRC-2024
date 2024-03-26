@@ -35,13 +35,13 @@ public class Constants {
 
         //drive motors port ids
         public static final int kFrontLeftDriveMotorPort = 1;
-        public static final int kBackLeftDriveMotorPort = 3;
+        public static final int kBackLeftDriveMotorPort = 7;
         public static final int kFrontRightDriveMotorPort = 2;
         public static final int kBackRightDriveMotorPort = 4;
         
         //turn motors port ids
         public static final int kFrontLeftTurningMotorPort = 5;
-        public static final int kBackLeftTurningMotorPort = 7;
+        public static final int kBackLeftTurningMotorPort = 3;
         public static final int kFrontRightTurningMotorPort = 6;
         public static final int kBackRightTurningMotorPort = 8;
 
@@ -71,17 +71,17 @@ public class Constants {
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
 
         //adjust wheel offsets
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-34.54092);
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(124.98048);
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(87.01164);
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(42.80256);
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-35.03528);
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(125.8048);
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(92.72448);
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(43.06644);
 
         //these are the physical max of the motor. Look up the values for these.
         public static final double kPhysicalMaxSpeedMetersPerSecond = 6.03504;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
 
         //adjust the divisor closer to 1 but never past if you want more speed
-        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 1;
+        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2;
 
         //adjust the divisor closer to 1 but never past if you want faster turning
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 3.5;
@@ -92,21 +92,24 @@ public class Constants {
 
         //adjust this value if your robot is moving without you touching the sticks. the older controller the more this number typically is
         //you probally want to replace controllers after two seasons or if the stick drift is too high for preicous movement of robot
-        public static final double kDeadband = 0.07;
+        public static final double kDeadband = 0.15;
     }
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 4;
+        public static final double kFastMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 2;
         public static final double kMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 8;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
-        public static final double kPXController = 0.05; //0.4
-        public static final double kPYController = 0.05; //0.4
-        public static final double kIXController = 0.003; //0.0125
-        public static final double kIYController = 0.003; //0.0125
+        public static final double kPXController = 0.07; //0.4
+        public static final double kPYController = 0.07; //0.4
+        public static final double kIXController = 0.000; //0.0125
+        public static final double kIYController = 0.000; //0.0125
         
         public static final double kPThetaController1 = 7;
-        public static final double kPThetaController = 1; //3
-        public static final double kPTargetController = 0.1;
+        public static final double kPThetaController = 1.7; //3
+        public static final double kPThetaController0 = 2;
+        public static final double kPTargetController = 0.075;
+        public static final double diagonalController = 0.0125;
 
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
                 new TrapezoidProfile.Constraints(
@@ -133,36 +136,46 @@ public class Constants {
         public static final int kLeftLimit = 0;
         public static final int kRightLimit = 1;
 
-        public static final int kHighTopRPM = 4500;
-        public static final int kHighBottomRPM = 4500;
+        public static final int kHighTopRPM = 5000;
+        public static final int kHighBottomRPM = 5000;
 
-        public static final int kLowTopRPM = 2000;
-        public static final int kLowBottomRPM = 1200;
+        public static final int kLowTopRPM = 1800;
+        public static final int kLowBottomRPM = 2600;
         //rpm control
-        public static final double kPTOP = 0.000005;
-        public static final double kPBOTTOM = 0.000005;
+        public static final double kPTOP = 0.000008;
+        public static final double kPBOTTOM = 0.000008;
+
+        public static final double kAmpPTOP = 0.000006;
+        public static final double kAmpPBOTTOM = 0.000006;
 
         public static final double kPPitch = 0.01;
 
         public static final double kIngestForwardSpeed = 1;
         public static final double kIngestReversedSpeed = -1;
 
-        public static final double kKurtinatorForwardSpeed = 1;
+        public static final double kKurtinatorForwardSpeed = 0.6;
         public static final double kKurtinatorReversedSpeed = -1;
 
         public static final double kClimberForwardSpeed = 1;
         public static final double kClimberReversedSpeed = -1;
-        // public static final int kWristMotor = 4;
-        // public static final int kArmMotor = 2;
-        // //Encoders
-        // public static final int kArmCoder = 6;
-        // public static final int kExtendMotorCoder = 7;
-        // public static final int kGrabberMotorCoder = 8;
-        // public static final int kWristMotorCoder = 9;
-        // //Limit
-        // public static final int kLimitSwitchIn = 0;
-        // public static final int kLimitSwitchOut = 1;
-        // public static final double kExtendMotorRotLimit = 7.3 * 360;
-        // public static final double armSpoolLimit = 30;
+
+        public static final double kSlappForwardSpeed = -0.1;
+        public static final double kSlappReducedForwardSpeed = -0.05;
+        public static final double kSlappReversedSpeed = 0.1;
+        public static final double kSlappReducedReversedSpeed = 0.05;
+        public static final double kSlappAmpLimit = 23;
+    }
+    
+    public static NavPodConfig getNavPodConfig(){
+        NavPodConfig config = new NavPodConfig();
+        config.cableMountAngle = 270;
+        config.fieldOrientedEnabled = true;
+        config.initialHeadingAngle = 0;
+        config.mountOffsetX = 0;
+        config.mountOffsetY = 0;
+        config.rotationScaleFactorX = 0.0; // 0.0675
+        config.rotationScaleFactorY = 0.0; // 0.02
+        config.translationScaleFactor = 0.0077706795; // 0.008567
+        return config;
     }
 }

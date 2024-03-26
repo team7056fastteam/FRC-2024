@@ -2,6 +2,7 @@ package frc.robot.subsystems.Specops;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +20,7 @@ public class Climber extends SubsystemBase{
         climberMotor = new CANSparkMax(Specops.kWinchMotor, MotorType.kBrushless);
         climbCoder = climberMotor.getEncoder();
         climbCoder.setPosition(0);
+        climberMotor.setIdleMode(IdleMode.kBrake);
     }
     public void setState(ClimbState state){
         this.state = state;
@@ -30,12 +32,12 @@ public class Climber extends SubsystemBase{
                 setClimberSpeed(Specops.kClimberForwardSpeed);
                 break;
             case kUnClimb:
-                if(climbCoder.getPosition() > 0){
+                //if(climbCoder.getPosition() > 0){
                     setClimberSpeed(Specops.kClimberReversedSpeed);
-                }
-                else{
-                    setClimberSpeed(0);
-                }   
+                // }
+                // else{
+                //     setClimberSpeed(0);
+                // }   
                 break;
         }
     }
@@ -46,5 +48,7 @@ public class Climber extends SubsystemBase{
 
     public void Dashboard(){
         SmartDashboard.putString("Climb State", state.toString());
+        SmartDashboard.putNumber("Climber Amps", climberMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Climber RPM", climberMotor.getEncoder().getVelocity());
     }
 }
