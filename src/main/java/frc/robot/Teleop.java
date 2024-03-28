@@ -107,9 +107,10 @@ public class Teleop {
     }
     public void Operator(){
         get.Button(get.HighShot(), new ShooterAction(shooterState.kHigh));
+        get.Button(get.Pass(), new ShooterAction(shooterState.kPass));
         get.Button(get.LowShot(), new ShooterAction(shooterState.kLow));
         get.Button(mode == DriveMode.Targeting, new ShooterAction(shooterState.kTarget));
-        get.Button(!get.HighShot() && !get.LowShot() && mode != DriveMode.Targeting, new ShooterAction(shooterState.kIdle));
+        get.Button(!get.HighShot()&& !get.Pass() && !get.LowShot() && mode != DriveMode.Targeting, new ShooterAction(shooterState.kIdle));
 
         get.Button(get.IngestIn(), new IngestAction(IngestState.kForward, KurtinatorState.kRunTilTrip));
         get.Button(get.IngestOut(), new IngestAction(IngestState.kReversed, KurtinatorState.kReversed));

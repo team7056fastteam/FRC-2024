@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Common.FastAutoBase;
 
 public class AutoModeSelector {
+    private static FastAutoBase BlueLeftSixPiece = new BlueLeftSixPiece();
     private static FastAutoBase BlueLeftFourPiece = new BlueLeftFourPiece();
     private static FastAutoBase BlueRightThreePiece = new BlueRightThreePiece();
     private static FastAutoBase BlueRightThreepieceLong = new BlueRightThreepieceLong();
@@ -42,6 +43,7 @@ public class AutoModeSelector {
         autoChooser.setDefaultOption("Blue Side Left Four piece", BlueLeftFourPiece);
 
         autoChooser.addOption("Blue Side Left Four piece", BlueLeftFourPiece);
+        autoChooser.addOption("Blue Side Left Six piece", BlueLeftSixPiece);
         autoChooser.addOption("Blue Side Left Three piece", BlueLeftThreePiece);
         autoChooser.addOption("Blue Side Left Three piece Long", BlueLeftThreePieceLong);
         autoChooser.addOption("Blue Side Right Three piece Long", BlueRightThreepieceLong);

@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -92,7 +94,7 @@ public class Constants {
 
         //adjust this value if your robot is moving without you touching the sticks. the older controller the more this number typically is
         //you probally want to replace controllers after two seasons or if the stick drift is too high for preicous movement of robot
-        public static final double kDeadband = 0.15;
+        public static final double kDeadband = 0.12;
     }
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 4;
@@ -106,7 +108,7 @@ public class Constants {
         public static final double kIYController = 0.000; //0.0125
         
         public static final double kPThetaController1 = 7;
-        public static final double kPThetaController = 1.7; //3
+        public static final double kPThetaController = 2; //3
         public static final double kPThetaController0 = 2;
         public static final double kPTargetController = 0.075;
         public static final double diagonalController = 0.0125;
@@ -139,6 +141,9 @@ public class Constants {
         public static final int kHighTopRPM = 5000;
         public static final int kHighBottomRPM = 5000;
 
+        public static final int kMidTopRPM = 4000;
+        public static final int kMidBottomRPM = 4000;
+
         public static final int kLowTopRPM = 1800;
         public static final int kLowBottomRPM = 2600;
         //rpm control
@@ -164,6 +169,23 @@ public class Constants {
         public static final double kSlappReversedSpeed = 0.1;
         public static final double kSlappReducedReversedSpeed = 0.05;
         public static final double kSlappAmpLimit = 23;
+    }
+
+    public static final class FieldLayout {
+        public static final Pose2d blueStartingLeft = new Pose2d(32.66,0, new Rotation2d(Math.toRadians(0)));
+
+        public static final double[] blueFirstNote = {35,100,28,3};
+        public static final double[] blueSecondNote = {93,100,0,3};
+        public static final double[] blueThirdNote = {150,100,337,3};
+
+        public static final double[] blueFirstNoteLong = {13,303,0,3};
+        public static final double[] blueSecondNoteLong = {75.5,303,0,3};
+        public static final double[] blueThirdNoteLong = {138,303,0,3};
+        public static final double[] blueFourthNoteLong = {200.5,303,0,3};
+        public static final double[] blueFifthNoteLong = {263,303,0,3};
+
+        public static final double[] blueStageLeft = {112,155,356,3};
+        public static final double[] blueShootingLeft = {39,39.13,45.63,3};
     }
     
     public static NavPodConfig getNavPodConfig(){

@@ -3,6 +3,7 @@ package frc.robot.AutoCommands;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.Common.FastCommand;
+import frc.robot.subsystems.Specops.NoteState.noteState;
 
 public class WaitForIntake extends FastCommand{
     Timer time = new Timer();
@@ -23,10 +24,12 @@ public class WaitForIntake extends FastCommand{
 
     @Override
     public Boolean isFinished() {
-        return (time.get() > maxWait) || !Robot._kurtinator.LimitSwitchTripped();
+        return (time.get() > maxWait) || Robot._noteState.state == noteState.kNote;
     }
 
     @Override
-    public void end() {}
+    public void end() {
+        time.stop();
+    }
     
 }

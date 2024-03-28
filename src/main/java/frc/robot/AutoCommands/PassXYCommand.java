@@ -24,6 +24,8 @@ public class PassXYCommand extends FastCommand{
     }
 
     @Override
-    public void end() {}
+    public void end() {
+        System.out.println("Successfully Passed Point with an Error of " + targetError);
+    }
     
 }

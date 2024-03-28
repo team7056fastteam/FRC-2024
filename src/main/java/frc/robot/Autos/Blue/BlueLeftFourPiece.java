@@ -17,9 +17,9 @@ import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 
 public class BlueLeftFourPiece extends FastAutoBase{
     //{x,y,heading,error}
-    double[][] point0 = {{-8.53,26.80,65,3}};
+    double[][] point0 = {{4.01,39.13,45.63,3}};
     double[][] point1 = {{-4.56,85.71,0,3}, {50.59,58.58,0,3}};
-    double[][] point2 = {{54.59, 87.51,0,3},{89.68, 60.07,320.44,3}};
+    double[][] point2 = {{54.59, 87.51,0,3},{89.68, 60.07,338.44,3}};
     double[][] point3 = {{106.47,89.29, 338.44, 3}, {89.68, 60.07,338.44,3}};
     double[][] point4 = {{ 27.71, 100.54, 0, 10, 2.5},{110.64, 192.43, 0, 10, 2.5}, {110.64, 286.15, 0, 10, 2.5},{110.64, 296.15, 0, 3}};
     double[][] point5 = {{110.64, 192.43, 0, 10, 2.5}, {44.63, 137.87, 0, 10, 2.5}, { 52.95, 61.50, 0 ,3}};

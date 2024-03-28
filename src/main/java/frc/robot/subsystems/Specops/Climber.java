@@ -24,6 +24,8 @@ public class Climber extends SubsystemBase{
     }
     public void setState(ClimbState state){
         this.state = state;
+    }
+    public void run(){
         switch(this.state){
             case kIdle:
                 setClimberSpeed(0);

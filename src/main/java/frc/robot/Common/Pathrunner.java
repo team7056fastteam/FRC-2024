@@ -3,6 +3,7 @@ package frc.robot.Common;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Common.Path.WayPointBehavior;
 import frc.robot.Constants.AutoConstants;
 
@@ -38,6 +39,9 @@ public class Pathrunner {
         double readXPower = xController.calculate(kX,selectedX);
         double readYPower = yController.calculate(kY,selectedY);
         hPower = thetaController.calculate(kH, selectedH);
+
+        SmartDashboard.putString("PathRunnerData", "X: " + selectedX + " Y: " + selectedY + " H: " + Math.toDegrees(selectedH)
+         + " Nominal Error: " + selectedError + " Acutal Error: " + error);
 
         if(selectedPoint == (path.points.length - 1) ){
             //end point
@@ -84,16 +88,18 @@ public class Pathrunner {
         }
         if(!kStopPath){
             if(path.way == WayPointBehavior.Standard){
-            return ChassisSpeeds.fromFieldRelativeSpeeds(
-            drivePower(yPower), 
-            -drivePower(xPower), 
-            hPower, currentPose.getRotation());
+                SmartDashboard.putString("PathPower", "xPower: " + -drivePower(xPower) + " yPower: " + drivePower(yPower) + " hPower: " + hPower);
+                return ChassisSpeeds.fromFieldRelativeSpeeds(
+                drivePower(yPower), 
+                -drivePower(xPower), 
+                hPower, currentPose.getRotation());
             }
             else{
-            return ChassisSpeeds.fromFieldRelativeSpeeds(
-            driveFastPower(yPower), 
-            -driveFastPower(xPower), 
-            hPower, currentPose.getRotation());
+                SmartDashboard.putString("PathPower", "xPower: " + -driveFastPower(xPower) + " yPower: " + driveFastPower(yPower) + " hPower: " + hPower);
+                return ChassisSpeeds.fromFieldRelativeSpeeds(
+                driveFastPower(yPower), 
+                -driveFastPower(xPower), 
+                hPower, currentPose.getRotation());
             }
         }
         else{

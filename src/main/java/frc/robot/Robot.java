@@ -32,6 +32,7 @@ import frc.robot.subsystems.Specops.NoteState;
 import frc.robot.subsystems.Specops.NoteState.noteState;
 import frc.robot.subsystems.Specops.Shooter;
 import frc.robot.subsystems.Specops.Slapper;
+import frc.robot.subsystems.Specops.Climber.ClimbState;
 
 public class Robot extends TimedRobot {
   //Subsytems
@@ -67,6 +68,9 @@ public class Robot extends TimedRobot {
 
   static NetworkTable limeLight = NetworkTableInstance.getDefault().getTable("limelight");
   static NetworkTableEntry tx = limeLight.getEntry("tx");
+
+  double samplingRate = 100/20;
+  double samplingStep = 0;
 
   @Override
   public void robotInit() {
@@ -137,19 +141,31 @@ public class Robot extends TimedRobot {
     setXY(0,0);
     resetH();
     enableLimeLight(true);
+    samplingStep = 0;
+
+    _climber.setState(ClimbState.kIdle); //This was painful to figure out :(
 
     if(modeSelector.getAutoMode() != null){
-      setXY(modeSelector.getAutoMode().getStartingPose().getX(),modeSelector.getAutoMode().getStartingPose().getY());
+      setXY(-modeSelector.getAutoMode().getStartingPose().getX(),modeSelector.getAutoMode().getStartingPose().getY());
       mAutoModeRunner.start();
     }
+    System.out.println("Autonomous Init");
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    _climber.run();
     _shooter.run();
     _ingest.run();
     _kurtinator.run();
+
+    samplingStep++;
+    if(samplingRate <= samplingStep){
+      System.out.println("Auctal Robot Data: " + currentPose.toString() + " PathRunnerData: " + SmartDashboard.getString("PathRunnerData", null)
+       + " Power: " + SmartDashboard.getString("PathPower", null));
+      samplingStep = 0;
+    }
   }
 
   /** This function is called once when teleop is enabled. */
@@ -165,7 +181,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     _teleop.Driver();
     _teleop.Operator();
-
+    _climber.run();
     _shooter.run();
     _ingest.run();
     _kurtinator.run();

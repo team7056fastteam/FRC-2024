@@ -81,6 +81,10 @@ public class ControllerFunction {
     public boolean UnFlipp(){
         return operator.getPOV() == 180;
     }
+    /**Operator POV Right*/
+    public boolean Pass(){
+        return operator.getPOV() == 90;
+    }
 
     public void Button(boolean active, FastTeleOpAction action){
         if(active){
