@@ -29,6 +29,7 @@ import frc.robot.subsystems.Specops.Climber;
 import frc.robot.subsystems.Specops.Ingest;
 import frc.robot.subsystems.Specops.Kurtinator;
 import frc.robot.subsystems.Specops.NoteState;
+import frc.robot.subsystems.Specops.Pivotinator;
 import frc.robot.subsystems.Specops.NoteState.noteState;
 import frc.robot.subsystems.Specops.Shooter;
 import frc.robot.subsystems.Specops.Slapper;
@@ -42,6 +43,7 @@ public class Robot extends TimedRobot {
   public static Kurtinator _kurtinator;
   public static Climber _climber;
   public static Slapper _slapper;
+  public static Pivotinator _pivot;
   private static NavPod _navpod;
 
   //Auto
@@ -88,6 +90,7 @@ public class Robot extends TimedRobot {
     _kurtinator = new Kurtinator();
     _climber = new Climber();
     _slapper = new Slapper();
+    _pivot =  new Pivotinator();
     modeSelector = new AutoModeSelector();
     mAutoModeRunner = new AutoModeRunner();
     _noteState = new NoteState();
@@ -133,6 +136,7 @@ public class Robot extends TimedRobot {
     _teleop.Dashboard();
     _slapper.Dashboard();
     _noteState.Dashboard();
+    _pivot.Dashboard();
   }
 
   @Override
@@ -146,7 +150,7 @@ public class Robot extends TimedRobot {
     _climber.setState(ClimbState.kIdle); //This was painful to figure out :(
 
     if(modeSelector.getAutoMode() != null){
-      setXY(-modeSelector.getAutoMode().getStartingPose().getX(),modeSelector.getAutoMode().getStartingPose().getY());
+      setXY(-modeSelector.getAutoMode().getStartingPose().getX(),-modeSelector.getAutoMode().getStartingPose().getY());
       mAutoModeRunner.start();
     }
     System.out.println("Autonomous Init");
@@ -159,6 +163,7 @@ public class Robot extends TimedRobot {
     _shooter.run();
     _ingest.run();
     _kurtinator.run();
+    _pivot.run();
 
     samplingStep++;
     if(samplingRate <= samplingStep){
@@ -185,6 +190,7 @@ public class Robot extends TimedRobot {
     _shooter.run();
     _ingest.run();
     _kurtinator.run();
+    _pivot.run();
   }
 
   public static Rotation2d getGyroscopeRotation2d() {

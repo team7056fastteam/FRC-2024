@@ -33,12 +33,9 @@ public class Shooter extends SubsystemBase{
 
         TopEncoder.setVelocityConversionFactor(1);
         BottomEncoder.setVelocityConversionFactor(1);
-
-        pitch = 50;
     }
 
-    public void setState(double pitch, double topSpeed, double bottomSpeed){
-        this.pitch = pitch;
+    public void setState(double topSpeed, double bottomSpeed){
         this.topSpeed = topSpeed;
         this.bottomSpeed = bottomSpeed;
     }
@@ -68,7 +65,6 @@ public class Shooter extends SubsystemBase{
     }
 
     public void Dashboard(){
-        SmartDashboard.putNumber("Pitch", pitch);
         SmartDashboard.putNumber("Top", TopEncoder.getVelocity());
         SmartDashboard.putNumber("Bottom", BottomEncoder.getVelocity());
         SmartDashboard.putString("Shooter Sate", _solution.State.toString());

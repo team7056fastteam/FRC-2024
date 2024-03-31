@@ -12,10 +12,6 @@ public class ControllerFunction {
     public boolean speedAdjustment(){
         return driver.getLeftBumper();
     }
-    /**Driver Y Button*/
-    public boolean Target(){
-        return driver.getYButton();
-    }
     /**Driver A Button*/
     public boolean Reset(){
         return driver.getAButton();
@@ -25,7 +21,7 @@ public class ControllerFunction {
         return driver.getPOV() == 0;
     }
     /**Driver Right Bumper*/
-    public boolean AngleLock(){
+    public boolean NoteTargeting(){
         return driver.getRightBumper();
     }
     /**Driver Left Trigger*/
@@ -33,7 +29,7 @@ public class ControllerFunction {
         return driver.getRawAxis(2) > 0.1;
     }
     /**Driver Right Trigger*/
-    public boolean robotOriented(){
+    public boolean AprilTagTargeting(){
         return driver.getRawAxis(3) > 0.1;
     }
     public double driverX(){
@@ -84,6 +80,18 @@ public class ControllerFunction {
     /**Operator POV Right*/
     public boolean Pass(){
         return operator.getPOV() == 90;
+    }
+    /**Operator Stick Up*/
+    public boolean ShooterUp(){
+        return operator.getRawAxis(1) < -0.5;
+    }
+    /**Operator Stick Down*/
+    public boolean ShooterDown(){
+        return operator.getRawAxis(1) > 0.5;
+    }
+    /**Operator Stick Right*/
+    public boolean ShooterAuto(){
+        return operator.getRawAxis(0) > 0.5;
     }
 
     public void Button(boolean active, FastTeleOpAction action){

@@ -94,7 +94,7 @@ public class Constants {
 
         //adjust this value if your robot is moving without you touching the sticks. the older controller the more this number typically is
         //you probally want to replace controllers after two seasons or if the stick drift is too high for preicous movement of robot
-        public static final double kDeadband = 0.12;
+        public static final double kDeadband = 0.07;
     }
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 4;
@@ -130,7 +130,7 @@ public class Constants {
         public static final int kShooterMotorBottom = 12;
         public static final int kShooterMotorTop = 11;
         public static final int kWinchMotor = 14;
-        public static final int kPitchMotor = 99;
+        public static final int kPivotMotor = 15;
         public static final int kSlapperMotor = 13;
 
         public static final int kPitchCoder = 6;
@@ -153,12 +153,14 @@ public class Constants {
         public static final double kAmpPTOP = 0.000006;
         public static final double kAmpPBOTTOM = 0.000006;
 
-        public static final double kPPitch = 0.01;
+        public static final double kPPivot = 0.16;
+        public static final double kIPivot = 0.13;
 
         public static final double kIngestForwardSpeed = 1;
         public static final double kIngestReversedSpeed = -1;
 
         public static final double kKurtinatorForwardSpeed = 0.6;
+        public static final double kKurtinatorExperimentalForwardSpeed = 0.8;
         public static final double kKurtinatorReversedSpeed = -1;
 
         public static final double kClimberForwardSpeed = 1;
@@ -180,12 +182,12 @@ public class Constants {
 
         public static final double[] blueFirstNoteLong = {13,303,0,3};
         public static final double[] blueSecondNoteLong = {75.5,303,0,3};
-        public static final double[] blueThirdNoteLong = {138,303,0,3};
-        public static final double[] blueFourthNoteLong = {200.5,303,0,3};
+        public static final double[] blueThirdNoteLong = {138,310,0,3};
+        public static final double[] blueFourthNoteLong = {205.5,310,0,3};
         public static final double[] blueFifthNoteLong = {263,303,0,3};
 
         public static final double[] blueStageLeft = {112,155,356,3};
-        public static final double[] blueShootingLeft = {39,39.13,45.63,3};
+        public static final double[] blueShootingLeft = {39,70.13,30.63,3};
     }
     
     public static NavPodConfig getNavPodConfig(){

@@ -14,6 +14,7 @@ import frc.robot.TeleOpActions.*;
 import frc.robot.subsystems.Specops.Climber.ClimbState;
 import frc.robot.subsystems.Specops.Ingest.IngestState;
 import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
+import frc.robot.subsystems.Specops.Pivotinator.pivotState;
 import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 import frc.robot.subsystems.Specops.Slapper.SlappState;
 
@@ -49,11 +50,11 @@ public class Teleop {
 
     public void Driver(){
         xY = Robot.getGoalTranslation();
-        if(get.speedAdjustment()){xT = 1.4;}else{xT = 0.675;}
+        xT = get.speedAdjustment() ? 1.4 : 0.675;
 
         if(get.lockWheels()){mode = DriveMode.Locked;}
-        else if(get.AngleLock()){mode = DriveMode.noteTargeting;}
-        else if(get.robotOriented()){mode = DriveMode.Targeting;}
+        else if(get.NoteTargeting()){mode = DriveMode.noteTargeting;}
+        else if(get.AprilTagTargeting()){mode = DriveMode.Targeting;}
         else{mode = DriveMode.fieldOriented;}
 
         get.Button(get.Reset(), new ResetAction());
@@ -61,7 +62,7 @@ public class Teleop {
 
         driveX = get.driverX();
         driveY = get.driverY();
-        driveZ = get.speedAdjustment() ? get.driverZ() : get.driverZ() * 1.3;
+        driveZ = get.driverZ();
 
         //apply deadband
         driveX = Math.abs(driveX) > DriveConstants.kDeadband ? driveX : 0.0;
@@ -71,7 +72,7 @@ public class Teleop {
         //apply DriveConstants
         driveX = driveX * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond * xT;
         driveY = driveY * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond * xT;
-        driveZ = driveZ * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
+        driveZ = driveZ * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond * (get.speedAdjustment() ? 1 : 1.3);
 
         switch(mode){
             case fieldOriented:
@@ -124,6 +125,11 @@ public class Teleop {
         get.Button(get.Flipp(), new SlapperAction(SlappState.kSlapp));
         get.Button(get.UnFlipp(), new SlapperAction(SlappState.kUnSlapp));
         get.Button(!get.Flipp() && !get.UnFlipp(), new SlapperAction(SlappState.kIdle));
+
+        get.Button(get.ShooterUp(), new PivotAction(pivotState.kHoming, 47));
+        get.Button(get.LowShot(), new PivotAction(pivotState.kPivoting, 48));
+        get.Button(get.ShooterAuto(), new PivotAction(pivotState.kAutoAim, 48));
+        get.Button(get.ShooterDown(), new PivotAction(pivotState.kPivoting, 30));
     }
 
     public void Dashboard(){
