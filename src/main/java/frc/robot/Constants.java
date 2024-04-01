@@ -180,13 +180,14 @@ public class Constants {
         public static final double[] blueSecondNote = {93,100,0,3};
         public static final double[] blueThirdNote = {150,100,337,3};
 
-        public static final double[] blueFirstNoteLong = {13,303,0,3};
-        public static final double[] blueSecondNoteLong = {75.5,303,0,3};
+        public static final double[] blueFirstNoteLong = {13,310,0,3};
+        public static final double[] blueSecondNoteLong = {75.5,310,0,3};
         public static final double[] blueThirdNoteLong = {138,310,0,3};
         public static final double[] blueFourthNoteLong = {205.5,310,0,3};
-        public static final double[] blueFifthNoteLong = {263,303,0,3};
+        public static final double[] blueFifthNoteLong = {263,310,0,3};
 
         public static final double[] blueStageLeft = {112,155,356,3};
+        public static final double[] blueLeftWingShot = {63,155,20,3};
         public static final double[] blueShootingLeft = {39,70.13,30.63,3};
     }
     

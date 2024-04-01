@@ -70,12 +70,9 @@ public class BlueLeftSixPiece extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path4),
             new FastSeries(List.of(
-                new PassXYCommand(FieldLayout.blueThirdNoteLong[0],FieldLayout.blueThirdNoteLong[1], 15),
+                new PassXYCommand(FieldLayout.blueThirdNoteLong[0],FieldLayout.blueThirdNoteLong[1], 20),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
-                new IngestCommand(IngestState.kForward),
-                new WaitForIntake(2),
-                new KurtinatorCommand(KurtinatorState.kIdle),
-                new IngestCommand(IngestState.kIdle)
+                new IngestCommand(IngestState.kForward)
         )))));
         runCommand(new WaitCommand(0.1));
         runCommand(new FastParallel(List.of(
@@ -89,12 +86,9 @@ public class BlueLeftSixPiece extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path6),
             new FastSeries(List.of(
-                new PassXYCommand(FieldLayout.blueFourthNoteLong[0],FieldLayout.blueFourthNoteLong[1], 15),
+                new PassXYCommand(FieldLayout.blueFourthNoteLong[0],FieldLayout.blueFourthNoteLong[1], 20),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
-                new IngestCommand(IngestState.kForward),
-                new WaitForIntake(2),
-                new KurtinatorCommand(KurtinatorState.kIdle),
-                new IngestCommand(IngestState.kIdle)
+                new IngestCommand(IngestState.kForward)
         )))));
         runCommand(new WaitCommand(0.1));
         runCommand(new FastParallel(List.of(
