@@ -37,7 +37,7 @@ public class BlueLeftSixPiece extends FastAutoBase{
 
     @Override
     public void routine() throws Exception {
-        runCommand(new PivotCommand(pivotState.kHoming, 47));
+        runCommand(new PivotCommand(pivotState.kHoming, 48));
         runCommand(new ShooterCommand(shooterState.kHigh));
         runCommand(new RunPathCommand(path0));
         runCommand(new KurtinatorCommand(KurtinatorState.kFeed));

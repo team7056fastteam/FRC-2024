@@ -1,18 +1,23 @@
 package frc.robot.subsystems.Specops;
 
+import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonPipelineResult;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.Constants.Specops;
 
 public class Pivotinator extends SubsystemBase{
     static final double maxCounts = 10727;
-    double maxAngle = 49;
+    double maxAngle = 48;
     double minAngle = 30;
 
     double targetHeight = 84;
@@ -20,7 +25,7 @@ public class Pivotinator extends SubsystemBase{
 
     public enum pivotState{kIdle, kPivoting, kHoming, kAutoAim}
     pivotState state = pivotState.kIdle;
-    double angleSetPoint = 42.5;
+    double angleSetPoint = 48;
 
     CANSparkMax pivotMotor;
     RelativeEncoder pivotEncoder;
@@ -48,18 +53,44 @@ public class Pivotinator extends SubsystemBase{
             case kPivoting:
               double helpfulPower0;
               helpfulPower0 = kPositionPid.calculate(angleSetPoint, countsToAngle(pivotEncoder.getPosition()));
-              helpfulPower0 = !UpperLimit.get() && helpfulPower0 < 0 ? 0 : helpfulPower0;
-              helpfulPower0 = !LowerLimit.get() && helpfulPower0 > 0 ? 0 : helpfulPower0/9;
+              //helpfulPower0 = !UpperLimit.get() && helpfulPower0 < 0 ? -0.1 : helpfulPower0;
+              //helpfulPower0 = !LowerLimit.get() && helpfulPower0 > 0 ? 0 : helpfulPower0/9;
+              if(!UpperLimit.get() && helpfulPower0 < 0){
+                helpfulPower0 = -0.03;
+              }
+              else if(!LowerLimit.get() && helpfulPower0 > 0){
+                helpfulPower0 = 0;
+              }
+              else if(helpfulPower0 > 0){
+                helpfulPower0 = helpfulPower0/9;
+              }
+              else{
+                helpfulPower0 = helpfulPower0 + -0.025;
+              }
               SmartDashboard.putNumber("Pivot Power", helpfulPower0);
-              pivotSpeed(helpfulPower0);
+              pivotSpeed(powerClamped(helpfulPower0));
               break;
             case kAutoAim:
               double helpfulPower1;
-              double pitch = pitchClamped(Math.toDegrees(Math.atan(targetHeight/dist)));
+              dist = Robot.getId() > -1 ? Units.metersToInches(PhotonUtils.calculateDistanceToTargetMeters(Units.inchesToMeters(8.25), Units.inchesToMeters(targetHeight), Units.degreesToRadians(60), 
+              Units.degreesToRadians(Robot.getTarget().getPitch()))) : dist;
+              double pitch = pitchClamped(Math.toDegrees(Math.atan(targetHeight/fudgeDist(dist))) - 5);
+              //double pitch = 35;
+              SmartDashboard.putNumber("Dist", Math.toDegrees(Math.atan(targetHeight/fudgeDist(dist))) - 5);
               helpfulPower1 = kPositionPid.calculate(pitch, countsToAngle(pivotEncoder.getPosition()));
-              helpfulPower1 = !UpperLimit.get() && helpfulPower1 < 0 ? 0 : helpfulPower1;
-              helpfulPower1 = !LowerLimit.get() && helpfulPower1 > 0 ? 0 : helpfulPower1/9;
-              pivotSpeed(helpfulPower1);
+              if(!UpperLimit.get() && helpfulPower1 < 0){
+                helpfulPower1 = -0.03;
+              }
+              else if(!LowerLimit.get() && helpfulPower1 > 0){
+                helpfulPower1 = 0;
+              }
+              else if(helpfulPower1 > 0){
+                helpfulPower1 = helpfulPower1/9;
+              }
+              else{
+                helpfulPower1 = helpfulPower1 + -0.025;
+              }
+              pivotSpeed(powerClamped(helpfulPower1));
               break;
             case kHoming:
               if(!UpperLimit.get()){
@@ -79,11 +110,17 @@ public class Pivotinator extends SubsystemBase{
     double pitchClamped(double pitch){
         return Math.max(minAngle, Math.min(maxAngle, pitch));
     }
+    double powerClamped(double power){
+        return Math.max(-0.2, Math.min(0.2, power));
+    }
     double countsToAngle(double counts){
         return pitchClamped(maxAngle - ((Math.abs(counts/maxCounts)) * (maxAngle - minAngle)));
       }
     void pivotSpeed(double speed){
         pivotMotor.set(speed);
+    }
+    double fudgeDist(double incorrectDist){
+      return ((incorrectDist*incorrectDist) * 0.0523285) + (-2.555797*incorrectDist) + (90.86383);
     }
     public void Dashboard(){
         SmartDashboard.putString("Pivot State", state.toString());

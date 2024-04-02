@@ -46,6 +46,7 @@ public class Teleop {
 
     public void TeleopInit(){
         thetaController.enableContinuousInput(0,2 * Math.PI);
+        Robot._pivot.setState(pivotState.kHoming);
     }
 
     public void Driver(){
@@ -126,9 +127,10 @@ public class Teleop {
         get.Button(get.UnFlipp(), new SlapperAction(SlappState.kUnSlapp));
         get.Button(!get.Flipp() && !get.UnFlipp(), new SlapperAction(SlappState.kIdle));
 
-        get.Button(get.ShooterUp(), new PivotAction(pivotState.kHoming, 47));
+        get.Button(get.ShooterUp(), new PivotAction(pivotState.kHoming, 48));
         get.Button(get.LowShot(), new PivotAction(pivotState.kPivoting, 48));
         get.Button(get.ShooterAuto(), new PivotAction(pivotState.kAutoAim, 48));
+        get.Button(get.ShooterNotSoDown(), new PivotAction(pivotState.kPivoting, 41));
         get.Button(get.ShooterDown(), new PivotAction(pivotState.kPivoting, 30));
     }
 

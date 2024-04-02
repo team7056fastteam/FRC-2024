@@ -153,8 +153,8 @@ public class Constants {
         public static final double kAmpPTOP = 0.000006;
         public static final double kAmpPBOTTOM = 0.000006;
 
-        public static final double kPPivot = 0.16;
-        public static final double kIPivot = 0.13;
+        public static final double kPPivot = 0.02;
+        public static final double kIPivot = 0.025;
 
         public static final double kIngestForwardSpeed = 1;
         public static final double kIngestReversedSpeed = -1;
@@ -175,20 +175,23 @@ public class Constants {
 
     public static final class FieldLayout {
         public static final Pose2d blueStartingLeft = new Pose2d(32.66,0, new Rotation2d(Math.toRadians(0)));
+        public static final Pose2d blueStartingRight = new Pose2d(143.66,0, new Rotation2d(Math.toRadians(0)));
 
         public static final double[] blueFirstNote = {35,100,28,3};
         public static final double[] blueSecondNote = {93,100,0,3};
         public static final double[] blueThirdNote = {150,100,337,3};
 
         public static final double[] blueFirstNoteLong = {13,310,0,3};
-        public static final double[] blueSecondNoteLong = {75.5,310,0,3};
+        public static final double[] blueSecondNoteLong = {75.5,310,0,5.5};
         public static final double[] blueThirdNoteLong = {138,310,0,3};
         public static final double[] blueFourthNoteLong = {205.5,310,0,3};
         public static final double[] blueFifthNoteLong = {263,310,0,3};
 
         public static final double[] blueStageLeft = {112,155,356,3};
-        public static final double[] blueLeftWingShot = {63,155,20,3};
+        public static final double[] blueLeftWingShot = {63,155,12,3};
         public static final double[] blueShootingLeft = {39,70.13,30.63,3};
+        public static final double[] blueShootingRight = {188,100,0,3};
+        //72.9394602
     }
     
     public static NavPodConfig getNavPodConfig(){

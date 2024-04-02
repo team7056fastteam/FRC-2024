@@ -20,8 +20,8 @@ public class BlueLeftFourPieceLong extends FastAutoBase{
     double[][] noteOne = {KurtMath.addXYToPoint(FieldLayout.blueFirstNote, 16, -35)};
     double[][] noteTwo = {FieldLayout.blueFirstNote};
     double[][] noteThree = {KurtMath.convertToVelocity(KurtMath.addXYToPoint(FieldLayout.blueFirstNoteLong, 0, -50),3.5,14),FieldLayout.blueFirstNoteLong};
-    double[][] shootLong = {KurtMath.convertToVelocity(KurtMath.addXYToPoint(FieldLayout.blueLeftWingShot, -10, 20), 3.5, 14), FieldLayout.blueLeftWingShot};
-    double[][] noteFour = {KurtMath.convertToVelocity(KurtMath.addXYToPoint(FieldLayout.blueSecondNoteLong, -30, -30),3.5,14),FieldLayout.blueFirstNoteLong};
+    double[][] shootLong = {KurtMath.convertToVelocity(KurtMath.addXYToPoint(FieldLayout.blueLeftWingShot, -15, 20), 3.5, 14), FieldLayout.blueLeftWingShot};
+    double[][] noteFour = {KurtMath.convertToVelocity(KurtMath.addXYToPoint(FieldLayout.blueSecondNoteLong, -20, -60),3.5,14),FieldLayout.blueSecondNoteLong};
 
     Path path0 = new Path(noteOne, WayPointBehavior.Standard);
     Path path1 = new Path(noteTwo, WayPointBehavior.Standard);
@@ -31,12 +31,13 @@ public class BlueLeftFourPieceLong extends FastAutoBase{
 
     @Override
     public void routine() throws Exception {
-        runCommand(new PivotCommand(pivotState.kHoming, 47));
+        runCommand(new PivotCommand(pivotState.kHoming, 42));
         runCommand(new ShooterCommand(shooterState.kHigh));
         runCommand(new RunPathCommand(path0));
         runCommand(new KurtinatorCommand(KurtinatorState.kFeed));
         runCommand(new WaitCommand(0.25));
         runCommand(new PivotCommand(pivotState.kPivoting, 35));
+        runCommand(new WaitCommand(0.25));
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path1),
             new FastSeries(List.of(
@@ -68,7 +69,7 @@ public class BlueLeftFourPieceLong extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path4),
             new FastSeries(List.of(
-                new PassXYCommand(FieldLayout.blueFirstNoteLong[0],FieldLayout.blueFirstNoteLong[1], 16),
+                new PassXYCommand(FieldLayout.blueSecondNoteLong[0],FieldLayout.blueSecondNoteLong[1], 16),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward)
         )))));

@@ -93,6 +93,10 @@ public class ControllerFunction {
     public boolean ShooterAuto(){
         return operator.getRawAxis(0) > 0.5;
     }
+    /**Operator Stick Left*/
+    public boolean ShooterNotSoDown(){
+        return operator.getRawAxis(0) < -0.5;
+    }
 
     public void Button(boolean active, FastTeleOpAction action){
         if(active){
