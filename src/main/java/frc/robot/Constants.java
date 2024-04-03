@@ -94,7 +94,7 @@ public class Constants {
 
         //adjust this value if your robot is moving without you touching the sticks. the older controller the more this number typically is
         //you probally want to replace controllers after two seasons or if the stick drift is too high for preicous movement of robot
-        public static final double kDeadband = 0.07;
+        public static final double kDeadband = 0.10;
     }
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 4;
@@ -153,7 +153,7 @@ public class Constants {
         public static final double kAmpPTOP = 0.000006;
         public static final double kAmpPBOTTOM = 0.000006;
 
-        public static final double kPPivot = 0.02;
+        public static final double kPPivot = 0.03;
         public static final double kIPivot = 0.025;
 
         public static final double kIngestForwardSpeed = 1;
@@ -185,12 +185,12 @@ public class Constants {
         public static final double[] blueSecondNoteLong = {75.5,310,0,5.5};
         public static final double[] blueThirdNoteLong = {138,310,0,3};
         public static final double[] blueFourthNoteLong = {205.5,310,0,3};
-        public static final double[] blueFifthNoteLong = {263,310,0,3};
+        public static final double[] blueFifthNoteLong = {268,310,0,3};
 
         public static final double[] blueStageLeft = {112,155,356,3};
         public static final double[] blueLeftWingShot = {63,155,12,3};
         public static final double[] blueShootingLeft = {39,70.13,30.63,3};
-        public static final double[] blueShootingRight = {188,100,0,3};
+        public static final double[] blueShootingRight = {204.34, 106.37,316,3};
         //72.9394602
     }
     

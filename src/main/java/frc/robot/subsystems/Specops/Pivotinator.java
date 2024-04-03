@@ -1,7 +1,6 @@
 package frc.robot.subsystems.Specops;
 
 import org.photonvision.PhotonUtils;
-import org.photonvision.targeting.PhotonPipelineResult;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -74,7 +73,7 @@ public class Pivotinator extends SubsystemBase{
               double helpfulPower1;
               dist = Robot.getId() > -1 ? Units.metersToInches(PhotonUtils.calculateDistanceToTargetMeters(Units.inchesToMeters(8.25), Units.inchesToMeters(targetHeight), Units.degreesToRadians(60), 
               Units.degreesToRadians(Robot.getTarget().getPitch()))) : dist;
-              double pitch = pitchClamped(Math.toDegrees(Math.atan(targetHeight/fudgeDist(dist))) - 5);
+              double pitch = pitchClamped(Math.toDegrees(Math.atan(targetHeight/fudgeDist(dist))) - 6);
               //double pitch = 35;
               SmartDashboard.putNumber("Dist", Math.toDegrees(Math.atan(targetHeight/fudgeDist(dist))) - 5);
               helpfulPower1 = kPositionPid.calculate(pitch, countsToAngle(pivotEncoder.getPosition()));
@@ -90,6 +89,7 @@ public class Pivotinator extends SubsystemBase{
               else{
                 helpfulPower1 = helpfulPower1 + -0.025;
               }
+              SmartDashboard.putNumber("Pivot Power", helpfulPower1);
               pivotSpeed(powerClamped(helpfulPower1));
               break;
             case kHoming:
@@ -111,7 +111,7 @@ public class Pivotinator extends SubsystemBase{
         return Math.max(minAngle, Math.min(maxAngle, pitch));
     }
     double powerClamped(double power){
-        return Math.max(-0.2, Math.min(0.2, power));
+        return Math.max(-0.2, Math.min(0.04, power));
     }
     double countsToAngle(double counts){
         return pitchClamped(maxAngle - ((Math.abs(counts/maxCounts)) * (maxAngle - minAngle)));
@@ -120,7 +120,9 @@ public class Pivotinator extends SubsystemBase{
         pivotMotor.set(speed);
     }
     double fudgeDist(double incorrectDist){
-      return ((incorrectDist*incorrectDist) * 0.0523285) + (-2.555797*incorrectDist) + (90.86383);
+      //return ((incorrectDist*incorrectDist) * 0.0523285) + (-2.555797*incorrectDist) + (90.86383);
+      //return ((incorrectDist*incorrectDist) * 0.0246) + (-.6639*incorrectDist) + (67.595);
+      return (incorrectDist) * 2;
     }
     public void Dashboard(){
         SmartDashboard.putString("Pivot State", state.toString());

@@ -46,6 +46,7 @@ public class Teleop {
 
     public void TeleopInit(){
         thetaController.enableContinuousInput(0,2 * Math.PI);
+        Robot._pivot.setPivotAngle(48);
         Robot._pivot.setState(pivotState.kHoming);
     }
 
