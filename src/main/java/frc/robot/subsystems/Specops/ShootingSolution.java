@@ -7,7 +7,7 @@ import frc.robot.Constants.Specops;
 //import frc.robot.subsystems.Specops.Pitchinator.PitchState;
 
 public class ShootingSolution {
-    public enum shooterState {kIdle, kTarget, kLow, kHigh, kPass}
+    public enum shooterState {kIdle, kTarget, kLow, kHigh, kPass, kReversed}
     private Shooter _shooter;
 
     public shooterState State = shooterState.kIdle;
@@ -74,6 +74,11 @@ public class ShootingSolution {
                 topSpeed3 += topPID.calculate(Math.abs(_shooter.getTopRPM()),Specops.kMidTopRPM);
                 bottomSpeed3 += bottomPID.calculate(Math.abs(_shooter.getBottomRPM()),Specops.kMidBottomRPM);
                 _shooter.setState(topSpeed3, bottomSpeed3);
+                break;
+            case kReversed:
+                _shooter.setState(-0.4, -0.4);
+                break;
+            default:
                 break;
         }
     }

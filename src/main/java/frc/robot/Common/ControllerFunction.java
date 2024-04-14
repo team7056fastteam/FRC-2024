@@ -57,6 +57,10 @@ public class ControllerFunction {
     public boolean HighShot(){
         return operator.getXButton();
     }
+    /**Operator Right Trigger*/
+    public boolean BypassIngest(){
+        return operator.getRawAxis(3) > 0.1;
+    }
     /**Operator Right Bumper*/
     public boolean Feed(){
         return operator.getRightBumper();

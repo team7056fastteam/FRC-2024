@@ -94,7 +94,7 @@ public class Constants {
 
         //adjust this value if your robot is moving without you touching the sticks. the older controller the more this number typically is
         //you probally want to replace controllers after two seasons or if the stick drift is too high for preicous movement of robot
-        public static final double kDeadband = 0.10;
+        public static final double kDeadband = 0.15;
     }
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 4;
@@ -144,8 +144,8 @@ public class Constants {
         public static final int kMidTopRPM = 4000;
         public static final int kMidBottomRPM = 4000;
 
-        public static final int kLowTopRPM = 1800;
-        public static final int kLowBottomRPM = 2600;
+        public static final int kLowTopRPM = 1700;
+        public static final int kLowBottomRPM = 2500;
         //rpm control
         public static final double kPTOP = 0.000008;
         public static final double kPBOTTOM = 0.000008;
@@ -160,7 +160,7 @@ public class Constants {
         public static final double kIngestReversedSpeed = -1;
 
         public static final double kKurtinatorForwardSpeed = 0.6;
-        public static final double kKurtinatorExperimentalForwardSpeed = 0.8;
+        public static final double kKurtinatorExperimentalForwardSpeed = 1;
         public static final double kKurtinatorReversedSpeed = -1;
 
         public static final double kClimberForwardSpeed = 1;
@@ -170,7 +170,7 @@ public class Constants {
         public static final double kSlappReducedForwardSpeed = -0.05;
         public static final double kSlappReversedSpeed = 0.1;
         public static final double kSlappReducedReversedSpeed = 0.05;
-        public static final double kSlappAmpLimit = 23;
+        public static final double kSlappAmpLimit = 25;
     }
 
     public static final class FieldLayout {
@@ -182,7 +182,7 @@ public class Constants {
         public static final double[] blueThirdNote = {150,100,337,3};
 
         public static final double[] blueFirstNoteLong = {13,310,0,3};
-        public static final double[] blueSecondNoteLong = {75.5,310,0,5.5};
+        public static final double[] blueSecondNoteLong = {79.5,310,0,5.5};
         public static final double[] blueThirdNoteLong = {138,310,0,3};
         public static final double[] blueFourthNoteLong = {205.5,310,0,3};
         public static final double[] blueFifthNoteLong = {268,310,0,3};
@@ -191,6 +191,24 @@ public class Constants {
         public static final double[] blueLeftWingShot = {63,155,12,3};
         public static final double[] blueShootingLeft = {39,70.13,30.63,3};
         public static final double[] blueShootingRight = {204.34, 106.37,316,3};
+
+        public static final Pose2d redStartingRight = new Pose2d(-32.66,0, new Rotation2d(Math.toRadians(0)));
+        public static final Pose2d redStartingLeft = new Pose2d(-143.66,0, new Rotation2d(Math.toRadians(0)));
+
+        public static final double[] redFirstNote = {-35,100,337,3};
+        public static final double[] redSecondNote = {-93,100,0,3};
+        public static final double[] redThirdNote = {-150,100,28,3};
+
+        public static final double[] redFirstNoteLong = {-16,310,0,3};
+        public static final double[] redSecondNoteLong = {-81.5,310,0,5.5};
+        public static final double[] redThirdNoteLong = {-138,310,0,3};
+        public static final double[] redFourthNoteLong = {-215.5,310,0,3};
+        public static final double[] redFifthNoteLong = {-268,310,0,3};
+
+        public static final double[] redStageRight = {-112,155,11,3};
+        public static final double[] redRightWingShot = {-63,155,356,3};
+        public static final double[] redShootingRight = {-39,70.13,316,3};
+        public static final double[] redShootingLeft = {-204.34, 106.37,45.63,3};
         //72.9394602
     }
     

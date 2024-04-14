@@ -110,15 +110,17 @@ public class Teleop {
     }
     public void Operator(){
         get.Button(get.HighShot(), new ShooterAction(shooterState.kHigh));
+        get.Button(get.IngestOut(), new ShooterAction(shooterState.kReversed));
         get.Button(get.Pass(), new ShooterAction(shooterState.kPass));
         get.Button(get.LowShot(), new ShooterAction(shooterState.kLow));
         get.Button(mode == DriveMode.Targeting, new ShooterAction(shooterState.kTarget));
-        get.Button(!get.HighShot()&& !get.Pass() && !get.LowShot() && mode != DriveMode.Targeting, new ShooterAction(shooterState.kIdle));
+        get.Button(!get.HighShot()&& !get.Pass() && !get.LowShot() && mode != DriveMode.Targeting && !get.IngestOut(), new ShooterAction(shooterState.kIdle));
 
         get.Button(get.IngestIn(), new IngestAction(IngestState.kForward, KurtinatorState.kRunTilTrip));
         get.Button(get.IngestOut(), new IngestAction(IngestState.kReversed, KurtinatorState.kReversed));
+        get.Button(get.BypassIngest(), new IngestAction(IngestState.kForward, KurtinatorState.kFeed));
         get.Button(get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kFeed));
-        get.Button(!get.IngestIn() && !get.IngestOut() && !get.Feed(), new IngestAction(IngestState.kIdle, KurtinatorState.kIdle));
+        get.Button(!get.IngestIn() && !get.IngestOut() && !get.Feed() && !get.BypassIngest(), new IngestAction(IngestState.kIdle, KurtinatorState.kIdle));
 
         get.Button(get.Climb(), new ClimberAction(ClimbState.kClimb));
         get.Button(get.UnClimb(), new ClimberAction(ClimbState.kUnClimb));
@@ -130,9 +132,10 @@ public class Teleop {
 
         get.Button(get.ShooterUp(), new PivotAction(pivotState.kHoming, 48));
         get.Button(get.LowShot(), new PivotAction(pivotState.kPivoting, 48));
+        get.Button(get.Pass(), new PivotAction(pivotState.kPivoting, 48));
         get.Button(get.ShooterAuto(), new PivotAction(pivotState.kAutoAim, 48));
-        get.Button(get.ShooterNotSoDown(), new PivotAction(pivotState.kPivoting, 41));
-        get.Button(get.ShooterDown(), new PivotAction(pivotState.kPivoting, 30));
+        get.Button(get.ShooterNotSoDown(), new PivotAction(pivotState.kIdle, 48));
+        get.Button(get.ShooterDown(), new PivotAction(pivotState.kPivoting, 35.5));
     }
 
     public void Dashboard(){

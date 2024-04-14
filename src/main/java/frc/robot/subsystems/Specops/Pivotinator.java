@@ -43,6 +43,7 @@ public class Pivotinator extends SubsystemBase{
     }
     public void setState(pivotState state){
         this.state = state;
+        kPositionPid.reset();
     }
     public void run(){
         switch (this.state) {
@@ -55,13 +56,13 @@ public class Pivotinator extends SubsystemBase{
               //helpfulPower0 = !UpperLimit.get() && helpfulPower0 < 0 ? -0.1 : helpfulPower0;
               //helpfulPower0 = !LowerLimit.get() && helpfulPower0 > 0 ? 0 : helpfulPower0/9;
               if(!UpperLimit.get() && helpfulPower0 < 0){
-                helpfulPower0 = -0.03;
+                helpfulPower0 = -0.04;
               }
               else if(!LowerLimit.get() && helpfulPower0 > 0){
                 helpfulPower0 = 0;
               }
               else if(helpfulPower0 > 0){
-                helpfulPower0 = helpfulPower0/9;
+                helpfulPower0 = helpfulPower0/3;
               }
               else{
                 helpfulPower0 = helpfulPower0 + -0.025;
@@ -73,18 +74,19 @@ public class Pivotinator extends SubsystemBase{
               double helpfulPower1;
               dist = Robot.getId() > -1 ? Units.metersToInches(PhotonUtils.calculateDistanceToTargetMeters(Units.inchesToMeters(8.25), Units.inchesToMeters(targetHeight), Units.degreesToRadians(60), 
               Units.degreesToRadians(Robot.getTarget().getPitch()))) : dist;
-              double pitch = pitchClamped(Math.toDegrees(Math.atan(targetHeight/fudgeDist(dist))) - 6);
+              double pitch = pitchClamped(Math.toDegrees(Math.atan(targetHeight/fudgeDist(dist))) - 3.5);
               //double pitch = 35;
-              SmartDashboard.putNumber("Dist", Math.toDegrees(Math.atan(targetHeight/fudgeDist(dist))) - 5);
+              SmartDashboard.putNumber("Calc Pich", Math.toDegrees(Math.atan(targetHeight/fudgeDist(dist))) - 3.5);
+              SmartDashboard.putNumber("Dist", dist);
               helpfulPower1 = kPositionPid.calculate(pitch, countsToAngle(pivotEncoder.getPosition()));
               if(!UpperLimit.get() && helpfulPower1 < 0){
-                helpfulPower1 = -0.03;
+                helpfulPower1 = -0.04;
               }
               else if(!LowerLimit.get() && helpfulPower1 > 0){
                 helpfulPower1 = 0;
               }
               else if(helpfulPower1 > 0){
-                helpfulPower1 = helpfulPower1/9;
+                helpfulPower1 = helpfulPower1/3;
               }
               else{
                 helpfulPower1 = helpfulPower1 + -0.025;
@@ -111,7 +113,7 @@ public class Pivotinator extends SubsystemBase{
         return Math.max(minAngle, Math.min(maxAngle, pitch));
     }
     double powerClamped(double power){
-        return Math.max(-0.2, Math.min(0.04, power));
+        return Math.max(-0.2, Math.min(0.03, power));
     }
     double countsToAngle(double counts){
         return pitchClamped(maxAngle - ((Math.abs(counts/maxCounts)) * (maxAngle - minAngle)));
@@ -121,8 +123,8 @@ public class Pivotinator extends SubsystemBase{
     }
     double fudgeDist(double incorrectDist){
       //return ((incorrectDist*incorrectDist) * 0.0523285) + (-2.555797*incorrectDist) + (90.86383);
-      //return ((incorrectDist*incorrectDist) * 0.0246) + (-.6639*incorrectDist) + (67.595);
-      return (incorrectDist) * 2;
+      return ((incorrectDist*incorrectDist) * 0.0246) + (-.6639*incorrectDist) + (67.595);
+      //return (incorrectDist) * 2;
     }
     public void Dashboard(){
         SmartDashboard.putString("Pivot State", state.toString());

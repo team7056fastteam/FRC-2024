@@ -1,4 +1,4 @@
-package frc.robot.Autos.Blue;
+package frc.robot.Autos.Red;
 
 import java.util.List;
 
@@ -16,12 +16,12 @@ import frc.robot.subsystems.Specops.Kurtinator.KurtinatorState;
 import frc.robot.subsystems.Specops.Pivotinator.pivotState;
 import frc.robot.subsystems.Specops.ShootingSolution.shooterState;
 
-public class BlueLeftFourPieceLong extends FastAutoBase{
-    double[][] noteOne = {KurtMath.addXYToPoint(FieldLayout.blueFirstNote, 16, -35)};
-    double[][] noteTwo = {FieldLayout.blueFirstNote};
-    double[][] noteThree = {KurtMath.convertToVelocity(KurtMath.addXYToPoint(FieldLayout.blueFirstNoteLong, 0, -50),3.5,14),FieldLayout.blueFirstNoteLong};
-    double[][] shootLong = {KurtMath.convertToVelocity(KurtMath.addXYToPoint(FieldLayout.blueLeftWingShot, -15, 20), 3.5, 14), FieldLayout.blueLeftWingShot};
-    double[][] noteFour = {KurtMath.convertToVelocity(KurtMath.addXYToPoint(FieldLayout.blueSecondNoteLong, -20, -60),3.5,14),FieldLayout.blueSecondNoteLong};
+public class RedRightFourPieceLong extends FastAutoBase{
+    double[][] noteOne = {KurtMath.addXYToPoint(FieldLayout.redFirstNote, -16, -35)};
+    double[][] noteTwo = {FieldLayout.redFirstNote};
+    double[][] noteThree = {KurtMath.convertToVelocity(KurtMath.addXYToPoint(FieldLayout.redFirstNoteLong, 0, -50),3.5,14),FieldLayout.redFirstNoteLong};
+    double[][] shootLong = {KurtMath.convertToVelocity(KurtMath.addXYToPoint(FieldLayout.redRightWingShot, 15, 20), 3.5, 14), FieldLayout.redRightWingShot};
+    double[][] noteFour = {KurtMath.convertToVelocity(KurtMath.addXYToPoint(FieldLayout.redSecondNoteLong, 20, -60),3.5,14),FieldLayout.redSecondNoteLong};
 
     Path path0 = new Path(noteOne, WayPointBehavior.Standard);
     Path path1 = new Path(noteTwo, WayPointBehavior.Standard);
@@ -41,17 +41,16 @@ public class BlueLeftFourPieceLong extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path1),
             new FastSeries(List.of(
-                new PassXYCommand(FieldLayout.blueFirstNote[0],FieldLayout.blueFirstNote[1], 16),
+                new PassXYCommand(FieldLayout.redFirstNote[0],FieldLayout.redFirstNote[1], 25),
                 new KurtinatorCommand(KurtinatorState.kFeed),
                 new IngestCommand(IngestState.kForward),
                 new WaitForIntake(1)
         )))));
         runCommand(new WaitCommand(0.1));
-        runCommand(new KurtinatorCommand(KurtinatorState.kRunTilTrip));
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path2),
             new FastSeries(List.of(
-                new PassXYCommand(FieldLayout.blueFirstNoteLong[0],FieldLayout.blueFirstNoteLong[1], 16),
+                new PassXYCommand(FieldLayout.redFirstNoteLong[0],FieldLayout.redFirstNoteLong[1], 20),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward)
         )))));
@@ -60,7 +59,7 @@ public class BlueLeftFourPieceLong extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path3),
             new FastSeries(List.of(
-                new PassXYCommand(FieldLayout.blueLeftWingShot[0],FieldLayout.blueLeftWingShot[1], 3),
+                new PassXYCommand(FieldLayout.redRightWingShot[0],FieldLayout.redRightWingShot[1], 3),
                 new KurtinatorCommand(KurtinatorState.kFeed),
                 new IngestCommand(IngestState.kIdle)
         )))));
@@ -68,7 +67,7 @@ public class BlueLeftFourPieceLong extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path4),
             new FastSeries(List.of(
-                new PassXYCommand(FieldLayout.blueSecondNoteLong[0],FieldLayout.blueSecondNoteLong[1], 16),
+                new PassXYCommand(FieldLayout.redSecondNoteLong[0],FieldLayout.redSecondNoteLong[1], 20),
                 new KurtinatorCommand(KurtinatorState.kRunTilTrip),
                 new IngestCommand(IngestState.kForward)
         )))));
@@ -76,7 +75,7 @@ public class BlueLeftFourPieceLong extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path3),
             new FastSeries(List.of(
-                new PassXYCommand(FieldLayout.blueLeftWingShot[0],FieldLayout.blueLeftWingShot[1], 3),
+                new PassXYCommand(FieldLayout.redRightWingShot[0],FieldLayout.redRightWingShot[1], 3),
                 new KurtinatorCommand(KurtinatorState.kFeed),
                 new IngestCommand(IngestState.kIdle)
         )))));
@@ -86,6 +85,6 @@ public class BlueLeftFourPieceLong extends FastAutoBase{
 
     @Override
     public Pose2d getStartingPose() {
-        return FieldLayout.blueStartingLeft;
+        return FieldLayout.redStartingRight;
     }
 }

@@ -2,31 +2,8 @@ package frc.robot.Autos;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Autos.Blue.BlueLeftFourPiece;
-import frc.robot.Autos.Blue.BlueLeftFourPieceLong;
-import frc.robot.Autos.Blue.BlueLeftOnePiece;
-import frc.robot.Autos.Blue.BlueLeftSixPiece;
-import frc.robot.Autos.Blue.BlueLeftThreePiece;
-import frc.robot.Autos.Blue.BlueLeftThreePieceLong;
-import frc.robot.Autos.Blue.BlueMidLeftThreePiece;
-import frc.robot.Autos.Blue.BlueMidLong;
-import frc.robot.Autos.Blue.BlueMidRightThreePiece;
-import frc.robot.Autos.Blue.BlueRightFourPieceLong;
-import frc.robot.Autos.Blue.BlueRightOnePiece;
-import frc.robot.Autos.Blue.BlueRightThreePiece;
-import frc.robot.Autos.Blue.BlueRightThreePieceSuperLong;
-import frc.robot.Autos.Blue.BlueRightThreepieceLong;
-import frc.robot.Autos.Red.RedLeftOnePiece;
-import frc.robot.Autos.Red.RedLeftThreePiece;
-import frc.robot.Autos.Red.RedLeftThreePieceLongShiny;
-import frc.robot.Autos.Red.RedLeftThreePieceSuperLong;
-import frc.robot.Autos.Red.RedMidLeftThreePiece;
-import frc.robot.Autos.Red.RedMidLong;
-import frc.robot.Autos.Red.RedMidRightThreePiece;
-import frc.robot.Autos.Red.RedRightFourPiece;
-import frc.robot.Autos.Red.RedRightOnePiece;
-import frc.robot.Autos.Red.RedRightThreePiece;
-import frc.robot.Autos.Red.RedRightThreePieceLong;
+import frc.robot.Autos.Blue.*;
+import frc.robot.Autos.Red.*;
 import frc.robot.Common.FastAutoBase;
 
 public class AutoModeSelector {
@@ -44,7 +21,11 @@ public class AutoModeSelector {
     private static FastAutoBase BlueLeftThreePiece = new BlueLeftThreePiece();
     private static FastAutoBase BlueLeftOnePiece = new BlueLeftOnePiece();
     private static FastAutoBase BlueRightOnePiece = new BlueRightOnePiece();
+    private static FastAutoBase BlueGetFucked = new BlueGetFucked();
 
+    private static FastAutoBase RedRightSixPiece = new RedRightSixPiece();
+    private static FastAutoBase RedLeftFourPieceLong = new RedLeftFourPieceLong();
+    private static FastAutoBase RedRightFourPieceLong = new RedRightFourPieceLong();
     private static FastAutoBase RedLeftThreePiece = new RedLeftThreePiece();
     private static FastAutoBase RedRightThreePiece = new RedRightThreePiece();
     private static FastAutoBase RedLeftThreePieceLongShiny = new RedLeftThreePieceLongShiny();
@@ -68,6 +49,7 @@ public class AutoModeSelector {
         autoChooser.setDefaultOption("Blue Side Left Four piece", BlueLeftFourPiece);
 
         autoChooser.addOption("Blue Side Left Four piece", BlueLeftFourPiece);
+        autoChooser.addOption("Blue Funny", BlueGetFucked);
         autoChooser.addOption("Blue Side Left Six piece", BlueLeftSixPiece);
         autoChooser.addOption("Blue Side Left Four piece long", BlueLeftFourPieceLong);
         autoChooser.addOption("Blue Side Right Four piece long", BlueRightFourPieceLong);
@@ -93,6 +75,9 @@ public class AutoModeSelector {
         autoChooser.addOption("Red Side Mid Right Three Piece", RedMidRightThreePiece);
         autoChooser.addOption("Red Side Left One Piece", RedLeftOnePiece);
         autoChooser.addOption("Red Side Right One Piece", RedRightOnePiece);
+        autoChooser.addOption("Red Side Right Six piece", RedRightSixPiece);
+        autoChooser.addOption("Red Side Right Four piece long", RedRightFourPieceLong);
+        autoChooser.addOption("Red Side Left Four piece long", RedLeftFourPieceLong);
 
         autoChooser.addOption("Do Nothing :)", DoNothing);
 
