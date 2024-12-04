@@ -153,8 +153,8 @@ public class Constants {
         public static final double kAmpPTOP = 0.000006;
         public static final double kAmpPBOTTOM = 0.000006;
 
-        public static final double kPPivot = 0.03;
-        public static final double kIPivot = 0.025;
+        public static final double kPPivot = 0.035;
+        public static final double kIPivot = 0.06;
 
         public static final double kIngestForwardSpeed = 1;
         public static final double kIngestReversedSpeed = -1;

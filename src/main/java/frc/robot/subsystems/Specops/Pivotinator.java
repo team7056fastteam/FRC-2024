@@ -132,5 +132,6 @@ public class Pivotinator extends SubsystemBase{
         SmartDashboard.putBoolean("Bottom Tripped", !LowerLimit.get());
         SmartDashboard.putNumber("Pivot Angle", countsToAngle(pivotEncoder.getPosition()));
         SmartDashboard.putNumber("target Pivot Angle", angleSetPoint);
+        SmartDashboard.putNumber("Angle Error", (countsToAngle(pivotEncoder.getPosition()) - SmartDashboard.getNumber("Calc Pich", 0)));
     }
 }

@@ -21,7 +21,7 @@ public class AutoModeSelector {
     private static FastAutoBase BlueLeftThreePiece = new BlueLeftThreePiece();
     private static FastAutoBase BlueLeftOnePiece = new BlueLeftOnePiece();
     private static FastAutoBase BlueRightOnePiece = new BlueRightOnePiece();
-    private static FastAutoBase BlueGetFucked = new BlueGetFucked();
+    private static FastAutoBase BlueGetScrewed = new BlueGetScrewed();
 
     private static FastAutoBase RedRightSixPiece = new RedRightSixPiece();
     private static FastAutoBase RedLeftFourPieceLong = new RedLeftFourPieceLong();
@@ -37,6 +37,7 @@ public class AutoModeSelector {
     private static FastAutoBase RedRightThreePieceLong = new RedRightThreePieceLong();
     private static FastAutoBase RedLeftOnePiece = new RedLeftOnePiece();
     private static FastAutoBase RedRightOnePiece = new RedRightOnePiece();
+    private static FastAutoBase RedGetScrewed = new RedGetScrewed();
 
     private static FastAutoBase DoNothing = new DoNothing();
 
@@ -49,7 +50,7 @@ public class AutoModeSelector {
         autoChooser.setDefaultOption("Blue Side Left Four piece", BlueLeftFourPiece);
 
         autoChooser.addOption("Blue Side Left Four piece", BlueLeftFourPiece);
-        autoChooser.addOption("Blue Funny", BlueGetFucked);
+        autoChooser.addOption("Blue Funny", BlueGetScrewed);
         autoChooser.addOption("Blue Side Left Six piece", BlueLeftSixPiece);
         autoChooser.addOption("Blue Side Left Four piece long", BlueLeftFourPieceLong);
         autoChooser.addOption("Blue Side Right Four piece long", BlueRightFourPieceLong);
@@ -65,6 +66,7 @@ public class AutoModeSelector {
         autoChooser.addOption("Blue Side Right One Piece", BlueRightOnePiece);
 
         autoChooser.addOption("Red Side Right Four Piece", RedRightFourPiece);
+        autoChooser.addOption("Red Funny", RedGetScrewed);
         autoChooser.addOption("Red Side Right Three Piece", RedRightThreePiece);
         autoChooser.addOption("Red Side Right Three Piece Long", RedRightThreePieceLong);
         autoChooser.addOption("Red Side Middle Long", RedMidLong);

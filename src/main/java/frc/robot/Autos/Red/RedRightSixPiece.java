@@ -55,6 +55,7 @@ public class RedRightSixPiece extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path2),
             new FastSeries(List.of(
+                new PivotCommand(pivotState.kPivoting, 37.5),
                 new PassXYCommand(FieldLayout.redSecondNote[0],FieldLayout.redSecondNote[1], 10),
                 new WaitForIntake(1)
         )))));
@@ -62,6 +63,7 @@ public class RedRightSixPiece extends FastAutoBase{
         runCommand(new FastParallel(List.of(
             new RunPathCommand(path3),
             new FastSeries(List.of(
+                new PivotCommand(pivotState.kPivoting, 35),
                 new PassXYCommand(FieldLayout.redThirdNote[0] + 10,FieldLayout.redThirdNote[1] - 10, 10),
                 new WaitForIntake(1)
         )))));

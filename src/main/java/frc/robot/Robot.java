@@ -124,6 +124,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     currentPose = new Pose2d(new Translation2d(-kx, -ky), getGyroscopeRotation2d());
+    SmartDashboard.putNumber("RobotX", currentPose.getX());
+    SmartDashboard.putNumber("RobotY", currentPose.getY());
+    SmartDashboard.putNumber("RobotH", currentPose.getRotation().getDegrees());
     if(camera != null){result = camera.getLatestResult();}
     target = getTarget();
     setBlinkin(_noteState.state == noteState.kNote);

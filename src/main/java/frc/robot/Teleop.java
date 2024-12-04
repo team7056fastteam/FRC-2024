@@ -52,7 +52,7 @@ public class Teleop {
 
     public void Driver(){
         xY = Robot.getGoalTranslation();
-        xT = get.speedAdjustment() ? 1.4 : 0.675;
+        xT = get.speedAdjustment() ? 1.54 : 0.675;
 
         if(get.lockWheels()){mode = DriveMode.Locked;}
         else if(get.NoteTargeting()){mode = DriveMode.noteTargeting;}
@@ -92,14 +92,14 @@ public class Teleop {
                 if(Robot.getId() > -1){
                     z = theta.calculate(Robot.getTy() - yawOffset);
                 }
-                else{
-                    // z = thetaController.calculate(
-                    // Robot.getPose().getRotation().getRadians(),
-                    // KurtMath.kurtAngle(60,0,
-                    // Robot.getPose().getX(),Robot.getPose().getY())
-                    // );
-                    z=0;
-                }
+                // else{
+                //     // z = thetaController.calculate(
+                //     // Robot.getPose().getRotation().getRadians(),
+                //     // KurtMath.kurtAngle(60,0,
+                //     // Robot.getPose().getX(),Robot.getPose().getY())
+                //     // );
+                //     z=0;
+                // }
                 Robot._drive.runChassis(driveX, driveY, driveZ + z);
                 break;
             case Locked:
